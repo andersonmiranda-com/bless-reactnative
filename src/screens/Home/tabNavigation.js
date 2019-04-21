@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
-import { Icon, Header, FooterTab, Button, Thumbnail } from "native-base";
+import { Icon, Footer, FooterTab, Button, Thumbnail } from "native-base";
 import Profile from "../Profile";
 import PhotoCard from "../PhotoCard";
 import Chat from "../Chat";
@@ -18,7 +18,7 @@ const HomeTabNavigation = createBottomTabNavigator(
     lazy: true,
     tabBarComponent: props => {
       return (
-        <Header>
+        <Footer>
           <FooterTab>
             <Button onPress={() => props.navigation.navigate("Profile")}>
               <Icon
@@ -54,7 +54,7 @@ const HomeTabNavigation = createBottomTabNavigator(
               />
             </Button>
           </FooterTab>
-        </Header>
+        </Footer>
       );
     }
   }

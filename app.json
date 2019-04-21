@@ -1,28 +1,33 @@
 {
-  "expo": {
-    "sdkVersion": "28.0.0",
-    "icon": "./assets/icon.png",
-    "slug": "bless-club",
-    "splash": {
-      "image": "./assets/launchscreen.png",
-      "resizeMode": "cover"
-    },
-    "orientation": "portrait",
-    "primaryColor": "#cccccc",
-    "packagerOpts": {
-      "assetExts": ["ttf"]
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "io.market.nativebase.geekyants.datingappui"
-    },
-    "android": {
-      "package": "io.market.nativebase.geekyants.datingappui"
-    },
-    "androidStatusBarColor": "#EEE",
-    "androidStatusBar": {
-      "barStyle": "dark-content",
-      "backgroundColor": "#EEE"
+    "expo": {
+        "name": "Bless",
+        "slug": "bless-club",
+        "sdkVersion": "28.0.0",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "orientation": "portrait",
+        "primaryColor": "#cccccc",
+        "packagerOpts": {
+            "assetExts": ["ttf"]
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "co.virtualcase.bless"
+        },
+        "android": {
+            "package": "co.virtualcase.bless"
+        },
+        "androidStatusBarColor": "#EEE",
+        "androidStatusBar": {
+            "barStyle": "dark-content",
+            "backgroundColor": "#EEE"
+        },
+        "facebookScheme": "fb420075655217013",
+        "facebookAppId": "420075655217013",
+        "facebookDisplayName": "Bless Club"
     }
-  }
 }
