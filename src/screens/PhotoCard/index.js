@@ -144,10 +144,7 @@ class PhotoCard extends Component {
                                     <Image style={styles.cardMain} source={item.image} />
                                 </CardItem>
                                 <CardItem
-                                    style={{
-                                        borderBottomLeftRadius: 10,
-                                        borderBottomRightRadius: 10
-                                    }}
+                                    style={styles.deckswiperDetailsCarditem}
                                 >
                                     <Body>
                                         <Text style={styles.text}>
@@ -156,15 +153,9 @@ class PhotoCard extends Component {
                                         <Text style={styles.subtextLeft}>{item.college}</Text>
                                     </Body>
                                     <Right>
-                                        <Button
-                                            transparent
-                                            textStyle={{ color: "#797979", fontWeight: "900" }}
-                                        >
-                                            <Icon
-                                                name="md-book"
-                                                style={{ color: "#797979", paddingRight: 4 }}
-                                            />
-                                            <Text style={styles.text}>{item.num}</Text>
+                                        <Button transparent>
+                                            <Icon name="md-book" style={styles.iconRight} />
+                                            <Text style={styles.subtextRight}>{item.num}</Text>
                                         </Button>
                                     </Right>
                                 </CardItem>
