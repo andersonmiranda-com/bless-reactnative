@@ -11,7 +11,7 @@ export default {
     wrapper: {
         flex: 1,
         backgroundColor: "#FFF",
-        marginTop: isIphoneX ? 25 : 10
+        paddingTop: isIphoneX ? 25 : 10
     },
     deckswiperView: {
         marginHorizontal: 15,

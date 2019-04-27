@@ -12,7 +12,7 @@ class UserDetails extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <Container style={{ backgroundColor: "#FFF" }}>
+      <Container style={ styles.wrapper}>
         <Content style={{ marginTop: Platform.OS === "ios" ? 20 : 0 }}>
           {Platform.OS === "android" &&
             <Button
@@ -23,7 +23,7 @@ class UserDetails extends Component {
             </Button>}
           <View style={styles.instagramPhotosCarousel}>
             <Swiper
-              style={styles.wrapper}
+              style={styles.wrapperSwipper}
               width={width}
               height={height / 1.5}
               dot={<View style={styles.dot} />}

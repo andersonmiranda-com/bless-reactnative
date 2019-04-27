@@ -138,7 +138,7 @@ class Settings extends Component {
             </Card>
             <CardItem style={styles.switchBlock}>
               <Left>
-                <Text style={styles.swipText}>Show me on DatingApp</Text>
+                <Text style={styles.swipText}>Show me on Bless</Text>
               </Left>
               <Right>
                 <Switch
@@ -154,7 +154,7 @@ class Settings extends Component {
             </CardItem>
             <View>
               <Text style={styles.someText}>
-                DatingApp uses these preferences to suggest matches.Some match
+                Bless uses these preferences to suggest matches.Some match
                 suggestions may not fall within your desired parameters.
               </Text>
             </View>
@@ -185,7 +185,7 @@ class Settings extends Component {
                   }}
                 >
                   Create a username. Share your username. Have people all over
-                  the world swipe you right on DatingApp
+                  the world swipe you right on Bless
                 </Text>
               </CardItem>
             </Card>

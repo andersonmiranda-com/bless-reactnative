@@ -14,7 +14,7 @@ export default {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#FFF",
-        marginTop: isIphoneX ? 25 : 10
+        paddingTop: isIphoneX ? 25 : 10
     },
     profileImageView: {
         alignItems: "center",

@@ -7,57 +7,58 @@ import Chat from "../Chat";
 import styles from "./styles";
 
 const HomeTabNavigation = createBottomTabNavigator(
-  {
-    Profile: { screen: Profile },
-    PhotoCard: { screen: PhotoCard },
-    Chat: { screen: Chat }
-  },
-  {
-    tabBarPosition: "top",
-    initialRouteName: "PhotoCard",
-    lazy: true,
-    tabBarComponent: props => {
-      return (
-        <Footer>
-          <FooterTab>
-            <Button onPress={() => props.navigation.navigate("Profile")}>
-              <Icon
-                name="md-person"
-                size={20}
-                style={
-                  props.navigation.state.index === 0
-                    ? styles.activeIcon
-                    : styles.inActiveIcon
-                }
-              />
-            </Button>
+    {
+        Profile: { screen: Profile },
+        PhotoCard: { screen: PhotoCard },
+        Chat: { screen: Chat }
+    },
+    {
+        tabBarPosition: "top",
+        initialRouteName: "PhotoCard",
+        lazy: true,
+        tabBarComponent: props => {
+            return (
+                <Footer>
+                    <FooterTab>
+                        <Button onPress={() => props.navigation.navigate("Profile")}>
+                            <Icon
+                                name="md-person"
+                                style={[
+                                    props.navigation.state.index === 0
+                                        ? styles.activeIcon
+                                        : styles.inActiveIcon,
+                                    { fontSize: 24 }
+                                ]}
+                            />
+                        </Button>
 
-            <Button onPress={() => props.navigation.navigate("PhotoCard")}>
-              <Thumbnail
-                small
-                source={
-                  props.navigation.state.index === 1
-                    ? require("../../../assets/logo.png")
-                    : require("../../../assets/logo1.png")
-                }
-              />
-            </Button>
+                        <Button onPress={() => props.navigation.navigate("PhotoCard")}>
+                            <Thumbnail
+                                small
+                                source={
+                                    props.navigation.state.index === 1
+                                        ? require("../../../assets/logo.png")
+                                        : require("../../../assets/logo1.png")
+                                }
+                            />
+                        </Button>
 
-            <Button onPress={() => props.navigation.navigate("Chat")}>
-              <Icon
-                name="md-chatboxes"
-                style={
-                  props.navigation.state.index === 2
-                    ? styles.activeIcon
-                    : styles.inActiveIcon
-                }
-              />
-            </Button>
-          </FooterTab>
-        </Footer>
-      );
+                        <Button onPress={() => props.navigation.navigate("Chat")}>
+                            <Icon
+                                name="md-chatboxes"
+                                style={[
+                                    props.navigation.state.index === 2
+                                        ? styles.activeIcon
+                                        : styles.inActiveIcon,
+                                    { fontSize: 24 }
+                                ]}
+                            />
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            );
+        }
     }
-  }
 );
 
 export default HomeTabNavigation;
