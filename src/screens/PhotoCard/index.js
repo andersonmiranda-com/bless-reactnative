@@ -14,6 +14,8 @@ import {
     Body
 } from "native-base";
 import commonColor from "../../theme/variables/commonColor";
+import * as firebase from "firebase";
+import moment from "moment";
 import styles from "./styles";
 import data from "./data";
 
@@ -22,146 +24,183 @@ class PhotoCard extends Component {
         super(props);
         this.state = {
             direction: null,
-            opac: 0
+            opac: 0,
+            profiles: []
         };
     }
+
+    componentDidMount() {
+        firebase
+            .database()
+            .ref()
+            .child("users")
+            .once("value", snap => {
+                let profiles = [];
+                snap.forEach(profile => {
+                    const { name, bio, birthday, id } = profile.val();
+                    profiles.push({ name, bio, birthday, id });
+                });
+                this.setState({ profiles });
+            });
+    }
+
+    _renderCard = item => {
+        const { birthday, name, bio, id } = item;
+        const profileBday = moment(birthday, "MM/DD/YYYY");
+        const profileAge = moment().diff(profileBday, "years");
+        const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
+
+        const navigation = this.props.navigation;
+        return (
+            <Card activeOpacity={1} style={{ borderRadius: 10 }}>
+                <CardItem
+                    button
+                    style={styles.deckswiperImageCarditem}
+                    activeOpacity={1}
+                    cardBody
+                    onPress={() => navigation.navigate("PhotoCardDetails")}
+                >
+                    <ImageBackground style={styles.cardMain} source={{ uri: fbImage }}>
+                        {this.state.direction === "left" && (
+                            <View
+                                style={{
+                                    opacity: -this.state.opac / 150,
+                                    position: "absolute",
+                                    right: 30,
+                                    top: 40,
+                                    borderColor: commonColor.brandPrimary,
+                                    borderWidth: 2,
+                                    borderRadius: 30,
+                                    width: 60,
+                                    height: 60,
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                            >
+                                <Icon
+                                    style={{
+                                        backgroundColor: "transparent",
+                                        color: commonColor.brandPrimary,
+                                        fontSize: 40,
+                                        textAlign: "center",
+                                        lineHeight: 40,
+                                        marginTop: 8,
+                                        marginLeft: 2
+                                    }}
+                                    name="md-close"
+                                />
+                            </View>
+                        )}
+                        {this.state.direction === "right" && (
+                            <View
+                                style={{
+                                    opacity: this.state.opac / 150,
+                                    position: "absolute",
+                                    left: 30,
+                                    top: 40,
+                                    borderColor: commonColor.brandSuccess,
+                                    borderWidth: 2,
+                                    borderRadius: 30,
+                                    width: 60,
+                                    height: 60,
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                            >
+                                <Icon
+                                    style={{
+                                        backgroundColor: "transparent",
+                                        color: commonColor.brandSuccess,
+                                        fontSize: 40,
+                                        textAlign: "center",
+                                        lineHeight: 40,
+                                        marginTop: 8,
+                                        marginLeft: 2
+                                    }}
+                                    name="md-heart"
+                                />
+                            </View>
+                        )}
+                    </ImageBackground>
+                </CardItem>
+                <CardItem
+                    button
+                    activeOpacity={1}
+                    onPress={() => navigation.navigate("PhotoCardDetails")}
+                    style={styles.deckswiperDetailsCarditem}
+                >
+                    <Body>
+                        <Text style={styles.text}>
+                            {name}, {profileAge}
+                        </Text>
+                        <Text style={styles.subtextLeft}>{bio}</Text>
+                    </Body>
+                    (
+                    {/* <Right>
+                        <Button transparent>
+                            <Icon name="md-book" style={styles.iconRight} />
+                            <Text style={styles.subtextRight}>{item.num}</Text>
+                        </Button>
+                    </Right> */}
+                    )
+                </CardItem>
+            </Card>
+        );
+    };
+
+    _renderBottom = item => {
+        const { birthday, name, bio, id } = item;
+        const profileBday = moment(birthday, "MM/DD/YYYY");
+        const profileAge = moment().diff(profileBday, "years");
+        const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
+
+        return (
+            <Card style={{ borderRadius: 10 }}>
+                <CardItem
+                    style={{
+                        borderTopLeftRadius: 10,
+                        overflow: "hidden",
+                        borderTopRightRadius: 10
+                    }}
+                    cardBody
+                >
+                    <Image style={styles.cardMain} source={{ uri: fbImage }} />
+                </CardItem>
+                <CardItem style={styles.deckswiperDetailsCarditem}>
+                    <Body>
+                        <Text style={styles.text}>
+                            {name}, {profileAge}
+                        </Text>
+                        <Text style={styles.subtextLeft}>{bio}</Text>
+                    </Body>
+                    (
+                    {/* <Right>
+                        <Button transparent>
+                            <Icon name="md-book" style={styles.iconRight} />
+                            <Text style={styles.subtextRight}>{item.num}</Text>
+                        </Button>
+                    </Right> */}
+                    )
+                </CardItem>
+            </Card>
+        );
+    };
 
     render() {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.wrapper}>
                 <View style={styles.deckswiperView}>
-                    <DeckSwiper
-                        activeOpacity={1}
-                        dataSource={data}
-                        ref={mr => (this._deckSwiper = mr)}
-                        onSwiping={(dir, opa) => this.setState({ direction: dir, opac: opa })}
-                        renderTop={item => (
-                            <Card activeOpacity={1} style={{ borderRadius: 10 }}>
-                                <CardItem
-                                    button
-                                    style={styles.deckswiperImageCarditem}
-                                    activeOpacity={1}
-                                    cardBody
-                                    onPress={() => navigation.navigate("PhotoCardDetails")}
-                                >
-                                    <ImageBackground style={styles.cardMain} source={item.image}>
-                                        {this.state.direction === "left" && (
-                                            <View
-                                                style={{
-                                                    opacity: -this.state.opac / 150,
-                                                    position: "absolute",
-                                                    right: 30,
-                                                    top: 40,
-                                                    borderWidth: 2,
-                                                    borderRadius: 5,
-                                                    borderColor: commonColor.brandPrimary,
-                                                    width: 100,
-                                                    height: 40,
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                    transform: [{ rotate: "20deg" }]
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        backgroundColor: "transparent",
-                                                        fontSize: 30,
-                                                        color: commonColor.brandPrimary,
-                                                        fontWeight: "900",
-                                                        textAlign: "center",
-                                                        lineHeight: 35
-                                                    }}
-                                                >
-                                                    NOPE
-                                                </Text>
-                                            </View>
-                                        )}
-                                        {this.state.direction === "right" && (
-                                            <View
-                                                style={{
-                                                    opacity: this.state.opac / 150,
-                                                    position: "absolute",
-                                                    left: 30,
-                                                    top: 40,
-                                                    borderWidth: 2,
-                                                    borderRadius: 5,
-                                                    borderColor: commonColor.brandSuccess,
-                                                    width: 100,
-                                                    height: 40,
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                    transform: [{ rotate: "-20deg" }]
-                                                }}
-                                            >
-                                                <Text
-                                                    style={{
-                                                        backgroundColor: "transparent",
-                                                        fontSize: 30,
-                                                        color: commonColor.brandSuccess,
-                                                        fontWeight: "900",
-                                                        textAlign: "center",
-                                                        lineHeight: 35
-                                                    }}
-                                                >
-                                                    Like
-                                                </Text>
-                                            </View>
-                                        )}
-                                    </ImageBackground>
-                                </CardItem>
-                                <CardItem
-                                    button
-                                    activeOpacity={1}
-                                    onPress={() => navigation.navigate("PhotoCardDetails")}
-                                    style={styles.deckswiperDetailsCarditem}
-                                >
-                                    <Body>
-                                        <Text style={styles.text}>
-                                            {item.name}, {item.age}
-                                        </Text>
-                                        <Text style={styles.subtextLeft}>{item.college}</Text>
-                                    </Body>
-                                    <Right>
-                                        <Button transparent>
-                                            <Icon name="md-book" style={styles.iconRight} />
-                                            <Text style={styles.subtextRight}>{item.num}</Text>
-                                        </Button>
-                                    </Right>
-                                </CardItem>
-                            </Card>
-                        )}
-                        renderBottom={item => (
-                            <Card style={{ borderRadius: 10 }}>
-                                <CardItem
-                                    style={{
-                                        borderTopLeftRadius: 10,
-                                        overflow: "hidden",
-                                        borderTopRightRadius: 10
-                                    }}
-                                    cardBody
-                                >
-                                    <Image style={styles.cardMain} source={item.image} />
-                                </CardItem>
-                                <CardItem
-                                    style={styles.deckswiperDetailsCarditem}
-                                >
-                                    <Body>
-                                        <Text style={styles.text}>
-                                            {item.name}, {item.age}
-                                        </Text>
-                                        <Text style={styles.subtextLeft}>{item.college}</Text>
-                                    </Body>
-                                    <Right>
-                                        <Button transparent>
-                                            <Icon name="md-book" style={styles.iconRight} />
-                                            <Text style={styles.subtextRight}>{item.num}</Text>
-                                        </Button>
-                                    </Right>
-                                </CardItem>
-                            </Card>
-                        )}
-                    />
+                    {this.state.profiles.length > 0 && (
+                        <DeckSwiper
+                            activeOpacity={1}
+                            dataSource={this.state.profiles}
+                            ref={mr => (this._deckSwiper = mr)}
+                            onSwiping={(dir, opa) => this.setState({ direction: dir, opac: opa })}
+                            renderTop={this._renderCard}
+                            renderBottom={this._renderBottom}
+                        />
+                    )}
                 </View>
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
