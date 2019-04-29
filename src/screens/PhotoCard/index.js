@@ -19,7 +19,6 @@ import moment from "moment";
 import styles from "./styles";
 
 class PhotoCard extends Component {
-
     db = firebase.firestore();
 
     constructor(props) {
@@ -199,6 +198,14 @@ class PhotoCard extends Component {
         );
     };
 
+    _renderEmpty = () => {
+        return (
+            <View style={{ alignSelf: "center" }}>
+                <Text>Over</Text>
+            </View>
+        );
+    };
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -210,8 +217,11 @@ class PhotoCard extends Component {
                             dataSource={this.state.profiles}
                             ref={mr => (this._deckSwiper = mr)}
                             onSwiping={(dir, opa) => this.setState({ direction: dir, opac: opa })}
+                            renderItem={this._renderCard}
                             renderTop={this._renderCard}
                             renderBottom={this._renderBottom}
+                            renderEmpty={this._renderEmpty}
+                            looping={false}
                         />
                     )}
                 </View>
