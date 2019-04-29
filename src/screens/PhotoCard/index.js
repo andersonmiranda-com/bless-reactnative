@@ -10,16 +10,18 @@ import {
     Row,
     Icon,
     Button,
-    Right,
     Body
 } from "native-base";
 import commonColor from "../../theme/variables/commonColor";
 import * as firebase from "firebase";
+import "firebase/firestore";
 import moment from "moment";
 import styles from "./styles";
-import data from "./data";
 
 class PhotoCard extends Component {
+
+    db = firebase.firestore();
+
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +32,18 @@ class PhotoCard extends Component {
     }
 
     componentDidMount() {
-        firebase
+        var usersRef = this.db.collection("users");
+
+        usersRef.get().then(querySnapshot => {
+            let profiles = [];
+            querySnapshot.forEach(doc => {
+                const { name, bio, birthday, id } = doc.data();
+                profiles.push({ name, bio, birthday, id });
+            });
+            this.setState({ profiles });
+        });
+
+        /*  firebase
             .database()
             .ref()
             .child("users")
@@ -41,7 +54,7 @@ class PhotoCard extends Component {
                     profiles.push({ name, bio, birthday, id });
                 });
                 this.setState({ profiles });
-            });
+            }); */
     }
 
     _renderCard = item => {

@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "512322399163",
+    "firebase_url": "https://bless-club.firebaseio.com",
+    "project_id": "bless-club",
+    "storage_bucket": "bless-club.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512322399163:android:bcf953c222666276",
+        "android_client_info": {
+          "package_name": "co.virtualcase.bless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512322399163-dcf3q931adcit4q382r9vgpjmkkqe2ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYcynvtu8NG-OFAp4lMyVyj0w-sTfrk9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512322399163-dcf3q931adcit4q382r9vgpjmkkqe2ke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5385146663664175~4473064186"
+    }
+  ],
+  "configuration_version": "1"
+}
