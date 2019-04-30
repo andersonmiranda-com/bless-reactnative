@@ -27,8 +27,7 @@
     "eject": "expo eject",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "test": "jest && flow && eslint .",
-    "precommit": "yarn test"
+    "test": "jest && flow && eslint ."
   },
   "jest": {
     "preset": "jest-expo",
