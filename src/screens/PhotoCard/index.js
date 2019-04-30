@@ -1,17 +1,7 @@
 import React, { Component } from "react";
 import { Image, ImageBackground, View } from "react-native";
-import {
-    Container,
-    Text,
-    Card,
-    CardItem,
-    DeckSwiper,
-    Grid,
-    Row,
-    Icon,
-    Button,
-    Body
-} from "native-base";
+import { Container, Text, Card, CardItem, Grid, Row, Icon, Button, Body } from "native-base";
+import { DeckSwiper } from "../../components/DeckSwiper";
 import commonColor from "../../theme/variables/commonColor";
 import * as firebase from "firebase";
 import "firebase/firestore";
@@ -63,6 +53,8 @@ class PhotoCard extends Component {
         const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
 
         const navigation = this.props.navigation;
+
+        console.log(this.state.direction);
         return (
             <Card activeOpacity={1} style={{ borderRadius: 10 }}>
                 <CardItem
@@ -119,17 +111,36 @@ class PhotoCard extends Component {
                                     alignItems: "center"
                                 }}
                             >
+                            <Text>Like</Text>
+                            </View>
+                        )}
+                        {this.state.direction === "top" && (
+                            <View
+                                style={{
+                                    opacity: this.state.opac / 150,
+                                    position: "absolute",
+                                    right: 50,
+                                    top: 50,
+                                    borderColor: commonColor.brandInfo,
+                                    borderWidth: 2,
+                                    borderRadius: 40,
+                                    width: 80,
+                                    height: 80,
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                            >
                                 <Icon
                                     style={{
                                         backgroundColor: "transparent",
-                                        color: commonColor.brandSuccess,
-                                        fontSize: 40,
+                                        color: commonColor.brandInfo,
+                                        fontSize: 45,
                                         textAlign: "center",
                                         lineHeight: 40,
                                         marginTop: 8,
                                         marginLeft: 2
                                     }}
-                                    name="md-heart"
+                                    name="md-star"
                                 />
                             </View>
                         )}
@@ -206,6 +217,11 @@ class PhotoCard extends Component {
         );
     };
 
+    _onSwiping = (dir, opa) => {
+        console.log(dir, opa);
+        this.setState({ direction: dir, opac: opa });
+    };
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -216,7 +232,7 @@ class PhotoCard extends Component {
                             activeOpacity={1}
                             dataSource={this.state.profiles}
                             ref={mr => (this._deckSwiper = mr)}
-                            onSwiping={(dir, opa) => this.setState({ direction: dir, opac: opa })}
+                            onSwiping={this._onSwiping}
                             renderItem={this._renderCard}
                             renderTop={this._renderCard}
                             renderBottom={this._renderBottom}
