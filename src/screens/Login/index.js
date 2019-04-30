@@ -132,8 +132,7 @@ class Login extends Component {
                         block
                         rounded
                         style={styles.loginBtn}
-                        //onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
-                        onPress={this.login}
+                        onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
                     >
                         <Text style={styles.loginBtnText}>Login with email</Text>
                     </Button>
