@@ -216,14 +216,6 @@ class PhotoCard extends Component {
                         </Text>
                         <Text style={styles.subtextLeft}>{bio}</Text>
                     </Body>
-                    (
-                    {/* <Right>
-                        <Button transparent>
-                            <Icon name="md-book" style={styles.iconRight} />
-                            <Text style={styles.subtextRight}>{item.num}</Text>
-                        </Button>
-                    </Right> */}
-                    )
                 </CardItem>
             </Card>
         );
@@ -254,14 +246,6 @@ class PhotoCard extends Component {
                         </Text>
                         <Text style={styles.subtextLeft}>{bio}</Text>
                     </Body>
-                    (
-                    {/* <Right>
-                        <Button transparent>
-                            <Icon name="md-book" style={styles.iconRight} />
-                            <Text style={styles.subtextRight}>{item.num}</Text>
-                        </Button>
-                    </Right> */}
-                    )
                 </CardItem>
             </Card>
         );
@@ -306,32 +290,31 @@ class PhotoCard extends Component {
         console.log(profiles.length, loading);
         return (
             <Container style={styles.wrapper}>
-                <View style={styles.deckswiperView}>
-                    {profiles.length === 0 &&
-                        loading && (
-                            <View style={styles.wrapperCentered}>
-                                <Spinner color="black" />
-                            </View>
-                        )}
-                    {profiles.length > 0 &&
-                        !loading && (
-                            <DeckSwiper
-                                activeOpacity={1}
-                                dataSource={profiles}
-                                ref={mr => (this._deckSwiper = mr)}
-                                onSwiping={this._onSwiping}
-                                onSwipeRight={this._onSwipeRight}
-                                onSwipeLeft={this._onSwipeLeft}
-                                onSwipeTop={this._onSwipeTop}
-                                onSwipeBottom={this._onSwipeBottom}
-                                renderItem={this._renderCard}
-                                renderTop={this._renderCard}
-                                renderBottom={this._renderBottom}
-                                renderEmpty={this._renderEmpty}
-                                looping={false}
-                            />
-                        )}
-                </View>
+                {profiles.length === 0 &&
+                    !!loading && (
+                        <View style={styles.wrapperCentered}>
+                            <Spinner color="black" />
+                        </View>
+                    )}
+                {profiles.length > 0 && !loading && (
+                    <View style={styles.deckswiperView}>
+                        <DeckSwiper
+                            activeOpacity={1}
+                            dataSource={profiles}
+                            ref={mr => (this._deckSwiper = mr)}
+                            onSwiping={this._onSwiping}
+                            onSwipeRight={this._onSwipeRight}
+                            onSwipeLeft={this._onSwipeLeft}
+                            onSwipeTop={this._onSwipeTop}
+                            onSwipeBottom={this._onSwipeBottom}
+                            renderItem={this._renderCard}
+                            renderTop={this._renderCard}
+                            renderBottom={this._renderBottom}
+                            renderEmpty={this._renderEmpty}
+                            looping={false}
+                        />
+                    </View>
+                )}
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
                         <Button style={styles.bottomRoundedSmallPills}>
