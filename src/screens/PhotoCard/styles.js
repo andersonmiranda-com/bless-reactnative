@@ -33,10 +33,10 @@ export default {
             width < 330
                 ? Platform.OS === "ios"
                     ? height / 1.8
-                    : height / 1.9
+                    : height / 1.8
                 : Platform.OS === "ios"
                     ? height / 1.6
-                    : height / 1.75,
+                    : height / 1.6,
         flex: 1,
         width: null
     },
