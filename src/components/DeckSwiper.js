@@ -135,10 +135,25 @@ class DeckSwiper extends Component {
         }
         setTimeout(() => {
             Animated.timing(this.state.fadeAnim, { toValue: 1 }).start();
-            Animated.spring(this.state.enter, { toValue: 1, friction: 7 }).start();
+            Animated.spring(this.state.enter, { toValue: 1, friction: 5 }).start();
             this.selectNext();
             Animated.decay(this.state.pan, {
                 velocity: { x: -8, y: 1 },
+                deceleration: 0.98
+            }).start(this._resetState.bind(this));
+        }, 300);
+    }
+
+    swipeTop() {
+        if (this.props.onSwiping) {
+            this.props.onSwiping("top");
+        }
+        setTimeout(() => {
+            Animated.timing(this.state.fadeAnim, { toValue: 1 }).start();
+            Animated.spring(this.state.enter, { toValue: 1, friction: 5 }).start();
+            this.selectNext();
+            Animated.decay(this.state.pan, {
+                velocity: { x: 0, y: -12 },
                 deceleration: 0.98
             }).start(this._resetState.bind(this));
         }, 300);
@@ -159,22 +174,33 @@ class DeckSwiper extends Component {
             },
 
             onPanResponderMove: (e, gestureState) => {
-                if (gestureState.dx > 20) {
+                const absDx = Math.abs(gestureState.dx);
+                const absDy = Math.abs(gestureState.dy);
+
+                let directionVertical;
+
+                if (absDy >= absDx) {
+                    directionVertical = true;
+                } else {
+                    directionVertical = false;
+                }
+
+                if (gestureState.dx > 20 && !directionVertical) {
                     if (this.props.onSwiping) {
                         this.props.onSwiping("right", gestureState.dx);
                     }
-                } else if (gestureState.dx < -20) {
+                } else if (gestureState.dx < -20 && !directionVertical) {
                     if (this.props.onSwiping) {
                         this.props.onSwiping("left", gestureState.dx);
                     }
-                } else if (gestureState.dy < -20) {
+                } else if (gestureState.dy < -20 && directionVertical) {
                     if (this.props.onSwiping) {
                         this.props.onSwiping("top", gestureState.dy);
                     }
                 }
 
-                let val = 0;
-                
+                let val = Math.abs((gestureState.dx + gestureState.dy / 2) * 0.001);
+
                 if (Math.abs(gestureState.dx) > 20) {
                     let val = Math.abs(gestureState.dx * 0.0013);
                     const opa = Math.abs(gestureState.dx * 0.0022);
@@ -199,10 +225,63 @@ class DeckSwiper extends Component {
                 );
             },
 
-            onPanResponderRelease: (e, { vx, vy }) => {
+            onPanResponderRelease: (e, { dx, dy }) => {
                 if (this.props.onSwiping) {
                     this.props.onSwiping(null);
                 }
+                const absDx = Math.abs(dx);
+                const absDy = Math.abs(dy);
+                const directionX = absDx / dx;
+                const directionY = absDy / dy;
+
+                let directionVertical;
+                let abs;
+                let direction;
+
+                if (absDy >= absDx) {
+                    directionVertical = true;
+                    abs = absDy;
+                    direction = directionY;
+                } else {
+                    directionVertical = false;
+                    abs = absDx;
+                    direction = directionX;
+                }
+
+                if (abs > SWIPE_THRESHOLD) {
+                    if (direction > 0 && directionVertical) {
+                        this.props.onSwipeBottom
+                            ? this.props.onSwipeBottom(this.state.selectedItem)
+                            : undefined;
+                        //this.selectNext();
+                    } else if (direction < 0 && directionVertical) {
+                        this.props.onSwipeBottom
+                            ? this.props.onSwipeTop(this.state.selectedItem)
+                            : undefined;
+                        this.selectNext();
+                    } else if (direction > 0 && !directionVertical) {
+                        this.props.onSwipeBottom
+                            ? this.props.onSwipeLeft(this.state.selectedItem)
+                            : undefined;
+                        this.selectNext();
+                    } else if (direction < 0 && !directionVertical) {
+                        this.props.onSwipeBottom
+                            ? this.props.onSwipeRight(this.state.selectedItem)
+                            : undefined;
+                        this.selectNext();
+                    } else {
+                        this.props.onSwipeTop
+                            ? this.props.onSwipeLeft(this.state.selectedItem)
+                            : undefined;
+                        this.selectNext();
+                    }
+
+                    Animated.decay(this.state.pan, {
+                        velocity: { x: 5 * directionX, y: 5 * directionY },
+                        deceleration: 0.98
+                    }).start(this._resetState.bind(this));
+
+                    /*
                 let velocity;
 
                 if (vx >= 0) {
@@ -211,7 +290,30 @@ class DeckSwiper extends Component {
                     velocity = clamp(vx * -1, 4.5, 10) * -1;
                 }
 
-                if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
+                if (vy >= 0) {
+                    velocity = clamp(vy, 4.5, 10);
+                } else if (vy < 0) {
+                    velocity = clamp(vy * -1, 4.5, 10) * -1;
+                }
+
+                if (Math.abs(this.state.pan.y._value) > SWIPE_THRESHOLD) {
+                    if (velocity > 0) {
+                        this.props.onSwipeBottom
+                            ? this.props.onSwipeBottom(this.state.selectedItem)
+                            : undefined;
+                        //this.selectNext();
+                    } else {
+                        this.props.onSwipeTop
+                            ? this.props.onSwipeTop(this.state.selectedItem)
+                            : undefined;
+                        this.selectNext();
+                    }
+
+                    Animated.decay(this.state.pan, {
+                        velocity: { x: velocity, y: vy },
+                        deceleration: 0.98
+                    }).start(this._resetState.bind(this));
+                } else if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
                     if (velocity > 0) {
                         this.props.onSwipeRight
                             ? this.props.onSwipeRight(this.state.selectedItem)
@@ -228,10 +330,11 @@ class DeckSwiper extends Component {
                         velocity: { x: velocity, y: vy },
                         deceleration: 0.98
                     }).start(this._resetState.bind(this));
+ */
                 } else {
                     Animated.spring(this.state.pan, {
                         toValue: { x: 0, y: 0 },
-                        friction: 4
+                        friction: 4.5
                     }).start();
                 }
             }

@@ -51,19 +51,11 @@ class PhotoCard extends Component {
         const profileBday = moment(birthday, "MM/DD/YYYY");
         const profileAge = moment().diff(profileBday, "years");
         const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
-
         const navigation = this.props.navigation;
 
-        console.log(this.state.direction);
         return (
             <Card activeOpacity={1} style={{ borderRadius: 10 }}>
-                <CardItem
-                    button
-                    style={styles.deckswiperImageCarditem}
-                    activeOpacity={1}
-                    cardBody
-                    onPress={() => navigation.navigate("PhotoCardDetails")}
-                >
+                <CardItem button style={styles.deckswiperImageCarditem} activeOpacity={1} cardBody>
                     <ImageBackground style={styles.cardMain} source={{ uri: fbImage }}>
                         {this.state.direction === "left" && (
                             <View
@@ -72,6 +64,7 @@ class PhotoCard extends Component {
                                     position: "absolute",
                                     right: 30,
                                     top: 40,
+                                    backgroundColor: commonColor.brandPrimary,
                                     borderColor: commonColor.brandPrimary,
                                     borderWidth: 2,
                                     borderRadius: 30,
@@ -84,7 +77,7 @@ class PhotoCard extends Component {
                                 <Icon
                                     style={{
                                         backgroundColor: "transparent",
-                                        color: commonColor.brandPrimary,
+                                        color: "white",
                                         fontSize: 40,
                                         textAlign: "center",
                                         lineHeight: 40,
@@ -102,6 +95,7 @@ class PhotoCard extends Component {
                                     position: "absolute",
                                     left: 30,
                                     top: 40,
+                                    backgroundColor: commonColor.brandSuccess,
                                     borderColor: commonColor.brandSuccess,
                                     borderWidth: 2,
                                     borderRadius: 30,
@@ -111,16 +105,28 @@ class PhotoCard extends Component {
                                     alignItems: "center"
                                 }}
                             >
-                            <Text>Like</Text>
+                                <Icon
+                                    style={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        fontSize: 40,
+                                        textAlign: "center",
+                                        lineHeight: 40,
+                                        marginTop: 8,
+                                        marginLeft: 2
+                                    }}
+                                    name="md-heart"
+                                />
                             </View>
                         )}
                         {this.state.direction === "top" && (
                             <View
                                 style={{
-                                    opacity: this.state.opac / 150,
+                                    opacity: -this.state.opac / 150,
                                     position: "absolute",
-                                    right: 50,
-                                    top: 50,
+                                    right: 80,
+                                    bottom: 50,
+                                    backgroundColor: commonColor.brandInfo,
                                     borderColor: commonColor.brandInfo,
                                     borderWidth: 2,
                                     borderRadius: 40,
@@ -133,7 +139,7 @@ class PhotoCard extends Component {
                                 <Icon
                                     style={{
                                         backgroundColor: "transparent",
-                                        color: commonColor.brandInfo,
+                                        color: "white",
                                         fontSize: 45,
                                         textAlign: "center",
                                         lineHeight: 40,
@@ -222,6 +228,22 @@ class PhotoCard extends Component {
         this.setState({ direction: dir, opac: opa });
     };
 
+    _onSwipeRight = item => {
+        console.log("Swipe right", item);
+    };
+
+    _onSwipeLeft = item => {
+        console.log("Swipe left", item);
+    };
+
+    _onSwipeTop = item => {
+        console.log("Swipe top", item);
+    };
+
+    _onSwipeBottom = item => {
+        this.props.navigation.navigate("PhotoCardDetails");
+    };
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -233,6 +255,10 @@ class PhotoCard extends Component {
                             dataSource={this.state.profiles}
                             ref={mr => (this._deckSwiper = mr)}
                             onSwiping={this._onSwiping}
+                            onSwipeRight={this._onSwipeRight}
+                            onSwipeLeft={this._onSwipeLeft}
+                            onSwipeTop={this._onSwipeTop}
+                            onSwipeBottom={this._onSwipeBottom}
                             renderItem={this._renderCard}
                             renderTop={this._renderCard}
                             renderBottom={this._renderBottom}
@@ -282,7 +308,7 @@ class PhotoCard extends Component {
                         </Button>
                         <Button
                             style={styles.bottomRoundedSmallPills}
-                            onPress={() => navigation.navigate("PhotoCardDetails")}
+                            onPress={() => this._deckSwiper._root.swipeTop()}
                         >
                             <Icon
                                 name="md-star"
