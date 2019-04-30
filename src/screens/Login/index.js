@@ -2,12 +2,38 @@ import React, { Component } from "react";
 import { Dimensions, Image, StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon } from "native-base";
 import Swiper from "react-native-swiper";
+import firebase from "firebase";
 import styles from "./styles";
 import commonColor from "../../theme/variables/commonColor";
 
 var deviceHeight = Dimensions.get("window").height;
 
 class Login extends Component {
+    authenticate = token => {
+        const provider = firebase.auth.FacebookAuthProvider;
+        const credential = provider.credential(token);
+        return firebase.auth().signInAndRetrieveDataWithCredential(credential);
+    };
+
+    login = async () => {
+        const ADD_ID = "420075655217013";
+        const options = {
+            permissions: ["public_profile", "user_gender", "user_birthday", "email"]
+            //permissions: ["public_profile", "email"]
+        };
+        const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(ADD_ID, options);
+
+        if (type === "success") {
+            const fields = ["id", "first_name", "last_name", "gender", "birthday", "work"];
+            const response = await fetch(
+                `https://graph.facebook.com/me?fields=${fields.toString()}&access_token=${token}`
+            );
+            console.log(await response.json());
+            this.authenticate(token);
+            //this.props.navigation.navigate("HomeTabNavigation");
+        }
+    };
+
     render() {
         return (
             <Container style={{ backgroundColor: "#fff" }}>
@@ -19,7 +45,7 @@ class Login extends Component {
                 />
                 <Content scrollEnabled={false}>
                     <Swiper
-                        height={deviceHeight / 1.3}
+                        height={deviceHeight / 1.4}
                         loop={false}
                         dot={<View style={styles.swiperDot} />}
                         activeDot={<View style={styles.swiperActiveDot} />}
@@ -32,6 +58,7 @@ class Login extends Component {
                                 <Image
                                     source={require("../../../assets/e1.jpg")}
                                     style={styles.image1}
+                                    resizeMode="contain"
                                 />
                             </View>
                         </View>
@@ -42,7 +69,7 @@ class Login extends Component {
                             </Text>
                             <Image
                                 source={require("../../../assets/likeSquare.png")}
-                                style={styles.image}
+                                style={styles.image1}
                                 resizeMode="contain"
                             />
                         </View>
@@ -79,7 +106,7 @@ class Login extends Component {
                             <Text style={styles.loginText}>Chat and get to know your matches</Text>
                             <Image
                                 source={require("../../../assets/2.png")}
-                                style={styles.image}
+                                style={styles.image1}
                                 resizeMode="contain"
                             />
                         </View>
@@ -88,8 +115,9 @@ class Login extends Component {
                     <Button
                         block
                         rounded
-                        style={styles.loginBtn}
-                        onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
+                        style={styles.loginFBBtn}
+                        //onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
+                        onPress={this.login}
                     >
                         <Icon
                             name="facebook-official"
@@ -98,6 +126,16 @@ class Login extends Component {
                         />
 
                         <Text style={styles.loginBtnText}>Log in with Facebook</Text>
+                    </Button>
+
+                    <Button
+                        block
+                        rounded
+                        style={styles.loginBtn}
+                        //onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
+                        onPress={this.login}
+                    >
+                        <Text style={styles.loginBtnText}>Login with email</Text>
                     </Button>
                 </Content>
                 <View style={styles.noteView}>
