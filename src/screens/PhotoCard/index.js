@@ -60,94 +60,133 @@ class PhotoCard extends Component {
                         {this.state.direction === "left" && (
                             <View
                                 style={{
-                                    opacity: -this.state.opac / 150,
-                                    position: "absolute",
-                                    right: 30,
-                                    top: 40,
-                                    backgroundColor: commonColor.brandPrimary,
-                                    borderColor: commonColor.brandPrimary,
-                                    borderWidth: 2,
-                                    borderRadius: 30,
-                                    width: 60,
-                                    height: 60,
-                                    justifyContent: "center",
-                                    alignItems: "center"
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    alignItems: "flex-end",
+                                    justifyContent: "flex-start",
+                                    paddingTop: 30,
+                                    paddingRight: 30
                                 }}
                             >
-                                <Icon
+                                <View
                                     style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 40,
-                                        textAlign: "center",
-                                        lineHeight: 40,
-                                        marginTop: 8,
-                                        marginLeft: 2
+                                        opacity: -this.state.opac / 150,
+                                        backgroundColor: commonColor.brandPrimary,
+                                        borderColor: commonColor.brandPrimary,
+                                        borderWidth: 2,
+                                        borderRadius: 30,
+                                        width: 60,
+                                        height: 60,
+                                        alignItems: "center",
+                                        justifyContent: "center"
                                     }}
-                                    name="md-close"
-                                />
+                                >
+                                    <Icon
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "white",
+                                            fontSize: 40,
+                                            textAlign: "center",
+                                            lineHeight: 40,
+                                            marginTop: 6,
+                                            marginLeft: 2
+                                        }}
+                                        name="md-close"
+                                    />
+                                </View>
                             </View>
                         )}
                         {this.state.direction === "right" && (
                             <View
                                 style={{
-                                    opacity: this.state.opac / 150,
-                                    position: "absolute",
-                                    left: 30,
-                                    top: 40,
-                                    backgroundColor: commonColor.brandSuccess,
-                                    borderColor: commonColor.brandSuccess,
-                                    borderWidth: 2,
-                                    borderRadius: 30,
-                                    width: 60,
-                                    height: 60,
-                                    justifyContent: "center",
-                                    alignItems: "center"
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    alignItems: "flex-start",
+                                    justifyContent: "flex-start",
+                                    paddingTop: 30,
+                                    paddingLeft: 30
                                 }}
                             >
-                                <Icon
+                                <View
                                     style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 40,
-                                        textAlign: "center",
-                                        lineHeight: 40,
-                                        marginTop: 8,
-                                        marginLeft: 2
+                                        opacity: this.state.opac / 150,
+                                        backgroundColor: commonColor.brandSuccess,
+                                        borderColor: commonColor.brandSuccess,
+                                        borderWidth: 2,
+                                        borderRadius: 30,
+                                        width: 60,
+                                        height: 60,
+                                        alignItems: "center",
+                                        justifyContent: "center"
                                     }}
-                                    name="md-heart"
-                                />
+                                >
+                                    <Icon
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "white",
+                                            fontSize: 40,
+                                            textAlign: "center",
+                                            lineHeight: 40,
+                                            marginTop: 10,
+                                            marginLeft: 2
+                                        }}
+                                        name="md-heart"
+                                    />
+                                </View>
                             </View>
                         )}
                         {this.state.direction === "top" && (
                             <View
                                 style={{
-                                    opacity: -this.state.opac / 150,
-                                    position: "absolute",
-                                    right: 80,
-                                    bottom: 50,
-                                    backgroundColor: commonColor.brandInfo,
-                                    borderColor: commonColor.brandInfo,
-                                    borderWidth: 2,
-                                    borderRadius: 40,
-                                    width: 80,
-                                    height: 80,
-                                    justifyContent: "center",
-                                    alignItems: "center"
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "flex-end",
+                                    paddingBottom: 30
                                 }}
                             >
-                                <Icon
+                                <View
                                     style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 45,
-                                        textAlign: "center",
-                                        lineHeight: 40,
-                                        marginTop: 8,
-                                        marginLeft: 2
+                                        opacity: -this.state.opac / 150,
+                                        backgroundColor: commonColor.brandInfo,
+                                        borderColor: commonColor.brandInfo,
+                                        borderWidth: 0,
+                                        borderRadius: 10,
+                                        width: 200,
+                                        height: 50,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        flexDirection: "row",
+                                        padding: 10
+
                                     }}
-                                    name="md-star"
-                                />
+                                >
+                                    <Icon
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "white",
+                                            fontSize: 30,
+                                            textAlign: "center",
+                                            marginTop: 0,
+                                            marginLeft: 2,
+                                            width: 32
+                                        }}
+                                        name="md-star"
+                                    />
+                                    <Text
+                                        style={{
+                                            backgroundColor: "transparent",
+                                            color: "white",
+                                            fontSize: 26,
+                                            fontWeight: "700",
+                                            textAlign: "center",
+                                            lineHeight: 26,
+                                            marginTop: 5,
+                                            marginLeft: 2,
+                                            marginRight: 8
+                                        }}
+                                    >SUPER LIKE</Text>
+                                </View>
                             </View>
                         )}
                     </ImageBackground>
