@@ -224,7 +224,6 @@ class PhotoCard extends Component {
     };
 
     _onSwiping = (dir, opa) => {
-        console.log(dir, opa);
         this.setState({ direction: dir, opac: opa });
     };
 

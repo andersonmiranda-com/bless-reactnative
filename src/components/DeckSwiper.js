@@ -255,26 +255,21 @@ class DeckSwiper extends Component {
                             : undefined;
                         //this.selectNext();
                     } else if (direction < 0 && directionVertical) {
-                        this.props.onSwipeBottom
+                        this.props.onSwipeTop
                             ? this.props.onSwipeTop(this.state.selectedItem)
                             : undefined;
                         this.selectNext();
                     } else if (direction > 0 && !directionVertical) {
-                        this.props.onSwipeBottom
-                            ? this.props.onSwipeLeft(this.state.selectedItem)
-                            : undefined;
-                        this.selectNext();
-                    } else if (direction < 0 && !directionVertical) {
-                        this.props.onSwipeBottom
+                        this.props.onSwipeRight
                             ? this.props.onSwipeRight(this.state.selectedItem)
                             : undefined;
                         this.selectNext();
-                    } else {
-                        this.props.onSwipeTop
+                    } else if (direction < 0 && !directionVertical) {
+                        this.props.onSwipeLeft
                             ? this.props.onSwipeLeft(this.state.selectedItem)
                             : undefined;
                         this.selectNext();
-                    }
+                    } 
 
                     Animated.decay(this.state.pan, {
                         velocity: { x: 5 * directionX, y: 5 * directionY },
