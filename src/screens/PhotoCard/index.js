@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import { Image, ImageBackground, View } from "react-native";
-import { Container, Text, Card, CardItem, Grid, Row, Icon, Button, Body } from "native-base";
+import {
+    Container,
+    Text,
+    Card,
+    CardItem,
+    Grid,
+    Row,
+    Icon,
+    Button,
+    Body,
+    Spinner
+} from "native-base";
 import { DeckSwiper } from "../../components/DeckSwiper";
 import commonColor from "../../theme/variables/commonColor";
 import * as firebase from "firebase";
@@ -16,7 +27,8 @@ class PhotoCard extends Component {
         this.state = {
             direction: null,
             opac: 0,
-            profiles: []
+            profiles: [],
+            loading: true
         };
     }
 
@@ -29,7 +41,7 @@ class PhotoCard extends Component {
                 const { name, bio, birthday, id } = doc.data();
                 profiles.push({ name, bio, birthday, id });
             });
-            this.setState({ profiles });
+            this.setState({ profiles, loading: false });
         });
 
         /*  firebase
@@ -158,7 +170,6 @@ class PhotoCard extends Component {
                                         alignItems: "center",
                                         flexDirection: "row",
                                         padding: 10
-
                                     }}
                                 >
                                     <Icon
@@ -185,7 +196,9 @@ class PhotoCard extends Component {
                                             marginLeft: 2,
                                             marginRight: 8
                                         }}
-                                    >SUPER LIKE</Text>
+                                    >
+                                        SUPER LIKE
+                                    </Text>
                                 </View>
                             </View>
                         )}
@@ -256,8 +269,14 @@ class PhotoCard extends Component {
 
     _renderEmpty = () => {
         return (
-            <View style={{ alignSelf: "center" }}>
-                <Text>Over</Text>
+            <View>
+                <Text
+                    style={{
+                        alignSelf: "center"
+                    }}
+                >
+                    End of Cards
+                </Text>
             </View>
         );
     };
@@ -283,27 +302,35 @@ class PhotoCard extends Component {
     };
 
     render() {
-        const navigation = this.props.navigation;
+        const { profiles, loading } = this.state;
+        console.log(profiles.length, loading);
         return (
             <Container style={styles.wrapper}>
                 <View style={styles.deckswiperView}>
-                    {this.state.profiles.length > 0 && (
-                        <DeckSwiper
-                            activeOpacity={1}
-                            dataSource={this.state.profiles}
-                            ref={mr => (this._deckSwiper = mr)}
-                            onSwiping={this._onSwiping}
-                            onSwipeRight={this._onSwipeRight}
-                            onSwipeLeft={this._onSwipeLeft}
-                            onSwipeTop={this._onSwipeTop}
-                            onSwipeBottom={this._onSwipeBottom}
-                            renderItem={this._renderCard}
-                            renderTop={this._renderCard}
-                            renderBottom={this._renderBottom}
-                            renderEmpty={this._renderEmpty}
-                            looping={false}
-                        />
-                    )}
+                    {profiles.length === 0 &&
+                        loading && (
+                            <View style={styles.wrapperCentered}>
+                                <Spinner color="black" />
+                            </View>
+                        )}
+                    {profiles.length > 0 &&
+                        !loading && (
+                            <DeckSwiper
+                                activeOpacity={1}
+                                dataSource={profiles}
+                                ref={mr => (this._deckSwiper = mr)}
+                                onSwiping={this._onSwiping}
+                                onSwipeRight={this._onSwipeRight}
+                                onSwipeLeft={this._onSwipeLeft}
+                                onSwipeTop={this._onSwipeTop}
+                                onSwipeBottom={this._onSwipeBottom}
+                                renderItem={this._renderCard}
+                                renderTop={this._renderCard}
+                                renderBottom={this._renderBottom}
+                                renderEmpty={this._renderEmpty}
+                                looping={false}
+                            />
+                        )}
                 </View>
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
