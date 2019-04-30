@@ -13,6 +13,11 @@ export default {
         backgroundColor: "#FFF",
         paddingTop: isIphoneX ? 25 : 10
     },
+    wrapperCentered: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
     deckswiperView: {
         marginHorizontal: 15,
         marginTop: 15,
