@@ -12,10 +12,11 @@ import {
     Body,
     Spinner
 } from "native-base";
-import { DeckSwiper } from "../../components/DeckSwiper";
 import commonColor from "../../theme/variables/commonColor";
 
 import moment from "moment";
+
+import Card from "../../components/Card";
 import styles from "./styles";
 
 class PhotoCards extends Component {
@@ -267,22 +268,19 @@ class PhotoCards extends Component {
                     )}
                 {profiles.length > 0 &&
                     !loading && (
-                        <View style={styles.deckswiperView}>
-                            <DeckSwiper
-                                activeOpacity={1}
-                                dataSource={profiles}
-                                ref={mr => (this._deckSwiper = mr)}
-                                onSwiping={this._onSwiping}
-                                onSwipeRight={this._onSwipeRight}
-                                onSwipeLeft={this._onSwipeLeft}
-                                onSwipeTop={this._onSwipeTop}
-                                onSwipeBottom={this._onSwipeBottom}
-                                renderItem={this._renderCard}
-                                renderTop={this._renderCard}
-                                renderBottom={this._renderBottom}
-                                renderEmpty={this._renderEmpty}
-                                looping={false}
-                            />
+                        <View style={{ flex: 1 }}>
+                            {profiles
+                                .slice(profileIndex, profileIndex + 3)
+                                .reverse()
+                                .map(profile => {
+                                    return (
+                                        <Card
+                                            key={profile.id}
+                                            profile={profile}
+                                            onSwipeOff={this.nextCard}
+                                        />
+                                    );
+                                })}
                         </View>
                     )}
                 <Grid style={styles.bottomGrid}>

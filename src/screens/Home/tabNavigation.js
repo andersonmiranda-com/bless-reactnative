@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
 import { Icon, Footer, FooterTab, Button, Thumbnail } from "native-base";
 import Profile from "../Profile";
-import Home from "./index.js";
+import Home from "./Home.js";
 import Chat from "../Chat";
 import styles from "./styles";
 
