@@ -15,6 +15,7 @@ import {
     Body,
     Right
 } from "native-base";
+import firebase from "firebase";
 import styles from "./styles";
 import commonColor from "../../theme/variables/commonColor";
 
@@ -39,6 +40,22 @@ class Settings extends Component {
         disKM: true
     };
 
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {}
+
+    logout() {
+        const { navigation } = this.props;
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                navigation.dispatch(resetAction);
+            });
+    }
+
     changeDisType(val) {
         if (val === 1) {
             this.setState({ disKM: true });
@@ -48,7 +65,7 @@ class Settings extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation;
+        const { navigation } = this.props;
         return (
             <Container>
                 <Header>
@@ -361,11 +378,7 @@ class Settings extends Component {
                             </Card>
                         </View>
 
-                        <Button
-                            block
-                            style={styles.helpBtn}
-                            onPress={() => navigation.dispatch(resetAction)}
-                        >
+                        <Button block style={styles.helpBtn} onPress={() => this.logout()}>
                             <Text style={styles.helpBtnText}>Logout</Text>
                         </Button>
                         <View style={{ alignItems: "center", marginVertical: 20 }}>

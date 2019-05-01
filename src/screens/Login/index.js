@@ -1,3 +1,4 @@
+import Expo from "expo";
 import React, { Component } from "react";
 import { Dimensions, Image, StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon } from "native-base";
@@ -9,13 +10,39 @@ import commonColor from "../../theme/variables/commonColor";
 var deviceHeight = Dimensions.get("window").height;
 
 class Login extends Component {
+    db = firebase.firestore();
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: true,
+            loadingFB: false
+        };
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.props.navigation.navigate("HomeTabNavigation", { uid: user.uid });
+            } else {
+                this.setState({ loading: false });
+            }
+        });
+    }
+
     authenticate = token => {
         const provider = firebase.auth.FacebookAuthProvider;
         const credential = provider.credential(token);
         return firebase.auth().signInAndRetrieveDataWithCredential(credential);
     };
 
+    createUser = (uid, userData) => {
+        var usersRef = this.db.collection("users");
+        usersRef.doc(uid).set(userData);
+    };
+
     login = async () => {
+        this.setState({ loadingFB: true });
         const ADD_ID = "420075655217013";
         const options = {
             permissions: ["public_profile", "user_gender", "user_birthday", "email"]
@@ -28,9 +55,12 @@ class Login extends Component {
             const response = await fetch(
                 `https://graph.facebook.com/me?fields=${fields.toString()}&access_token=${token}`
             );
-            console.log(await response.json());
-            this.authenticate(token);
-            //this.props.navigation.navigate("HomeTabNavigation");
+            const userData = await response.json();
+            const userInfo = await this.authenticate(token);
+            this.setState({ loadingFB: false });
+            this.createUser(userInfo.user.uid, userData);
+        } else {
+            this.setState({ loadingFB: false });
         }
     };
 
