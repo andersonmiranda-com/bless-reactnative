@@ -12,54 +12,24 @@ import {
     Body,
     Spinner
 } from "native-base";
-import { DeckSwiper } from "../../components/DeckSwiper";
 import commonColor from "../../theme/variables/commonColor";
-import * as firebase from "firebase";
-import "firebase/firestore";
+
 import moment from "moment";
+
+import Card from "../../components/Card";
 import styles from "./styles";
 
-class PhotoCard extends Component {
-    db = firebase.firestore();
-
+class PhotoCards extends Component {
     constructor(props) {
         super(props);
         this.state = {
             direction: null,
-            opac: 0,
-            profiles: [],
-            loading: true
+            opac: 0
         };
     }
 
-    componentDidMount() {
-        var usersRef = this.db.collection("users");
-
-        usersRef.get().then(querySnapshot => {
-            let profiles = [];
-            querySnapshot.forEach(doc => {
-                const { name, bio, birthday, id } = doc.data();
-                profiles.push({ name, bio, birthday, id });
-            });
-            this.setState({ profiles, loading: false });
-        });
-
-        /*  firebase
-            .database()
-            .ref()
-            .child("users")
-            .once("value", snap => {
-                let profiles = [];
-                snap.forEach(profile => {
-                    const { name, bio, birthday, id } = profile.val();
-                    profiles.push({ name, bio, birthday, id });
-                });
-                this.setState({ profiles });
-            }); */
-    }
-
     _renderCard = item => {
-        const { birthday, name, bio, id } = item;
+        const { birthday, first_name, bio, id } = item;
         const profileBday = moment(birthday, "MM/DD/YYYY");
         const profileAge = moment().diff(profileBday, "years");
         const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
@@ -212,7 +182,7 @@ class PhotoCard extends Component {
                 >
                     <Body>
                         <Text style={styles.text}>
-                            {name}, {profileAge}
+                            {first_name}, {profileAge}
                         </Text>
                         <Text style={styles.subtextLeft}>{bio}</Text>
                     </Body>
@@ -222,7 +192,7 @@ class PhotoCard extends Component {
     };
 
     _renderBottom = item => {
-        const { birthday, name, bio, id } = item;
+        const { birthday, first_name, bio, id } = item;
         const profileBday = moment(birthday, "MM/DD/YYYY");
         const profileAge = moment().diff(profileBday, "years");
         const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
@@ -242,7 +212,7 @@ class PhotoCard extends Component {
                 <CardItem style={styles.deckswiperDetailsCarditem}>
                     <Body>
                         <Text style={styles.text}>
-                            {name}, {profileAge}
+                            {first_name}, {profileAge}
                         </Text>
                         <Text style={styles.subtextLeft}>{bio}</Text>
                     </Body>
@@ -286,8 +256,8 @@ class PhotoCard extends Component {
     };
 
     render() {
-        const { profiles, loading } = this.state;
-        console.log(profiles.length, loading);
+        const { profiles, loading } = this.props;
+
         return (
             <Container style={styles.wrapper}>
                 {profiles.length === 0 &&
@@ -296,25 +266,23 @@ class PhotoCard extends Component {
                             <Spinner color="black" />
                         </View>
                     )}
-                {profiles.length > 0 && !loading && (
-                    <View style={styles.deckswiperView}>
-                        <DeckSwiper
-                            activeOpacity={1}
-                            dataSource={profiles}
-                            ref={mr => (this._deckSwiper = mr)}
-                            onSwiping={this._onSwiping}
-                            onSwipeRight={this._onSwipeRight}
-                            onSwipeLeft={this._onSwipeLeft}
-                            onSwipeTop={this._onSwipeTop}
-                            onSwipeBottom={this._onSwipeBottom}
-                            renderItem={this._renderCard}
-                            renderTop={this._renderCard}
-                            renderBottom={this._renderBottom}
-                            renderEmpty={this._renderEmpty}
-                            looping={false}
-                        />
-                    </View>
-                )}
+                {profiles.length > 0 &&
+                    !loading && (
+                        <View style={{ flex: 1 }}>
+                            {profiles
+                                .slice(profileIndex, profileIndex + 3)
+                                .reverse()
+                                .map(profile => {
+                                    return (
+                                        <Card
+                                            key={profile.id}
+                                            profile={profile}
+                                            onSwipeOff={this.nextCard}
+                                        />
+                                    );
+                                })}
+                        </View>
+                    )}
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
                         <Button style={styles.bottomRoundedSmallPills}>
@@ -375,4 +343,4 @@ class PhotoCard extends Component {
     }
 }
 
-export default PhotoCard;
+export default PhotoCards;

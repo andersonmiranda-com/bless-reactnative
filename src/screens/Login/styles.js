@@ -11,6 +11,11 @@ const isIphoneX =
     (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
 export default {
+    wrapperCentered: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
     swiperDot: {
         backgroundColor: "rgba(0,0,0,.2)",
         width: 10,
@@ -38,29 +43,31 @@ export default {
         alignItems: "center"
     },
     loginText: {
-        fontSize: 18,
+        fontSize: 16,
         color: commonColor.contentTextColor,
         fontWeight: "700",
         textAlign: "center",
-        marginVertical: 10
+        marginVertical: 10,
+        paddingHorizontal: 20
     },
     swiperImageView: {
         borderRadius: 10,
         borderWidth: 1,
         borderColor: "#ccc",
+        height: deviceHeight / 2.5,
         overflow: "hidden"
+    },
+    image: {
+        height: deviceHeight / 2.5,
+        width: deviceWidth / 1.7
     },
     image1: {
         height: deviceHeight / 2.5,
         width: deviceWidth / 1.7,
         marginBottom: 30
     },
-    image: {
-        height: deviceHeight / 2,
-        width: deviceWidth / 1.7
-    },
     img1: {
-        height: deviceHeight / 4,
+        height: deviceHeight / 6,
         width: deviceWidth / 1.7
     },
     img2: {
@@ -71,6 +78,12 @@ export default {
         borderColor: "#FFF"
     },
     loginBtn: {
+        width: deviceWidth - 60,
+        alignSelf: "center",
+        backgroundColor: commonColor.brandInfo,
+        marginVertical: 15
+    },
+    loginFBBtn: {
         width: deviceWidth - 60,
         alignSelf: "center",
         backgroundColor: "#3B5998"

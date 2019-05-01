@@ -64,7 +64,7 @@
       "comma-dangle": 0,               // disallow trailing commas in object literals
       "no-cond-assign": 1,             // disallow assignment in conditional expressions
       "no-console": 1,                 // disallow use of console (off by default in the node environment)
-      "no-const-assign": 2,            // disallow assignment to const-declared variables
+      "no-const-assign": 1,            // disallow assignment to const-declared variables
       "no-constant-condition": 0,      // disallow use of constant expressions in conditions
       "no-control-regex": 1,           // disallow control characters in regular expressions
       "no-debugger": 1,                // disallow use of debugger
@@ -144,7 +144,7 @@
       "no-label-var": 1,               // disallow labels that share a name with a variable
       "no-shadow": 1,                  // disallow declaration of variables already declared in the outer scope
       "no-shadow-restricted-names": 1, // disallow shadowing of names such as arguments
-      "no-undef": 2,                   // disallow use of undeclared variables unless mentioned in a /*global */ block
+      "no-undef": 1,                   // disallow use of undeclared variables unless mentioned in a /*global */ block
       "no-undefined": 0,               // disallow use of undefined variable (off by default)
       "no-undef-init": 1,              // disallow use of undefined when initializing variables
       "no-unused-vars": [1, {"vars": "all", "args": "none"}], // disallow declaration of variables that are not used in the code
@@ -218,7 +218,7 @@
       "react/display-name": 0,
       "react/jsx-boolean-value": 0,
       "react/jsx-no-comment-textnodes": 1,
-      "react/jsx-no-duplicate-props": 2,
+      "react/jsx-no-duplicate-props": 1,
       "react/jsx-no-undef": 1,
       "react/jsx-sort-props": 0,
       "react/jsx-uses-react": 1,
