@@ -7,7 +7,6 @@ import Card from "../../components/Card";
 import styles from "./styles";
 
 class PhotoCards extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -84,13 +83,26 @@ class PhotoCards extends Component {
             .update(relationUpdate);
     };
 
-    nextCard = (swipedRight, profileUid) => {
+    nextCard = (direction, profileUid) => {
         const userUid = this.state.user.uid;
+
+        console.log(direction, profileUid);
+
         this.setState({ profileIndex: this.state.profileIndex + 1 });
-        if (swipedRight) {
+        /*  if (swipedRight) {
             this.relate(userUid, profileUid, true);
         } else {
             this.relate(userUid, profileUid, false);
+        } */
+    };
+
+    doSwipe = direction => {
+        if (this.state.profileIndex < this.state.profiles.length) {
+            const cardTrigger =
+                this.state.profileIndex < this.state.profiles.length - 2
+                    ? 2
+                    : this.state.profiles.length - this.state.profileIndex - 1;
+            this._photoCard.doSwipe(direction, cardTrigger);
         }
     };
 
@@ -101,9 +113,15 @@ class PhotoCards extends Component {
                 {this.state.profiles
                     .slice(profileIndex, profileIndex + 3)
                     .reverse()
-                    .map(profile => {
+                    .map((profile, index) => {
                         return (
-                            <Card key={profile.id} profile={profile} onSwipeOff={this.nextCard} />
+                            <Card
+                                key={profile.id}
+                                ref={mr => (this._photoCard = mr)}
+                                index={index}
+                                profile={profile}
+                                onSwipeOff={this.nextCard}
+                            />
                         );
                     })}
             </View>

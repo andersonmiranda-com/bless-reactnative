@@ -272,10 +272,11 @@ class PhotoCards extends Component {
                             {profiles
                                 .slice(profileIndex, profileIndex + 3)
                                 .reverse()
-                                .map(profile => {
+                                .map((profile,index) => {
                                     return (
                                         <Card
-                                            key={profile.id}
+                                            key={profile.uid}
+                                            index={index}
                                             profile={profile}
                                             onSwipeOff={this.nextCard}
                                         />
