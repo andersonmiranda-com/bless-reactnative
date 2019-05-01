@@ -1,0 +1,60 @@
+{
+  "additionalUserInfo": If {
+    "isNewUser": false,
+    "profile": Object {
+      "birthday": "01/11/1968",
+      "email": "me@andersonmiranda.com",
+      "first_name": "Anderson",
+      "gender": "male",
+      "id": "2262740077149898",
+      "last_name": "Miranda",
+      "name": "Anderson Miranda",
+      "picture": Object {
+        "data": Object {
+          "height": 100,
+          "is_silhouette": false,
+          "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2262740077149898&height=100&width=100&ext=1559290104&hash=AeSUmPlXa7CMqDQy",
+          "width": 100,
+        },
+      },
+    },
+    "providerId": "facebook.com",
+  },
+  "credential": Object {
+    "oauthAccessToken": "EAAFZBDnw1P3UBAJha9k0llH03zWi6T697iPRBUADTPXcZCofQ34SxZASwycMCO3e2nsjTokFHDwjdX666RtrDxXUj9rdUo9eeAqLDyQHWYTeDMjHELdcr1LIcZC3gtzeiY7MU3KpPZCAZBU9XnD7IlHYdEiZAPPbx4sroVr69bTIqvToXgf5LFcpWuSmlEzBVu5yW0TTG2kSQZDZD",
+    "providerId": "facebook.com",
+    "signInMethod": "facebook.com",
+  },
+  "operationType": "signIn",
+  "user": Object {
+    "apiKey": "AIzaSyAiNBiSHwG1KHYtXKLnW6Cztrjfdsn53wM",
+    "appName": "[DEFAULT]",
+    "authDomain": "bless-club.firebaseapp.com",
+    "createdAt": "1556649313704",
+    "displayName": "Anderson Miranda",
+    "email": "me@andersonmiranda.com",
+    "emailVerified": false,
+    "isAnonymous": false,
+    "lastLoginAt": "1556698104859",
+    "phoneNumber": null,
+    "photoURL": "https://graph.facebook.com/2262740077149898/picture",
+    "providerData": Array [
+      Object {
+        "displayName": "Anderson Miranda",
+        "email": "me@andersonmiranda.com",
+        "phoneNumber": null,
+        "photoURL": "https://graph.facebook.com/2262740077149898/picture",
+        "providerId": "facebook.com",
+        "uid": "2262740077149898",
+      },
+    ],
+    "redirectEventId": null,
+    "stsTokenManager": Object {
+      "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQW5kZXJzb24gTWlyYW5kYSIsInBpY3R1cmUiOiJodHRwczovL2dyYXBoLmZhY2Vib29rLmNvbS8yMjYyNzQwMDc3MTQ5ODk4L3BpY3R1cmUiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYmxlc3MtY2x1YiIsImF1ZCI6ImJsZXNzLWNsdWIiLCJhdXRoX3RpbWUiOjE1NTY2OTgxMDQsInVzZXJfaWQiOiJwZHN6TG5XYkFTUUJXc2xyUGJsN2I5V0ZWemwyIiwic3ViIjoicGRzekxuV2JBU1FCV3NsclBibDdiOVdGVnpsMiIsImlhdCI6MTU1NjY5ODEwNCwiZXhwIjoxNTU2NzAxNzA0LCJlbWFpbCI6Im1lQGFuZGVyc29ubWlyYW5kYS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZmFjZWJvb2suY29tIjpbIjIyNjI3NDAwNzcxNDk4OTgiXSwiZW1haWwiOlsibWVAYW5kZXJzb25taXJhbmRhLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6ImZhY2Vib29rLmNvbSJ9fQ.GcpBjKBpJHCzcbLlw9dZdl9OcfJmiENyLDnaovV14RZrZ-3hM5chfsmaZ4J1Pn-rdw1HYk4jnD58k_884sj7JohKJ40LaBALl7__YN1dZ7vaFLmZY2NSpjOg_0oQRGYW4ajHHLcYixGzD1db_nmP7ghzKleuPb06lFtSQ-eCYTgTJ0T9p_fWurS5hTe86gf3nIKsZMVLNVzWrcepHEBOH70AKgy-GtM_ua7rVFaay7MpgEvtiQmUz6May9axe-y9SFlukrZXyux_0eEolt6ftckMLepdbfUoBJ-oTyanq-FRSLD_fOkzlnarB97PcF8-cq_ydL7yUrYwTMQkhmHvbg",
+      "apiKey": "AIzaSyAiNBiSHwG1KHYtXKLnW6Cztrjfdsn53wM",
+      "expirationTime": 1556701705034,
+      "refreshToken": "AEu4IL2NcsTdYMAmcguuBK1JybabZyxALOzcGowh08C8PcfpsYDy5vQ9u96ebcb6WHVwZGbhEQb-1AzSV7XY2FJKFI7LtgNOTmGt0JoIu00o2zr-9u-Ds1q89MAZgkQI7JMno2SrHyhRTI8eeW6ZR52wlogEvq_ogrLO-r6JGxhhhlLYXWZ1ugKX-klXu8BOszGOBIVt5ASdx3dyTOlUqWdcPfbWbZMX0JVCPvxTu0bGsipHxTfEO1cUS-PTKYuA4WCemVoKl2CJzUzKiDUUvgAPDFXZs6bCshCl7ZMMnSc1kjON-DQqe0Q",
+    },
+    "uid": "pdszLnWbASQBWslrPbl7b9WFVzl2",
+  },
+}

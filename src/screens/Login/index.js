@@ -1,13 +1,12 @@
 import Expo from "expo";
 import React, { Component } from "react";
 import { Dimensions, Image, StatusBar, Platform } from "react-native";
-import { Container, Content, Text, Button, View, Icon } from "native-base";
+import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
 import Swiper from "react-native-swiper";
 import firebase from "firebase";
 import styles from "./styles";
+import AppIntro from "./AppIntro";
 import commonColor from "../../theme/variables/commonColor";
-
-var deviceHeight = Dimensions.get("window").height;
 
 class Login extends Component {
     db = firebase.firestore();
@@ -65,6 +64,7 @@ class Login extends Component {
     };
 
     render() {
+        let { loading, loadingFB } = this.state;
         return (
             <Container style={{ backgroundColor: "#fff" }}>
                 <StatusBar
@@ -73,105 +73,58 @@ class Login extends Component {
                     }
                     barStyle="dark-content"
                 />
-                <Content scrollEnabled={false}>
-                    <Swiper
-                        height={deviceHeight / 1.4}
-                        loop={false}
-                        dot={<View style={styles.swiperDot} />}
-                        activeDot={<View style={styles.swiperActiveDot} />}
-                    >
-                        <View style={styles.swiperSlidesView}>
-                            <Text style={styles.loginText}>
-                                Discover interesting people around you
-                            </Text>
-                            <View style={styles.swiperImageView}>
-                                <Image
-                                    source={require("../../../assets/e1.jpg")}
-                                    style={styles.image1}
-                                    resizeMode="contain"
-                                />
-                            </View>
-                        </View>
 
-                        <View style={styles.swiperSlidesView}>
-                            <Text style={styles.loginText}>
-                                Anonymously like or pass on each person
-                            </Text>
-                            <Image
-                                source={require("../../../assets/likeSquare.png")}
-                                style={styles.image1}
-                                resizeMode="contain"
-                            />
-                        </View>
+                {loading && (
+                    <View style={styles.wrapperCentered}>
+                        <Spinner color="black" />
+                    </View>
+                )}
 
-                        <View style={styles.swiperSlidesView}>
-                            <Text style={styles.loginText}>When someone likes you back...</Text>
-                            <View style={styles.image}>
-                                <Image
-                                    source={require("../../../assets/1.png")}
-                                    style={styles.img1}
-                                    resizeMode="contain"
-                                />
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        marginHorizontal: 10
-                                    }}
-                                >
-                                    <Image
-                                        source={require("../../../assets/rf1.jpg")}
-                                        style={[styles.img2, { left: 10 }]}
+                {!loading && (
+                    <Content scrollEnabled={false}>
+                        <View>
+                            <AppIntro />
+                            <Button
+                                block
+                                rounded
+                                style={styles.loginFBBtn}
+                                //onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
+                                onPress={this.login}
+                            >
+                                {!loadingFB ? (
+                                    <Icon
+                                        name="facebook-official"
+                                        type="FontAwesome"
+                                        style={{ fontSize: 20, marginRight: 8 }}
                                     />
-                                    <Image
-                                        source={require("../../../assets/m4.jpg")}
-                                        style={[styles.img2, { right: 10 }]}
+                                ) : (
+                                    <Spinner
+                                        size="small"
+                                        color="white"
+                                        style={{ marginRight: 8 }}
                                     />
-                                </View>
-                            </View>
+                                )}
+                                <Text style={styles.loginBtnText}>Log in with Facebook</Text>
+                            </Button>
+                            <Button
+                                block
+                                rounded
+                                style={styles.loginBtn}
+                                onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
+                            >
+                                <Text style={styles.loginBtnText}>Login with email</Text>
+                            </Button>
                         </View>
+                    </Content>
+                )}
 
-                        <View style={styles.swiperSlidesView}>
-                            <Text style={styles.loginText}>Chat and get to know your matches</Text>
-                            <Image
-                                source={require("../../../assets/2.png")}
-                                style={styles.image1}
-                                resizeMode="contain"
-                            />
-                        </View>
-                    </Swiper>
-
-                    <Button
-                        block
-                        rounded
-                        style={styles.loginFBBtn}
-                        //onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
-                        onPress={this.login}
-                    >
-                        <Icon
-                            name="facebook-official"
-                            type="FontAwesome"
-                            style={{ fontSize: 20, marginRight: 8 }}
-                        />
-
-                        <Text style={styles.loginBtnText}>Log in with Facebook</Text>
-                    </Button>
-
-                    <Button
-                        block
-                        rounded
-                        style={styles.loginBtn}
-                        onPress={() => this.props.navigation.navigate("HomeTabNavigation")}
-                    >
-                        <Text style={styles.loginBtnText}>Login with email</Text>
-                    </Button>
-                </Content>
-                <View style={styles.noteView}>
-                    <Text style={styles.noteText}>
-                        By signing in, you agree with our terms of services and privacy settings
-                    </Text>
-                </View>
+                {!loading && (
+                    <View style={styles.noteView}>
+                        <Text style={styles.noteText}>
+                            By signing in, you agree with our terms of services and privacy settings
+                        </Text>
+                    </View>
+                )}
             </Container>
         );
     }

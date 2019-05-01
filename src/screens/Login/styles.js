@@ -11,6 +11,11 @@ const isIphoneX =
     (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
 export default {
+    wrapperCentered: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
     swiperDot: {
         backgroundColor: "rgba(0,0,0,.2)",
         width: 10,
