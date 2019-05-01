@@ -25,6 +25,7 @@ class Login extends Component {
                 this.firebaseRef = firebase.database().ref("users");
                 this.firebaseRef.child(auth.uid).on("value", snap => {
                     const user = snap.val();
+                    this.setState({ loading: false });
                     if (user != null) {
                         this.firebaseRef.child(auth.uid).off("value");
                         this.goHome(user);
@@ -69,8 +70,7 @@ class Login extends Component {
         this.setState({ loadingFB: true });
         const ADD_ID = "420075655217013";
         const options = {
-            permissions: ["public_profile", "user_gender", "user_birthday", "email"]
-            //permissions: ["public_profile", "email"]
+            permissions: ["public_profile", "email"]
         };
         const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(ADD_ID, options);
 
