@@ -2,53 +2,59 @@ import Expo from "expo";
 import React, { Component } from "react";
 import PhotoCards from "../PhotoCards";
 import * as firebase from "firebase";
-//import "firebase/firestore";
 import { GeoFire } from "geofire";
 
 class Home extends Component {
-    //db = firebase.firestore();
 
     constructor(props) {
         super(props);
         this.state = {
             profiles: [],
-            loading: true
+            profileIndex: 0
         };
     }
 
     componentDidMount() {
-        this.updateUserLocation(this.props.navigation.state.params.uid);
-
-        /*   var usersRef = this.db.collection("users");
-        usersRef.get().then(querySnapshot => {
-            let profiles = [];
-            querySnapshot.forEach(doc => {
-                const { name, bio, birthday, id } = doc.data();
-                profiles.push({ name, bio, birthday, id });
-            });
-            this.setState({ profiles, loading: false });
-        }); */
-
-        firebase
-            .database()
-            .ref()
-            .child("users")
-            .once("value", snap => {
-                let profiles = [];
-                snap.forEach(profile => {
-                    const { first_name, bio, birthday, id } = profile.val();
-                    profiles.push({ first_name, bio, birthday, id });
-                });
-                this.setState({ profiles, loading: false  });
-            });
+        const { uid } = this.props.navigation.state.params;
+        this.updateUserLocation(uid);
+        this.getProfiles(uid);
     }
+
+    getUser = uid => {
+        return firebase
+            .database()
+            .ref("users")
+            .child(uid)
+            .once("value");
+    };
+
+    getProfiles = async uid => {
+        const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
+        const userLocation = await geoFireRef.get(uid);
+        console.log("userLocation", userLocation);
+        const geoQuery = geoFireRef.query({
+            center: userLocation,
+            radius: 10 //km
+        });
+        geoQuery.on("key_entered", async (uid, location, distance) => {
+            console.log(uid + " at " + location + " is " + distance + "km from the center");
+            const user = await this.getUser(uid);
+            console.log(user.val().first_name);
+            const profiles = [...this.state.profiles, user.val()];
+            this.setState({ profiles });
+        });
+    };
 
     updateUserLocation = async uid => {
         const { Permissions, Location } = Expo;
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
-            const { latitude, longitude } = location.coords;
+
+            // const {latitude, longitude} = location.coords
+            const latitude = 37.39239; //demo lat
+            const longitude = -122.09072; //demo lon
+
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
             geoFireRef.set(uid, [latitude, longitude]);
 
