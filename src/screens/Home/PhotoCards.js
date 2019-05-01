@@ -7,18 +7,32 @@ import Card from "../../components/Card";
 import styles from "./styles";
 
 class PhotoCards extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
+            profileIndex: 0,
             profiles: [],
-            profileIndex: 0
+            user: this.props.user
         };
     }
 
-    componentDidMount() {
-        const { uid } = this.props;
+    componentWillMount() {
+        const { uid } = this.state.user;
         this.updateUserLocation(uid);
-        this.getProfiles(uid);
+        firebase
+            .database()
+            .ref("users")
+            .child(uid)
+            .on("value", snap => {
+                const user = snap.val();
+                this.setState({
+                    user,
+                    profiles: [],
+                    profileIndex: 0
+                });
+                this.getProfiles(user.uid, 10);
+            });
     }
 
     getUser = uid => {
@@ -29,12 +43,12 @@ class PhotoCards extends Component {
             .once("value");
     };
 
-    getProfiles = async uid => {
+    getProfiles = async (uid, distance) => {
         const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
         const userLocation = await geoFireRef.get(uid);
         const geoQuery = geoFireRef.query({
             center: userLocation,
-            radius: 10 //km
+            radius: distance //km
         });
         geoQuery.on("key_entered", async (uid, location, distance) => {
             const user = await this.getUser(uid);
@@ -53,16 +67,34 @@ class PhotoCards extends Component {
             const longitude = -122.09072; //demo lon
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
             geoFireRef.set(uid, [latitude, longitude]);
+            console.log("Permission Granted", location);
         } else {
             console.log("Permission Denied");
         }
     };
 
-    nextCard = () => {
-        this.setState({ profileIndex: this.state.profileIndex + 1 });
+    relate = (userUid, profileUid, status) => {
+        let relationUpdate = {};
+        relationUpdate[`${userUid}/liked/${profileUid}`] = status;
+        relationUpdate[`${profileUid}/likedBack/${userUid}`] = status;
+
+        firebase
+            .database()
+            .ref("relationships")
+            .update(relationUpdate);
     };
 
-    render() {
+    nextCard = (swipedRight, profileUid) => {
+        const userUid = this.state.user.uid;
+        this.setState({ profileIndex: this.state.profileIndex + 1 });
+        if (swipedRight) {
+            this.relate(userUid, profileUid, true);
+        } else {
+            this.relate(userUid, profileUid, false);
+        }
+    };
+
+    cardStack = () => {
         const { profileIndex } = this.state;
         return (
             <View style={styles.deckswiperView}>
@@ -76,6 +108,10 @@ class PhotoCards extends Component {
                     })}
             </View>
         );
+    };
+
+    render() {
+        return this.cardStack();
     }
 }
 
