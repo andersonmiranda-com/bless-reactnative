@@ -2,19 +2,19 @@ import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
 import { Icon, Footer, FooterTab, Button, Thumbnail } from "native-base";
 import Profile from "../Profile";
-import PhotoCard from "../PhotoCard";
+import Home from "./index.js";
 import Chat from "../Chat";
 import styles from "./styles";
 
 const HomeTabNavigation = createBottomTabNavigator(
     {
         Profile: { screen: Profile },
-        PhotoCard: { screen: PhotoCard },
+        Home: { screen: Home },
         Chat: { screen: Chat }
     },
     {
         tabBarPosition: "top",
-        initialRouteName: "PhotoCard",
+        initialRouteName: "Home",
         lazy: true,
         tabBarComponent: props => {
             return (
@@ -32,7 +32,7 @@ const HomeTabNavigation = createBottomTabNavigator(
                             />
                         </Button>
 
-                        <Button onPress={() => props.navigation.navigate("PhotoCard")}>
+                        <Button onPress={() => props.navigation.navigate("Home")}>
                             <Thumbnail
                                 small
                                 source={
