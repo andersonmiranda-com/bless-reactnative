@@ -28,10 +28,6 @@ export default class Card extends Component {
 
     componentWillMount() {
         this.pan = new Animated.ValueXY();
-
-        this.enter = new Animated.Value(0.8);
-        this.fadeAnim = new Animated.Value(0.8);
-
         this.cardPanResponder = PanResponder.create({
             onStartShouldSetPanResponder: () => true,
 
@@ -58,37 +54,18 @@ export default class Card extends Component {
                 let val = Math.abs((gestureState.dx + gestureState.dy / 2) * 0.001);
 
                 if (Math.abs(gestureState.dx) > 20) {
-                    let val = Math.abs(gestureState.dx * 0.0013);
-                    const opa = Math.abs(gestureState.dx * 0.0022);
+                    val = Math.abs(gestureState.dx * 0.0013);
                     if (val > 0.2) {
                         val = 0.2;
                     }
                 } else if (Math.abs(gestureState.dy) > 20) {
-                    let val = Math.abs(gestureState.dy * 0.0013);
-                    const opa = Math.abs(gestureState.dy * 0.0022);
+                    val = Math.abs(gestureState.dy * 0.0013);
                     if (val > 0.2) {
                         val = 0.2;
                     }
                 }
                 Animated.event([null, { dx: this.pan.x, dy: this.pan.y }])(e, gestureState);
             },
-
-            /*  onPanResponderRelease: (e, { dx }) => {
-                const absDx = Math.abs(dx);
-                const direction = absDx / dx;
-
-                if (absDx > 120) {
-                    Animated.decay(this.pan, {
-                        velocity: { x: 3 * direction, y: 0 },
-                        deceleration: 0.995
-                    }).start(this.props.onSwipeOff);
-                } else {
-                    Animated.spring(this.pan, {
-                        toValue: { x: 0, y: 0 },
-                        friction: 4.5
-                    }).start();
-                }
-            } */
 
             onPanResponderRelease: (e, { dx, dy }) => {
                 const absDx = Math.abs(dx);
@@ -121,12 +98,12 @@ export default class Card extends Component {
                         direction = "left";
                     }
 
-                    this.props.onSwipeOff(direction, this.props.profile.uid);
-
                     Animated.decay(this.pan, {
-                        velocity: { x: 5 * directionX, y: 5 * directionY },
-                        deceleration: 0.98
-                    }).start(this.pan.setValue({ x: 0, y: 0 }));
+                        velocity: { x: 3 * directionX, y: 3 * directionY },
+                        deceleration: 0.995
+                    }).start(() => {
+                        this.props.onSwipeOff(direction, this.props.profile.uid);
+                    });
                 } else {
                     Animated.spring(this.pan, {
                         toValue: { x: 0, y: 0 },
@@ -138,11 +115,31 @@ export default class Card extends Component {
         });
     }
 
-    _resetState() {
-        this.pan.setValue({ x: 0, y: 0 });
-        this.enter.setValue(0.8);
-        this.fadeAnim.setValue(0.8);
-    }
+    doSwipe = (direction, cardTrigger) => {
+        if (this.props.index === cardTrigger) {
+            //garante que é a carta do topo
+            this.setState({
+                direction: direction,
+                opac: direction === "left" || direction === "top" ? -150 : 150
+            });
+            setTimeout(() => {
+                Animated.decay(this.pan, {
+                    velocity: {
+                        x:
+                            direction === "left" || direction === "right"
+                                ? direction === "left"
+                                    ? -10
+                                    : 10
+                                : 0,
+                        y: direction === "top" ? -12 : 0
+                    },
+                    deceleration: 0.98
+                }).start(() => {
+                    this.props.onSwipeOff(direction, this.props.profile.uid);
+                });
+            }, 500);
+        }
+    };
 
     render() {
         const { birthday, first_name, work, id } = this.props.profile;

@@ -5,12 +5,14 @@ import PhotoCards from "./PhotoCards";
 import styles from "./styles";
 
 class Home extends Component {
-
     render() {
-
         return (
             <Container style={styles.wrapper}>
-                <PhotoCards user={this.props.navigation.state.params.user} />
+                <PhotoCards
+                    user={this.props.navigation.state.params.user}
+                    ref={mr => (this._photoCards = mr)}
+                />
+
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
                         <Button style={styles.bottomRoundedSmallPills}>
@@ -24,7 +26,9 @@ class Home extends Component {
                         </Button>
                         <Button
                             style={styles.bottomRoundedPills}
-                            onPress={() => this._deckSwiper._root.swipeLeft()}
+                            onPress={() => {
+                                this._photoCards.doSwipe("left");
+                            }}
                         >
                             <Icon
                                 name="md-close"
@@ -37,7 +41,7 @@ class Home extends Component {
                         </Button>
                         <Button
                             style={styles.bottomRoundedPills}
-                            onPress={() => this._deckSwiper._root.swipeRight()}
+                            onPress={() => this._photoCards.doSwipe("right")}
                         >
                             <Icon
                                 name="md-heart"
@@ -52,7 +56,7 @@ class Home extends Component {
                         </Button>
                         <Button
                             style={styles.bottomRoundedSmallPills}
-                            onPress={() => this._deckSwiper._root.swipeTop()}
+                            onPress={() => this._photoCards.doSwipe("top")}
                         >
                             <Icon
                                 name="md-star"
