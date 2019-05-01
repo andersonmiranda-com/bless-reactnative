@@ -1,8 +1,8 @@
 import Expo from "expo";
 import React, { Component } from "react";
-import { Dimensions, Image, StatusBar, Platform } from "react-native";
+import { StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
-import Swiper from "react-native-swiper";
+import { NavigationActions, StackActions } from "react-navigation";
 import firebase from "firebase";
 import styles from "./styles";
 import AppIntro from "./AppIntro";
@@ -20,13 +20,30 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                this.props.navigation.navigate("HomeTabNavigation", { uid: user.uid });
+        firebase.auth().onAuthStateChanged(auth => {
+            if (auth) {
+                this.firebaseRef = firebase.database().ref("users");
+                this.firebaseRef.child(auth.uid).on("value", snap => {
+                    const user = snap.val();
+                    if (user != null) {
+                        this.firebaseRef.child(auth.uid).off("value");
+                        this.goHome(user);
+                    }
+                });
             } else {
                 this.setState({ loading: false });
             }
         });
+    }
+
+    goHome(user) {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: "HomeTabNavigation", params: { user } })
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
     }
 
     authenticate = token => {
@@ -39,13 +56,13 @@ class Login extends Component {
         //firestore
         //var usersRef = this.db.collection("users");
         //usersRef.doc(uid).set(userData);
-        
+
         //firebase
         firebase
             .database()
             .ref("users")
             .child(uid)
-            .update(userData);
+            .update({ ...userData, uid });
     };
 
     login = async () => {

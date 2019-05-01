@@ -10,7 +10,7 @@ class Home extends Component {
 
         return (
             <Container style={styles.wrapper}>
-                <PhotoCards uid={this.props.navigation.state.params.uid} />
+                <PhotoCards uid={this.props.navigation.state.params.user.uid} />
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
                         <Button style={styles.bottomRoundedSmallPills}>
