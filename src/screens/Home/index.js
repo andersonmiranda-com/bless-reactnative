@@ -60,7 +60,9 @@ class Home extends Component {
 
     render() {
         const { profiles, loading } = this.state;
-        return <PhotoCards profiles={profiles} loading={loading} navigation={this.props.navigation} />;
+        return (
+            <PhotoCards profiles={profiles} loading={loading} navigation={this.props.navigation} />
+        );
     }
 }
 
