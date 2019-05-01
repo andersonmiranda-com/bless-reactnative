@@ -9,7 +9,7 @@ import AppIntro from "./AppIntro";
 import commonColor from "../../theme/variables/commonColor";
 
 class Login extends Component {
-    db = firebase.firestore();
+    //db = firebase.firestore();
 
     constructor(props) {
         super(props);
@@ -36,8 +36,16 @@ class Login extends Component {
     };
 
     createUser = (uid, userData) => {
-        var usersRef = this.db.collection("users");
-        usersRef.doc(uid).set(userData);
+        //firestore
+        //var usersRef = this.db.collection("users");
+        //usersRef.doc(uid).set(userData);
+        
+        //firebase
+        firebase
+            .database()
+            .ref("users")
+            .child(uid)
+            .update(userData);
     };
 
     login = async () => {

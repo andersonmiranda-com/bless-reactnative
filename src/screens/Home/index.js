@@ -2,11 +2,11 @@ import Expo from "expo";
 import React, { Component } from "react";
 import PhotoCards from "../PhotoCards";
 import * as firebase from "firebase";
-import "firebase/firestore";
 import GeoFire from "geofire";
+//import "firebase/firestore";
 
 class Home extends Component {
-    db = firebase.firestore();
+    //db = firebase.firestore();
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ class Home extends Component {
     componentDidMount() {
         this.updateUserLocation(this.props.navigation.state.params.uid);
 
-        var usersRef = this.db.collection("users");
+        /*   var usersRef = this.db.collection("users");
         usersRef.get().then(querySnapshot => {
             let profiles = [];
             querySnapshot.forEach(doc => {
@@ -27,20 +27,20 @@ class Home extends Component {
                 profiles.push({ name, bio, birthday, id });
             });
             this.setState({ profiles, loading: false });
-        });
+        }); */
 
-        /*  firebase
+        firebase
             .database()
             .ref()
             .child("users")
             .once("value", snap => {
                 let profiles = [];
                 snap.forEach(profile => {
-                    const { name, bio, birthday, id } = profile.val();
-                    profiles.push({ name, bio, birthday, id });
+                    const { first_name, bio, birthday, id } = profile.val();
+                    profiles.push({ first_name, bio, birthday, id });
                 });
-                this.setState({ profiles });
-            }); */
+                this.setState({ profiles, loading: false  });
+            });
     }
 
     updateUserLocation = async uid => {
