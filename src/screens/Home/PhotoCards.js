@@ -84,14 +84,17 @@ class PhotoCards extends Component {
             .update(relationUpdate);
     };
 
-    nextCard = (swipedRight, profileUid) => {
+    nextCard = (direction, profileUid) => {
         const userUid = this.state.user.uid;
+
+        console.log(direction, profileUid);
+
         this.setState({ profileIndex: this.state.profileIndex + 1 });
-        if (swipedRight) {
+       /*  if (swipedRight) {
             this.relate(userUid, profileUid, true);
         } else {
             this.relate(userUid, profileUid, false);
-        }
+        } */
     };
 
     cardStack = () => {
