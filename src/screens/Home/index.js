@@ -2,8 +2,8 @@ import Expo from "expo";
 import React, { Component } from "react";
 import PhotoCards from "../PhotoCards";
 import * as firebase from "firebase";
-import GeoFire from "geofire";
 //import "firebase/firestore";
+import { GeoFire } from "geofire";
 
 class Home extends Component {
     //db = firebase.firestore();
@@ -49,9 +49,9 @@ class Home extends Component {
         if (status === "granted") {
             const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
             const { latitude, longitude } = location.coords;
-
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
             geoFireRef.set(uid, [latitude, longitude]);
+
             console.log("Permission Granted", location);
         } else {
             console.log("Permission Denied");
