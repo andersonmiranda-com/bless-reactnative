@@ -298,7 +298,7 @@ export default class Card extends Component {
                                 </Text>
                             </View>
                         </View>
-                    )}{" "}
+                    )}
                 </ImageBackground>
                 <View style={{ padding: 15 }}>
                     <Text style={{ fontSize: 20, fontWeight: "300" }}>
