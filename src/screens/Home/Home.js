@@ -15,7 +15,10 @@ class Home extends Component {
 
                 <Grid style={styles.bottomGrid}>
                     <Row style={styles.bottomRowStyle}>
-                        <Button style={styles.bottomRoundedSmallPills}>
+                        <Button
+                            style={styles.bottomRoundedSmallPills}
+                            onPress={() => this._photoCards.doRestart()}
+                        >
                             <Icon
                                 name="md-refresh"
                                 style={{

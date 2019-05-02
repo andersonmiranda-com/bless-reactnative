@@ -110,6 +110,16 @@ class PhotoCards extends Component {
         }
     };
 
+    doRestart = () => {
+        this.setState({ profileIndex: 0 });
+    };
+
+    doGoBack = () => {
+        if (this.state.profileIndex > 0) {
+            this.setState({ profileIndex: this.state.profileIndex - 1 });
+        }
+    };
+
     cardStack = () => {
         const { profileIndex } = this.state;
         return (
