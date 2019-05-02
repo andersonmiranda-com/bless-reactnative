@@ -98,6 +98,9 @@ class PhotoCards extends Component {
             this.props.navigation.navigate("PhotoCardDetails");
         } else {
             this.setState({ profileIndex: this.state.profileIndex + 1 });
+
+            //TODO: setar lastProfileIndex para evitar erro da ultima carta
+
             /*  if (swipedRight) {
             this.relate(userUid, profileUid, true);
         } else {
@@ -145,7 +148,7 @@ class PhotoCards extends Component {
                         .map((profile, index) => {
                             return (
                                 <Card
-                                    key={profile.id}
+                                    key={profile.uid}
                                     ref={mr => (this._photoCard = mr)}
                                     index={index}
                                     profile={profile}

@@ -79,7 +79,7 @@ export default {
     },
     bottomGrid: {
         position: "absolute",
-        bottom: 20,
+        bottom: 15,
         left: 0,
         right: 0
     },
@@ -88,10 +88,10 @@ export default {
         justifyContent: "space-around"
     },
     bottomRoundedSmallPills: {
-        borderRadius: 25,
+        borderRadius: 23,
         marginTop: 8,
-        height: 50,
-        width: 50,
+        height: 46,
+        width: 46,
         backgroundColor: "white",
         alignItems: "center",
         // paddingTop: 10,
@@ -109,9 +109,9 @@ export default {
         }
     },
     bottomRoundedPills: {
-        borderRadius: 33,
-        height: 65,
-        width: 65,
+        borderRadius: 29,
+        height: 58,
+        width: 58,
         backgroundColor: "white",
         alignItems: "center",
         paddingTop: 6,

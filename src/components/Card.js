@@ -302,9 +302,10 @@ export default class Card extends Component {
                             </Text>
                         </View>
                     </View>
-                    
+
                     <LinearGradient
                         colors={["#00000000", "#00000050", "#00000060"]}
+                        locations={[0, 1, 2]}
                         style={{
                             padding: 20,
                             flex: 1,
@@ -333,7 +334,7 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: width - 30,
-        height: height - 180 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
+        height: height - 168 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
         overflow: "hidden",
         backgroundColor: "white",
         borderWidth: 1,

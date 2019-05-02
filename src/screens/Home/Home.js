@@ -24,7 +24,7 @@ class Home extends Component {
                                 name="md-refresh"
                                 style={{
                                     color: commonColor.brandWarning,
-                                    fontSize: 34
+                                    fontSize: 30
                                 }}
                             />
                         </Button>
@@ -39,7 +39,9 @@ class Home extends Component {
                                 style={{
                                     color: commonColor.brandDanger,
                                     fontSize: 40,
-                                    lineHeight: 40
+                                    lineHeight: 40,
+                                    marginLeft: 1,
+                                    width: 36
                                 }}
                             />
                         </Button>
@@ -51,10 +53,10 @@ class Home extends Component {
                                 name="md-heart"
                                 style={{
                                     color: commonColor.brandSuccess,
-                                    fontSize: 35,
-                                    lineHeight: 40,
-                                    marginLeft: 2,
-                                    marginRight: 2
+                                    fontSize: 40,
+                                    lineHeight: 45,
+                                    marginLeft: -3,
+                                    width: 40
                                 }}
                             />
                         </Button>
@@ -66,9 +68,9 @@ class Home extends Component {
                                 name="md-star"
                                 style={{
                                     color: commonColor.brandInfo,
-                                    fontSize: 34,
-                                    marginLeft: 3,
-                                    marginRight: 3
+                                    fontSize: 32,
+                                    marginLeft: 5,
+                                    width: 25
                                 }}
                             />
                         </Button>
