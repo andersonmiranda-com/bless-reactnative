@@ -10,7 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import * as firebase from "firebase";
 
 // Work around issue `Setting a timer for long time`
-import { Platform, InteractionManager } from "react-native";
+//import { Platform, InteractionManager } from "react-native";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAiNBiSHwG1KHYtXKLnW6Cztrjfdsn53wM",
@@ -26,7 +26,7 @@ firebase.initializeApp(firebaseConfig);
 const storeObj = {};
 
 // Work around issue `Setting a timer for long time`
-const _setTimeout = global.setTimeout;
+/* const _setTimeout = global.setTimeout;
 const _clearTimeout = global.clearTimeout;
 const MAX_TIMER_DURATION_MS = 60 * 1000;
 if (Platform.OS === "android") {
@@ -69,7 +69,7 @@ if (Platform.OS === "android") {
         _clearTimeout(id);
     };
 }
-
+ */
 export default class Setup extends Component {
     constructor() {
         super();
