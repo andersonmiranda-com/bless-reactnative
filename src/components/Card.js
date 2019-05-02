@@ -10,6 +10,7 @@ import {
     Animated
 } from "react-native";
 import { Icon, Text } from "native-base";
+import { LinearGradient } from "expo";
 import commonColor from "../theme/variables/commonColor";
 import moment from "moment";
 
@@ -149,7 +150,7 @@ export default class Card extends Component {
         if ((Platform.OS === "android" && Platform.Version > 27) || Platform.OS === "ios") {
             let rotateCard = this.pan.x.interpolate({
                 inputRange: [-200, 0, 200],
-                outputRange: ["-10deg", "0deg", "10deg"]
+                outputRange: ["-10deg", "0deg", "-10deg"]
             });
 
             animatedStyle = {
@@ -170,153 +171,159 @@ export default class Card extends Component {
                 {...this.cardPanResponder.panHandlers}
                 style={[styles.card, animatedStyle]}
             >
-                <ImageBackground style={{ flex: 1 }} source={{ uri: fbImage }}>
-                    {this.state.direction === "left" && (
+                <ImageBackground
+                    style={{
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: "stretch"
+                    }}
+                    source={{ uri: fbImage }}
+                >
+                    <View
+                        style={{
+                            flex: 5,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            paddingTop: 30,
+                            paddingRight: 30,
+                            paddingLeft: 30
+                        }}
+                    >
                         <View
                             style={{
-                                flex: 1,
-                                flexDirection: "column",
-                                alignItems: "flex-end",
-                                justifyContent: "flex-start",
-                                paddingTop: 30,
-                                paddingRight: 30
-                            }}
-                        >
-                            <View
-                                style={{
-                                    opacity: -this.state.opac / 150,
-                                    backgroundColor: commonColor.brandPrimary,
-                                    borderColor: commonColor.brandPrimary,
-                                    borderWidth: 2,
-                                    borderRadius: 30,
-                                    width: 60,
-                                    height: 60,
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}
-                            >
-                                <Icon
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 40,
-                                        textAlign: "center",
-                                        lineHeight: 40,
-                                        marginTop: platform === "ios" ? 6 : 1,
-                                        marginLeft: 2
-                                    }}
-                                    name="md-close"
-                                />
-                            </View>
-                        </View>
-                    )}
-                    {this.state.direction === "right" && (
-                        <View
-                            style={{
-                                flex: 1,
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                                justifyContent: "flex-start",
-                                paddingTop: 30,
-                                paddingLeft: 30
-                            }}
-                        >
-                            <View
-                                style={{
-                                    opacity: this.state.opac / 150,
-                                    backgroundColor: commonColor.brandSuccess,
-                                    borderColor: commonColor.brandSuccess,
-                                    borderWidth: 2,
-                                    borderRadius: 30,
-                                    width: 60,
-                                    height: 60,
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}
-                            >
-                                <Icon
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 40,
-                                        textAlign: "center",
-                                        lineHeight: 40,
-                                        marginTop: platform === "ios" ? 10 : 5,
-                                        marginLeft: 2
-                                    }}
-                                    name="md-heart"
-                                />
-                            </View>
-                        </View>
-                    )}
-                    {this.state.direction === "top" && (
-                        <View
-                            style={{
-                                flex: 1,
-                                flexDirection: "column",
+                                opacity:
+                                    this.state.direction === "right" ? this.state.opac / 150 : 0,
+                                backgroundColor: commonColor.brandSuccess,
+                                borderColor: commonColor.brandSuccess,
+                                borderWidth: 2,
+                                borderRadius: 30,
+                                width: 60,
+                                height: 60,
                                 alignItems: "center",
-                                justifyContent: "flex-end",
-                                paddingBottom: 30
+                                justifyContent: "center"
                             }}
                         >
-                            <View
+                            <Icon
                                 style={{
-                                    opacity: -this.state.opac / 150,
-                                    backgroundColor: commonColor.brandInfo,
-                                    borderColor: commonColor.brandInfo,
-                                    borderWidth: 0,
-                                    borderRadius: 10,
-                                    width: 200,
-                                    height: 50,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    flexDirection: "row",
-                                    padding: 10
+                                    backgroundColor: "transparent",
+                                    color: "white",
+                                    fontSize: 40,
+                                    textAlign: "center",
+                                    lineHeight: 40,
+                                    marginTop: platform === "ios" ? 10 : 5,
+                                    marginLeft: 2
+                                }}
+                                name="md-heart"
+                            />
+                        </View>
+
+                        <View
+                            style={{
+                                opacity:
+                                    this.state.direction === "left" ? -this.state.opac / 150 : 0,
+                                backgroundColor: commonColor.brandPrimary,
+                                borderColor: commonColor.brandPrimary,
+                                borderWidth: 2,
+                                borderRadius: 30,
+                                width: 60,
+                                height: 60,
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <Icon
+                                style={{
+                                    backgroundColor: "transparent",
+                                    color: "white",
+                                    fontSize: 40,
+                                    textAlign: "center",
+                                    lineHeight: 40,
+                                    marginTop: platform === "ios" ? 6 : 1,
+                                    marginLeft: 2
+                                }}
+                                name="md-close"
+                            />
+                        </View>
+                    </View>
+
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            paddingBottom: 30
+                        }}
+                    >
+                        <View
+                            style={{
+                                opacity:
+                                    this.state.direction === "top" ? -this.state.opac / 150 : 0,
+                                backgroundColor: commonColor.brandInfo,
+                                borderColor: commonColor.brandInfo,
+                                borderWidth: 0,
+                                borderRadius: 10,
+                                width: 200,
+                                height: 50,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "row",
+                                padding: 10,
+                                zIndex: 5
+                            }}
+                        >
+                            <Icon
+                                style={{
+                                    backgroundColor: "transparent",
+                                    color: "white",
+                                    fontSize: 30,
+                                    textAlign: "center",
+                                    marginTop: 0,
+                                    marginLeft: 2,
+                                    width: 32
+                                }}
+                                name="md-star"
+                            />
+                            <Text
+                                style={{
+                                    backgroundColor: "transparent",
+                                    color: "white",
+                                    fontSize: 26,
+                                    fontWeight: "700",
+                                    textAlign: "center",
+                                    lineHeight: 26,
+                                    marginTop: 5,
+                                    marginLeft: 2,
+                                    marginRight: 8
                                 }}
                             >
-                                <Icon
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 30,
-                                        textAlign: "center",
-                                        marginTop: 0,
-                                        marginLeft: 2,
-                                        width: 32
-                                    }}
-                                    name="md-star"
-                                />
-                                <Text
-                                    style={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        fontSize: 26,
-                                        fontWeight: "700",
-                                        textAlign: "center",
-                                        lineHeight: 26,
-                                        marginTop: 5,
-                                        marginLeft: 2,
-                                        marginRight: 8
-                                    }}
-                                >
-                                    SUPER LIKE
-                                </Text>
-                            </View>
+                                SUPER LIKE
+                            </Text>
                         </View>
-                    )}
+                    </View>
+                    
+                    <LinearGradient
+                        colors={["#00000000", "#00000050", "#00000060"]}
+                        style={{
+                            padding: 20,
+                            flex: 1,
+                            alignSelf: "stretch",
+                            maxHeight: 80
+                        }}
+                    >
+                        <TouchableOpacity onPress={() => this.props.onCardOpen(uid)}>
+                            <Text style={{ fontSize: 22, fontWeight: "700", color: "white" }}>
+                                {first_name}, {profileAge}
+                            </Text>
+                            {bio ? (
+                                <Text style={{ fontSize: 16, color: "white" }}>{bio}</Text>
+                            ) : (
+                                <View />
+                            )}
+                        </TouchableOpacity>
+                    </LinearGradient>
                 </ImageBackground>
-                <View style={{ padding: 15 }}>
-                    <TouchableOpacity onPress={() => this.props.onCardOpen(uid)}>
-                        <Text style={{ fontSize: 20, fontWeight: "300" }}>
-                            {first_name}, {profileAge}
-                        </Text>
-                        {bio ? (
-                            <Text style={{ fontSize: 15, color: "darkgrey" }}>{bio}</Text>
-                        ) : (
-                            <View />
-                        )}
-                    </TouchableOpacity>
-                </View>
             </Animated.View>
         );
     }
