@@ -45,6 +45,7 @@ class PhotoCards extends Component {
     getProfiles = async (uid, distance) => {
         const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
         const userLocation = await geoFireRef.get(uid);
+        console.log("userLocation", userLocation);
         const geoQuery = geoFireRef.query({
             center: userLocation,
             radius: distance //km
@@ -58,8 +59,8 @@ class PhotoCards extends Component {
 
     updateUserLocation = async uid => {
         const { Permissions, Location } = Expo;
-        //const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        //if (status === "granted") {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status === "granted") {
             const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
             // const {latitude, longitude} = location.coords
             const latitude = 37.39239; //demo lat
@@ -67,9 +68,10 @@ class PhotoCards extends Component {
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
             geoFireRef.set(uid, [latitude, longitude]);
             console.log("Permission Granted", location);
-        //} else {
-        //    console.log("Permission Denied");
-        //}
+            return [latitude, longitude];
+        } else {
+            console.log("Permission Denied");
+        }
     };
 
     relate = (userUid, profileUid, status) => {
