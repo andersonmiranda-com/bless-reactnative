@@ -26,7 +26,7 @@ export default {
     },
     deckswiperView: {
         marginHorizontal: 15,
-        marginTop: 20,
+        marginTop:  platform === "ios" ? 20 : 5,
         flex: 1
     },
     deckswiperImageCarditem: {
@@ -101,8 +101,8 @@ export default {
         justifyContent: "center",
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        borderColor: "#aaa",
-        borderWidth: Platform.OS === "ios" ? undefined : 0.2,
+        borderColor: "white",
+        borderWidth: Platform.OS === "ios" ? undefined : 0,
         shadowOffset: {
             height: 2,
             width: 1
@@ -118,8 +118,8 @@ export default {
         elevation: 3,
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        borderColor: "#aaa",
-        borderWidth: Platform.OS === "ios" ? undefined : 0.2,
+        borderColor: "white",
+        borderWidth: Platform.OS === "ios" ? undefined : 0,
         shadowOffset: {
             height: 2,
             width: 1
