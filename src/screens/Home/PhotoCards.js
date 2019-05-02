@@ -1,6 +1,7 @@
 import Expo from "expo";
 import React, { Component } from "react";
 import { View } from "react-native";
+import { Spinner } from "native-base";
 import * as firebase from "firebase";
 import { GeoFire } from "geofire";
 import Card from "../../components/Card";
@@ -12,14 +13,15 @@ class PhotoCards extends Component {
         this.state = {
             profileIndex: 0,
             profiles: [],
-            user: this.props.user
+            user: this.props.user,
+            loading: true
         };
     }
 
     componentWillMount() {
         const { uid } = this.state.user;
-        this.updateUserLocation(uid).then((userLocation) => {
-              firebase
+        this.updateUserLocation(uid).then(userLocation => {
+            firebase
                 .database()
                 .ref("users")
                 .child(uid)
@@ -31,7 +33,7 @@ class PhotoCards extends Component {
                         profileIndex: 0
                     });
                     this.getProfiles(user.uid, userLocation, 10);
-                }); 
+                });
         });
     }
 
@@ -61,7 +63,7 @@ class PhotoCards extends Component {
     updateUserLocation = async uid => {
         const { Permissions, Location } = Expo;
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
-         if (status === "granted") {
+        if (status === "granted") {
             const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
             // const {latitude, longitude} = location.coords
             const latitude = 37.39239; //demo lat
@@ -71,9 +73,9 @@ class PhotoCards extends Component {
             //console.log("Permission Granted", location);
             console.log("lat, lon", [latitude, longitude]);
             return [latitude, longitude];
-       } else {
-           console.log("Permission Denied");
-     }
+        } else {
+            console.log("Permission Denied");
+        }
     };
 
     relate = (userUid, profileUid, status) => {
@@ -121,25 +123,34 @@ class PhotoCards extends Component {
     };
 
     cardStack = () => {
-        const { profileIndex } = this.state;
-        return (
-            <View style={styles.deckswiperView}>
-                {this.state.profiles
-                    .slice(profileIndex, profileIndex + 3)
-                    .reverse()
-                    .map((profile, index) => {
-                        return (
-                            <Card
-                                key={profile.id}
-                                ref={mr => (this._photoCard = mr)}
-                                index={index}
-                                profile={profile}
-                                onSwipeOff={this.nextCard}
-                            />
-                        );
-                    })}
-            </View>
-        );
+        const { profileIndex, profiles, loading } = this.state;
+
+        if (profiles.length === 0 && !!loading) {
+            return (
+                <View style={styles.wrapperCentered}>
+                    <Spinner color="black" />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.deckswiperView}>
+                    {profiles
+                        .slice(profileIndex, profileIndex + 3)
+                        .reverse()
+                        .map((profile, index) => {
+                            return (
+                                <Card
+                                    key={profile.id}
+                                    ref={mr => (this._photoCard = mr)}
+                                    index={index}
+                                    profile={profile}
+                                    onSwipeOff={this.nextCard}
+                                />
+                            );
+                        })}
+                </View>
+            );
+        }
     };
 
     render() {
