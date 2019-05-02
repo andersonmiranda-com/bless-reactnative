@@ -148,17 +148,29 @@ export default class Card extends Component {
         const profileAge = moment().diff(profileBday, "years");
         const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
 
-        const rotateCard = this.pan.x.interpolate({
-            inputRange: [-200, 0, 200],
-            outputRange: ["-10deg", "0deg", "10deg"]
-        });
-        const animatedStyle = {
-            transform: [
-                { translateX: this.pan.x },
-                { translateY: this.pan.y },
-                { rotate: rotateCard }
-            ]
-        };
+        let animatedStyle;
+
+        if ((Platform.OS === "android" && Platform.Version > 27) || Platform.OS === "ios") {
+            let rotateCard = this.pan.x.interpolate({
+                inputRange: [-200, 0, 200],
+                outputRange: ["-10deg", "0deg", "10deg"]
+            });
+
+            animatedStyle = {
+                transform: [
+                    { translateX: this.pan.x },
+                    { translateY: this.pan.y },
+                    { rotate: rotateCard }
+                ]
+            };
+        } else {
+            animatedStyle = {
+                transform: [
+                    { translateX: this.pan.x },
+                    { translateY: this.pan.y }
+                ]
+            };
+        }
 
         return (
             <Animated.View
@@ -197,7 +209,7 @@ export default class Card extends Component {
                                         fontSize: 40,
                                         textAlign: "center",
                                         lineHeight: 40,
-                                        marginTop: 6,
+                                        marginTop: platform === "ios" ? 6 : 1,
                                         marginLeft: 2
                                     }}
                                     name="md-close"
@@ -236,7 +248,7 @@ export default class Card extends Component {
                                         fontSize: 40,
                                         textAlign: "center",
                                         lineHeight: 40,
-                                        marginTop: 10,
+                                        marginTop: platform === "ios" ? 10 : 5,
                                         marginLeft: 2
                                     }}
                                     name="md-heart"
@@ -319,7 +331,7 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: width - 30,
-        height: height - 180 - (isIphoneX ? 50 : 0),
+        height: height - 180 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
         overflow: "hidden",
         backgroundColor: "white",
         borderWidth: 1,
