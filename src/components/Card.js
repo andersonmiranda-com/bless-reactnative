@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import {
-    ImageBackground,
     Platform,
+    Dimensions,
+    ImageBackground,
+    TouchableOpacity,
     StyleSheet,
     View,
     PanResponder,
-    Animated,
-    Dimensions
+    Animated
 } from "react-native";
 import { Icon, Text } from "native-base";
 import commonColor from "../theme/variables/commonColor";
@@ -49,21 +50,10 @@ export default class Card extends Component {
                     this.setState({ direction: "left", opac: gestureState.dx });
                 } else if (gestureState.dy < -20 && directionVertical) {
                     this.setState({ direction: "top", opac: gestureState.dy });
+                } else {
+                    //return false;
                 }
 
-                let val = Math.abs((gestureState.dx + gestureState.dy / 2) * 0.001);
-
-                if (Math.abs(gestureState.dx) > 20) {
-                    val = Math.abs(gestureState.dx * 0.0013);
-                    if (val > 0.2) {
-                        val = 0.2;
-                    }
-                } else if (Math.abs(gestureState.dy) > 20) {
-                    val = Math.abs(gestureState.dy * 0.0013);
-                    if (val > 0.2) {
-                        val = 0.2;
-                    }
-                }
                 Animated.event([null, { dx: this.pan.x, dy: this.pan.y }])(e, gestureState);
             },
 
@@ -90,6 +80,12 @@ export default class Card extends Component {
                 if (abs > 120) {
                     if (direction > 0 && directionVertical) {
                         direction = "bottom";
+                        this.props.onSwipeOff(direction, this.props.profile.uid);
+                        Animated.spring(this.pan, {
+                            toValue: { x: 0, y: 0 },
+                            friction: 8
+                        }).start();
+                        return false;
                     } else if (direction < 0 && directionVertical) {
                         direction = "top";
                     } else if (direction > 0 && !directionVertical) {
@@ -142,7 +138,7 @@ export default class Card extends Component {
     };
 
     render() {
-        const { birthday, first_name, work, id } = this.props.profile;
+        const { birthday, first_name, work, id, uid } = this.props.profile;
         const bio = work && work[0] && work[0].position ? work[0].position.name : null;
         const profileBday = moment(birthday, "MM/DD/YYYY");
         const profileAge = moment().diff(profileBday, "years");
@@ -165,10 +161,7 @@ export default class Card extends Component {
             };
         } else {
             animatedStyle = {
-                transform: [
-                    { translateX: this.pan.x },
-                    { translateY: this.pan.y }
-                ]
+                transform: [{ translateX: this.pan.x }, { translateY: this.pan.y }]
             };
         }
 
@@ -313,14 +306,16 @@ export default class Card extends Component {
                     )}
                 </ImageBackground>
                 <View style={{ padding: 15 }}>
-                    <Text style={{ fontSize: 20, fontWeight: "300" }}>
-                        {first_name}, {profileAge}
-                    </Text>
-                    {bio ? (
-                        <Text style={{ fontSize: 15, color: "darkgrey" }}>{bio}</Text>
-                    ) : (
-                        <View />
-                    )}
+                    <TouchableOpacity onPress={() => this.props.onCardOpen(uid)}>
+                        <Text style={{ fontSize: 20, fontWeight: "300" }}>
+                            {first_name}, {profileAge}
+                        </Text>
+                        {bio ? (
+                            <Text style={{ fontSize: 15, color: "darkgrey" }}>{bio}</Text>
+                        ) : (
+                            <View />
+                        )}
+                    </TouchableOpacity>
                 </View>
             </Animated.View>
         );

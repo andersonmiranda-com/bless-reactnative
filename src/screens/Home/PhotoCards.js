@@ -94,12 +94,16 @@ class PhotoCards extends Component {
 
         console.log(direction, profileUid);
 
-        this.setState({ profileIndex: this.state.profileIndex + 1 });
-        /*  if (swipedRight) {
+        if (direction === "bottom") {
+            this.props.navigation.navigate("PhotoCardDetails");
+        } else {
+            this.setState({ profileIndex: this.state.profileIndex + 1 });
+            /*  if (swipedRight) {
             this.relate(userUid, profileUid, true);
         } else {
             this.relate(userUid, profileUid, false);
         } */
+        }
     };
 
     doSwipe = direction => {
@@ -146,6 +150,11 @@ class PhotoCards extends Component {
                                     index={index}
                                     profile={profile}
                                     onSwipeOff={this.nextCard}
+                                    onCardOpen={uid => {
+                                        this.props.navigation.navigate("PhotoCardDetails", {
+                                            uid: uid
+                                        });
+                                    }}
                                 />
                             );
                         })}

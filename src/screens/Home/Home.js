@@ -11,6 +11,7 @@ class Home extends Component {
                 <PhotoCards
                     user={this.props.navigation.state.params.user}
                     ref={mr => (this._photoCards = mr)}
+                    navigation={this.props.navigation}
                 />
 
                 <Grid style={styles.bottomGrid}>
