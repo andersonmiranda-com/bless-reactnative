@@ -337,8 +337,8 @@ const styles = StyleSheet.create({
         height: height - 168 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
         overflow: "hidden",
         backgroundColor: "white",
-        borderWidth: 1,
-        borderColor: "lightgrey",
+//        borderWidth: 1,
+//        borderColor: "lightgrey",
         borderRadius: 10
     }
 });
