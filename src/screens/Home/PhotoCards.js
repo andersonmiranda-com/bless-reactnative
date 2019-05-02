@@ -1,7 +1,7 @@
 import Expo from "expo";
 import React, { Component } from "react";
 import { View } from "react-native";
-import { Spinner } from "native-base";
+import { Spinner, Text } from "native-base";
 import * as firebase from "firebase";
 import { GeoFire } from "geofire";
 import Card from "../../components/Card";
@@ -128,7 +128,8 @@ class PhotoCards extends Component {
         if (profiles.length === 0 && !!loading) {
             return (
                 <View style={styles.wrapperCentered}>
-                    <Spinner color="black" />
+                    <Spinner />
+                    <Text>Loading cards...</Text>
                 </View>
             );
         } else {

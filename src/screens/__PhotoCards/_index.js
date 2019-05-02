@@ -263,7 +263,7 @@ class PhotoCards extends Component {
                 {profiles.length === 0 &&
                     !!loading && (
                         <View style={styles.wrapperCentered}>
-                            <Spinner color="black" />
+                            <Spinner />
                         </View>
                     )}
                 {profiles.length > 0 &&

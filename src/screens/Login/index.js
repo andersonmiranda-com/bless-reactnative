@@ -101,7 +101,7 @@ class Login extends Component {
 
                 {loading && (
                     <View style={styles.wrapperCentered}>
-                        <Spinner color="black" />
+                        <Spinner />
                     </View>
                 )}
 
