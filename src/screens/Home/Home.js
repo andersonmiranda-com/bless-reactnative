@@ -69,6 +69,7 @@ class Home extends Component {
                                 style={{
                                     color: commonColor.brandInfo,
                                     fontSize: 32,
+                                    lineHeight: 30,
                                     marginLeft: 5,
                                     width: 25
                                 }}
