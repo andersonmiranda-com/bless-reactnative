@@ -126,7 +126,7 @@ class EditProfile extends Component {
                         </View>
                     </View>
                     <View style={styles.headingView}>
-                        <Text style={styles.headingText}>CurrentWork</Text>
+                        <Text style={styles.headingText}>Denomination</Text>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("CurrentWork")}>
                         <View style={styles.textView}>
