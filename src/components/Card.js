@@ -290,7 +290,7 @@ export default class Card extends Component {
                                     backgroundColor: "transparent",
                                     color: "white",
                                     fontSize: 26,
-                                    fontWeight: "700",
+                                    fontFamily: "Rubik_Bold",
                                     textAlign: "center",
                                     lineHeight: 26,
                                     marginTop: 5,
@@ -314,7 +314,7 @@ export default class Card extends Component {
                         }}
                     >
                         <TouchableOpacity onPress={() => this.props.onCardOpen(uid)}>
-                            <Text style={{ fontSize: 22, fontWeight: "700", color: "white" }}>
+                            <Text style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}>
                                 {first_name}, {profileAge}
                             </Text>
                             {bio ? (

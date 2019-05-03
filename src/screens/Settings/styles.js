@@ -7,7 +7,7 @@ export default {
     },
     headerText: {
         fontSize: 18,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         paddingLeft: 2
     },
     locationSwipperCarditem: {
@@ -33,7 +33,7 @@ export default {
     textBlue: {
         color: "cornflowerblue",
         fontSize: 16,
-        fontWeight: "600"
+        fontFamily: "Rubik_Bold"
     },
     cardItemText: {
         color: commonColor.contentTextColor,
@@ -63,7 +63,7 @@ export default {
     sectionHeaderText: {
         color: commonColor.brandPrimary,
         fontSize: 18,
-        fontWeight: "600"
+        fontFamily: "Rubik_Bold"
     },
     switchBlock: {
         flex: 2,
@@ -98,7 +98,7 @@ export default {
     },
     helpBtnText: {
         fontSize: 18,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         color: commonColor.contentTextColor,
         textAlign: "center"
     }

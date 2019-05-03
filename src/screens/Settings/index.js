@@ -149,7 +149,7 @@ class Settings extends Component {
                                     </Text>
                                 </Left>
                                 <Right>
-                                    <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                                    <Text style={{ fontSize: 16, fontFamily: "Rubik_Bold" }}>
                                         {distanceValue}
                                         km
                                     </Text>
@@ -184,7 +184,7 @@ class Settings extends Component {
                                     </Text>
                                 </Left>
                                 <Right>
-                                    <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                                    <Text style={{ fontSize: 16, fontFamily: "Rubik_Bold" }}>
                                         {ageRangeValues.join("-")}
                                     </Text>
                                 </Right>
@@ -314,7 +314,7 @@ class Settings extends Component {
                                         </Text>
                                     </Left>
                                     <Right>
-                                        <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                                        <Text style={{ fontSize: 16, fontFamily: "Rubik_Bold" }}>
                                             {this.state.disKM ? "Km" : "Mi"}
                                         </Text>
                                     </Right>
@@ -337,7 +337,7 @@ class Settings extends Component {
                                                     ? "#FFF"
                                                     : commonColor.contentTextColor,
                                                 fontSize: 16,
-                                                fontWeight: "700"
+                                                fontFamily: "Rubik_Bold"
                                             }}
                                         >
                                             Km
@@ -360,7 +360,7 @@ class Settings extends Component {
                                                     ? "#FFF"
                                                     : commonColor.contentTextColor,
                                                 fontSize: 16,
-                                                fontWeight: "700"
+                                                fontFamily: "Rubik_Bold"
                                             }}
                                         >
                                             Mi

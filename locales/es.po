@@ -42,7 +42,7 @@ msgstr "Mujeres"
 
 #: src/screens/Settings/index.js
 msgid "Search Distance"
-msgstr "Distancia"
+msgstr "Distancia Máxima"
 
 #: src/screens/Settings/index.js
 msgid "Age Range"

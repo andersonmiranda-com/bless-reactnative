@@ -49,14 +49,14 @@ export default {
     text: {
         fontSize: 16,
         color: "#393E40",
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
         fontFamily: "arial"
     },
     subtextLeft: {
         fontSize: 12,
         color: commonColor.contentTextColor,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
         fontFamily: "arial"
     },
@@ -66,7 +66,7 @@ export default {
     },
     subtextRight: {
         color: commonColor.contentTextColor,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
         fontFamily: "arial",
         paddingBottom: 4

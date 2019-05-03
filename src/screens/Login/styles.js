@@ -45,7 +45,7 @@ export default {
     loginText: {
         fontSize: 16,
         color: commonColor.contentTextColor,
-        fontWeight: "700",
+        fontFamily: "Rubik_Bold",
         textAlign: "center",
         marginVertical: 10,
         paddingHorizontal: 20

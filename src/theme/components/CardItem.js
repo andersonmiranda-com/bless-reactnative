@@ -68,7 +68,7 @@ export default (variables = variable) => {
       "NativeBase.Text": {
         ".note": {
           color: variables.listNoteColor,
-          fontWeight: "200",
+          fontFamily: "Rubik_Light",
           marginRight: 20
         }
       },
@@ -184,7 +184,7 @@ export default (variables = variable) => {
     "NativeBase.Text": {
       ".note": {
         color: variables.listNoteColor,
-        fontWeight: "200"
+        fontFamily: "Rubik_Light"
       }
     },
 

@@ -264,7 +264,7 @@ const styles = {
         paddingVertical: 3
     },
     headingText: {
-        fontWeight: "bold",
+        fontFamily: "Rubik_Bold",
         color: commonColor.lightTextColor
     },
     textView: {

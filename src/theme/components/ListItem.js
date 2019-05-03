@@ -120,9 +120,9 @@ export default (variables = variable) => {
         "NativeBase.Text": {
           ".note": {
             color: variables.listNoteColor,
-            fontWeight: "200"
+            fontFamily: "Rubik_Light"
           },
-          fontWeight: "600"
+          fontFamily: "Rubik_Bold"
         },
         marginLeft: 10,
         alignItems: null,
@@ -147,7 +147,7 @@ export default (variables = variable) => {
         marginHorizontal: variables.listItemPadding,
         ".note": {
           color: variables.listNoteColor,
-          fontWeight: "200"
+          fontFamily: "Rubik_Light"
         }
       },
       alignSelf: null,
@@ -186,7 +186,7 @@ export default (variables = variable) => {
       "NativeBase.Text": {
         ".note": {
           color: variables.listNoteColor,
-          fontWeight: "200"
+          fontFamily: "Rubik_Light"
         },
         alignSelf: null
       },
@@ -211,7 +211,7 @@ export default (variables = variable) => {
     "NativeBase.Text": {
       ".note": {
         color: variables.listNoteColor,
-        fontWeight: "200"
+        fontFamily: "Rubik_Light"
       },
       alignSelf: "center"
     },

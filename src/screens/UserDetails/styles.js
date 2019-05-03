@@ -35,13 +35,13 @@ export default {
     },
     name: {
         fontSize: 20,
-        fontWeight: "800",
+        fontFamily: "Rubik_Bold",
         color: "rgba(0,0,0,0.75)"
     },
     distanceAwayText: {
         fontSize: 12,
         color: "rgba(0,0,0,0.3)",
-        fontWeight: "600"
+        fontFamily: "Rubik_Bold"
     },
     workingText: {
         fontSize: 16,

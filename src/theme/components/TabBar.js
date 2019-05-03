@@ -29,7 +29,7 @@ export default (variables = variable) => {
       },
       ".isTabActive": {
         "NativeBase.Text": {
-          fontWeight: "900"
+          fontFamily: "Rubik_Bold"
         }
       },
       flex: 1,
