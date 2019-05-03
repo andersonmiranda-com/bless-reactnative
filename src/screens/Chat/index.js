@@ -8,7 +8,7 @@ class Chat extends Component {
     const navigation = this.props.navigation;
     return (
       <Container style={styles.container}>
-        <Content scrollEnabled={false}>
+        <Content padder scrollEnabled={false}>
           <View style={styles.imageView}>
             <Image
               source={require("../../../assets/likeSquare.png")}
@@ -21,9 +21,8 @@ class Chat extends Component {
           </View>
           <Button
             block
-            large
+            rounded
             onPress={() => navigation.navigate("ChatList")}
-            style={styles.discoverBtn}
           >
             <Text style={styles.discoverBtnText}>Discover New People</Text>
           </Button>

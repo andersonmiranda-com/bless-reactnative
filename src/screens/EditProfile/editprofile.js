@@ -60,7 +60,7 @@ class EditProfile extends Component {
                 <Header>
                     <Left>
                         <Button transparent onPress={() => navigation.goBack()}>
-                            <Icon name="ios-arrow-back-outline" />
+                            <Icon name="ios-arrow-back" />
                         </Button>
                     </Left>
                     <Body>

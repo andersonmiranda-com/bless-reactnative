@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import commonColor from "../../theme/variables/commonColor";
 
 var Dimensions = require("Dimensions");
 var { width, height } = Dimensions.get("window");
@@ -176,5 +177,21 @@ export default {
         position: "absolute",
         right: 10,
         top: Platform.OS === "ios" ? -25 : height / 1.6
+    },
+    backBtn: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        backgroundColor: "rgba(255,255,255,0.1)",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    backBtnIcon: {
+        color: commonColor.brandPrimary,
+        alignSelf: "center",
+        width: 10
     }
 };
