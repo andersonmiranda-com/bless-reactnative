@@ -1,6 +1,6 @@
 import React from "react";
 import { Root } from "native-base";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Login from "./screens/Login/";
 import HomeTabNavigation from "./screens/Home/tabNavigation";
@@ -14,7 +14,7 @@ import CurrentWork from "./screens/EditProfile/currentWork";
 import School from "./screens/EditProfile/school";
 import AddPhoto from "./screens/EditProfile/addphoto";
 
-const App = createStackNavigator(
+const MainNavigator = createStackNavigator(
     {
         Login: { screen: Login },
         HomeTabNavigation: { screen: HomeTabNavigation },
@@ -34,6 +34,8 @@ const App = createStackNavigator(
         headerMode: "none"
     }
 );
+
+const App = createAppContainer(MainNavigator);
 
 export default () => (
     <Root>

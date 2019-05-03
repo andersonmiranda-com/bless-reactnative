@@ -58,7 +58,7 @@
         "react-native-multi-slider": "0.3.6",
         "react-native-scrollable-tab-view": "0.10.0",
         "react-native-swiper": "1.5.14",
-        "react-navigation": "2.17.0",
+        "react-navigation": "^3.9.1",
         "react-redux": "5.1.1",
         "redux": "4.0.1",
         "redux-form": "7.4.2",
