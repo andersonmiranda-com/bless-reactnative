@@ -149,6 +149,12 @@ class Settings extends Component {
                             >
                                 <MultiSlider
                                     selectedStyle={{ backgroundColor: commonColor.brandPrimary }}
+                                    markerStyle={{
+                                        backgroundColor:
+                                            Platform.OS === "android"
+                                                ? commonColor.brandPrimary
+                                                : "white"
+                                    }}
                                     max={100}
                                     sliderLength={width - 63}
                                     values={distanceValue}
@@ -175,8 +181,14 @@ class Settings extends Component {
                             >
                                 <MultiSlider
                                     selectedStyle={{ backgroundColor: commonColor.brandPrimary }}
+                                    markerStyle={{
+                                        backgroundColor:
+                                            Platform.OS === "android"
+                                                ? commonColor.brandPrimary
+                                                : "white"
+                                    }}
                                     min={18}
-                                    max={100}
+                                    max={70}
                                     sliderLength={width - 63}
                                     values={ageRangeValues}
                                     onValuesChange={value => {
