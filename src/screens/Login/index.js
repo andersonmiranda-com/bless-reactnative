@@ -2,7 +2,9 @@ import { Facebook } from "expo";
 import React, { Component } from "react";
 import { StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
-import { NavigationActions, StackActions } from "react-navigation";
+import { NavigationActions } from "react-navigation";
+import { connect } from "react-redux";
+import { setAppVar } from "../../actions/index";
 import firebase from "firebase";
 import styles from "./styles";
 import AppIntro from "./AppIntro";
@@ -37,14 +39,37 @@ class Login extends Component {
         });
     }
 
+    checkUser = async () => {
+        const { appUser } = this.props.appState;
+        console.log(appUser);
+        if (appUser.uid) {
+            this.setState({ loading: false, loadingFB: false });
+            console.log("entrou");
+
+            this.props.navigation.reset(
+                [
+                    NavigationActions.navigate({
+                        routeName: "HomeTabNavigation",
+                        params: { user: appUser }
+                    })
+                ],
+                0
+            );
+        } else {
+            this.setState({ loading: false, loadingFB: false });
+        }
+    };
+
     goHome(user) {
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: "HomeTabNavigation", params: { user } })
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.props.navigation.reset(
+            [
+                NavigationActions.navigate({
+                    routeName: "HomeTabNavigation",
+                    params: { user: user }
+                })
+            ],
+            0
+        );
     }
 
     authenticate = token => {
@@ -54,11 +79,6 @@ class Login extends Component {
     };
 
     createUser = (uid, userData) => {
-        //firestore
-        //var usersRef = this.db.collection("users");
-        //usersRef.doc(uid).set(userData);
-
-        //firebase
         firebase
             .database()
             .ref("users")
@@ -81,8 +101,11 @@ class Login extends Component {
             );
             const userData = await response.json();
             const userInfo = await this.authenticate(token);
-            this.setState({ loadingFB: false });
+
+            //this.props.setAppVar("appUser", { ...userData, uid: userInfo.user.uid });
             this.createUser(userInfo.user.uid, userData);
+            //this.checkUser();
+            this.setState({ loadingFB: false });
         } else {
             this.setState({ loadingFB: false });
         }
@@ -155,4 +178,13 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    return {
+        appState: state.appState
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    { setAppVar }
+)(Login);

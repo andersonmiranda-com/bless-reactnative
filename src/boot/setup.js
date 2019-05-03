@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Provider } from "react-redux";
 import { StyleProvider } from "native-base";
 import App from "../App";
-import configureStore from "./configureStore";
+import configureStore from "../reducers/configureStore";
 import getTheme from "../theme/components";
 import variables from "../theme/variables/commonColor";
 import { PersistGate } from "redux-persist/integration/react";
