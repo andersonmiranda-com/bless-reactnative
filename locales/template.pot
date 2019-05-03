@@ -1,5 +1,5 @@
 #: src/screens/Home/PhotoCards.js
-msgid "Discovering people..."
+msgid "Discovering new people..."
 msgstr ""
 
 #: src/screens/Profile/index.js

@@ -1,6 +1,6 @@
 export const translations = {
   'es': {
-    'Discovering people...': 'Descubriendo personas ...',
+    'Discovering new people...': 'Descubriendo nuevas personas ...',
     'Edit Profile': 'Editar perfil',
     'Settings': 'Ajustes',
   },
@@ -9,7 +9,7 @@ export const translations = {
     'plural_number': '2',
   },
   'pt-BR': {
-    'Discovering people...': 'Encontrando pessoas...',
+    'Discovering new people...': 'Descobrindo novas pessoas...',
     'Edit Profile': 'Editar Perfil',
     'Settings': 'Configurações',
   },

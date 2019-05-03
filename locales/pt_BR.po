@@ -13,8 +13,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/screens/Home/PhotoCards.js
-msgid "Discovering people..."
-msgstr "Encontrando pessoas..."
+msgid "Discovering new people..."
+msgstr "Descobrindo novas pessoas..."
 
 #: src/screens/Profile/index.js
 msgid "Edit Profile"
@@ -23,6 +23,9 @@ msgstr "Editar Perfil"
 #: src/screens/Profile/index.js
 msgid "Settings"
 msgstr "Configurações"
+
+#~ msgid "Discovering people..."
+#~ msgstr "Encontrando pessoas..."
 
 #~ msgid "Searching people..."
 #~ msgstr "Procurando pessoas..."
