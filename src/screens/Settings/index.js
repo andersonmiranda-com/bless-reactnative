@@ -16,6 +16,7 @@ import {
     Body,
     Right
 } from "native-base";
+import PropTypes from "prop-types";
 import MultiSlider from "react-native-multi-slider";
 import firebase from "firebase";
 import styles from "./styles";
@@ -46,8 +47,8 @@ class Settings extends Component {
         disKM: true
     };
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
     }
 
     componentDidMount() {}
@@ -82,23 +83,29 @@ class Settings extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>Settings</Title>
+                        <Title>{this.context.t("Settings")}</Title>
                     </Body>
                     <Right />
                 </Header>
                 <Content style={styles.container}>
                     <View style={{ paddingTop: 15, paddingHorizontal: 10 }}>
                         <View style={{ marginBottom: 10 }}>
-                            <Text style={styles.headerText}>Discovery Settings</Text>
+                            <Text style={styles.headerText}>
+                                {this.context.t("Discovery Settings")}
+                            </Text>
                         </View>
 
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
-                                <Text style={styles.sectionHeaderText}>Show Me</Text>
+                                <Left>
+                                    <Text style={styles.sectionHeaderText}>
+                                        {this.context.t("Show me")}
+                                    </Text>
+                                </Left>
                             </CardItem>
                             <CardItem>
                                 <Left>
-                                    <Text style={styles.cardItemText}>Men</Text>
+                                    <Text style={styles.cardItemText}>{this.context.t("Men")}</Text>
                                 </Left>
                                 <Right>
                                     <Switch
@@ -115,7 +122,9 @@ class Settings extends Component {
                             </CardItem>
                             <CardItem>
                                 <Left>
-                                    <Text style={styles.cardItemText}>Women</Text>
+                                    <Text style={styles.cardItemText}>
+                                        {this.context.t("Women")}
+                                    </Text>
                                 </Left>
                                 <Right>
                                     <Switch
@@ -135,7 +144,9 @@ class Settings extends Component {
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
                                 <Left>
-                                    <Text style={styles.sectionHeaderText}>Search Distance</Text>
+                                    <Text style={styles.sectionHeaderText}>
+                                        {this.context.t("Search Distance")}
+                                    </Text>
                                 </Left>
                                 <Right>
                                     <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -168,7 +179,9 @@ class Settings extends Component {
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
                                 <Left>
-                                    <Text style={styles.sectionHeaderText}>Age Range</Text>
+                                    <Text style={styles.sectionHeaderText}>
+                                        {this.context.t("Age Range")}
+                                    </Text>
                                 </Left>
                                 <Right>
                                     <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -201,7 +214,9 @@ class Settings extends Component {
                         <Card style={styles.card}>
                             <CardItem>
                                 <Left>
-                                    <Text style={styles.swipText}>Show me on Bless</Text>
+                                    <Text style={styles.swipText}>
+                                        {this.context.t("Show me on Bless")}
+                                    </Text>
                                 </Left>
                                 <Right>
                                     <Switch
@@ -219,18 +234,22 @@ class Settings extends Component {
                         </Card>
 
                         <View style={{ marginTop: 15, marginBottom: 10 }}>
-                            <Text style={styles.headerText}>App Settings</Text>
+                            <Text style={styles.headerText}>{this.context.t("App Settings")}</Text>
                         </View>
 
                         <View>
                             <Card style={styles.card}>
                                 <CardItem style={styles.cardItemHeaderView}>
-                                    <Text style={styles.sectionHeaderText}>Notifications</Text>
+                                    <Text style={styles.sectionHeaderText}>
+                                        {this.context.t("Notifications")}
+                                    </Text>
                                 </CardItem>
 
                                 <CardItem>
                                     <Left>
-                                        <Text style={styles.cardItemText}>New Matches</Text>
+                                        <Text style={styles.cardItemText}>
+                                            {this.context.t("New Matches")}
+                                        </Text>
                                     </Left>
                                     <Right>
                                         <Switch
@@ -247,7 +266,9 @@ class Settings extends Component {
                                 </CardItem>
                                 <CardItem>
                                     <Left>
-                                        <Text style={styles.cardItemText}>Messages</Text>
+                                        <Text style={styles.cardItemText}>
+                                            {this.context.t("Messages")}
+                                        </Text>
                                     </Left>
                                     <Right>
                                         <Switch
@@ -264,24 +285,9 @@ class Settings extends Component {
                                 </CardItem>
                                 <CardItem>
                                     <Left>
-                                        <Text style={styles.cardItemText}>Message Likes</Text>
-                                    </Left>
-                                    <Right>
-                                        <Switch
-                                            onValueChange={value =>
-                                                this.setState({ notSwitch3: value })
-                                            }
-                                            trackColor={{ true: commonColor.brandPrimary }}
-                                            thumbColor={
-                                                Platform.OS === "android" ? "#ededed" : undefined
-                                            }
-                                            value={this.state.notSwitch3}
-                                        />
-                                    </Right>
-                                </CardItem>
-                                <CardItem>
-                                    <Left>
-                                        <Text style={styles.cardItemText}>Super Likes</Text>
+                                        <Text style={styles.cardItemText}>
+                                            {this.context.t("Super Likes")}
+                                        </Text>
                                     </Left>
                                     <Right>
                                         <Switch
@@ -304,12 +310,12 @@ class Settings extends Component {
                                 <CardItem style={styles.cardItemHeaderView}>
                                     <Left>
                                         <Text style={styles.sectionHeaderText}>
-                                            Show Distance in
+                                            {this.context.t("Show Distance in")}
                                         </Text>
                                     </Left>
                                     <Right>
                                         <Text style={{ fontSize: 16, fontWeight: "600" }}>
-                                            {this.state.disKM ? "Km." : "Mi."}
+                                            {this.state.disKM ? "Km" : "Mi"}
                                         </Text>
                                     </Right>
                                 </CardItem>
@@ -334,7 +340,7 @@ class Settings extends Component {
                                                 fontWeight: "700"
                                             }}
                                         >
-                                            Km.
+                                            Km
                                         </Text>
                                     </Button>
                                     <Button
@@ -357,7 +363,7 @@ class Settings extends Component {
                                                 fontWeight: "700"
                                             }}
                                         >
-                                            Mi.
+                                            Mi
                                         </Text>
                                     </Button>
                                 </CardItem>
@@ -367,24 +373,27 @@ class Settings extends Component {
                         <View style={{ marginBottom: 20 }}>
                             <Card style={styles.card}>
                                 <CardItem style={styles.cardItemHeaderView}>
-                                    <Text style={styles.sectionHeaderText}>Legal</Text>
+                                    <Text style={styles.sectionHeaderText}>
+                                        {this.context.t("Legal")}
+                                    </Text>
                                 </CardItem>
                                 <View style={{ paddingLeft: 3, marginBottom: 10 }}>
                                     <Button transparent small>
-                                        <Text style={styles.cardItemText}>Licenses</Text>
+                                        <Text style={styles.cardItemText}>
+                                            {this.context.t("Privacy Policy")}
+                                        </Text>
                                     </Button>
                                     <Button transparent small>
-                                        <Text style={styles.cardItemText}>Privacy Policy</Text>
-                                    </Button>
-                                    <Button transparent small>
-                                        <Text style={styles.cardItemText}>Terms of Service</Text>
+                                        <Text style={styles.cardItemText}>
+                                            {this.context.t("Terms of Service")}
+                                        </Text>
                                     </Button>
                                 </View>
                             </Card>
                         </View>
 
                         <Button block rounded bordered primary>
-                            <Text>Help & Support</Text>
+                            <Text>{this.context.t("Help & Support")}</Text>
                         </Button>
 
                         <Button
@@ -394,7 +403,7 @@ class Settings extends Component {
                             style={{ marginVertical: 15 }}
                             onPress={() => this.logout()}
                         >
-                            <Text>Logout</Text>
+                            <Text>{this.context.t("Logout")}</Text>
                         </Button>
 
                         <View style={{ alignItems: "center", marginVertical: 20 }}>
@@ -409,5 +418,9 @@ class Settings extends Component {
         );
     }
 }
+
+Settings.contextTypes = {
+    t: PropTypes.func.isRequired
+};
 
 export default Settings;

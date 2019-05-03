@@ -20,9 +20,81 @@ msgstr "Descubriendo nuevas personas ..."
 msgid "Edit Profile"
 msgstr "Editar perfil"
 
-#: src/screens/Profile/index.js
+#: src/screens/Profile/index.js src/screens/Settings/index.js
 msgid "Settings"
 msgstr "Ajustes"
+
+#: src/screens/Settings/index.js
+msgid "Discovery Settings"
+msgstr "Configuración de búsqueda"
+
+#: src/screens/Settings/index.js
+msgid "Show me"
+msgstr "Muéstrame"
+
+#: src/screens/Settings/index.js
+msgid "Men"
+msgstr "Hombres"
+
+#: src/screens/Settings/index.js
+msgid "Women"
+msgstr "Mujeres"
+
+#: src/screens/Settings/index.js
+msgid "Search Distance"
+msgstr "Distancia"
+
+#: src/screens/Settings/index.js
+msgid "Age Range"
+msgstr "Rango de edad"
+
+#: src/screens/Settings/index.js
+msgid "Show me on Bless"
+msgstr "Muéstrame en Bless"
+
+#: src/screens/Settings/index.js
+msgid "App Settings"
+msgstr "Ajustes de Aplicación"
+
+#: src/screens/Settings/index.js
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: src/screens/Settings/index.js
+msgid "New Matches"
+msgstr "Nuevas Matches"
+
+#: src/screens/Settings/index.js
+msgid "Messages"
+msgstr "Mensajes"
+
+#: src/screens/Settings/index.js
+msgid "Super Likes"
+msgstr "Super Likes"
+
+#: src/screens/Settings/index.js
+msgid "Show Distance in"
+msgstr "Distancia en"
+
+#: src/screens/Settings/index.js
+msgid "Legal"
+msgstr "Información legal"
+
+#: src/screens/Settings/index.js
+msgid "Privacy Policy"
+msgstr "Politica de Privacidad"
+
+#: src/screens/Settings/index.js
+msgid "Terms of Service"
+msgstr "Términos de Servicio"
+
+#: src/screens/Settings/index.js
+msgid "Help & Support"
+msgstr "Ayuda y Soporte"
+
+#: src/screens/Settings/index.js
+msgid "Logout"
+msgstr "Cerrar sesión"
 
 #~ msgid "Discovering people..."
 #~ msgstr "Descubriendo personas ..."

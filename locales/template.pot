@@ -7,6 +7,79 @@ msgid "Edit Profile"
 msgstr ""
 
 #: src/screens/Profile/index.js
+#: src/screens/Settings/index.js
 msgid "Settings"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Discovery Settings"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Show me"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Men"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Women"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Search Distance"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Age Range"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Show me on Bless"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "App Settings"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Notifications"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "New Matches"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Messages"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Super Likes"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Show Distance in"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Legal"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Privacy Policy"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Terms of Service"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Help & Support"
+msgstr ""
+
+#: src/screens/Settings/index.js
+msgid "Logout"
 msgstr ""
 
