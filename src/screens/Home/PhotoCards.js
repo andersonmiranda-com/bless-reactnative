@@ -1,6 +1,7 @@
 import Expo from "expo";
 import React, { Component } from "react";
 import { View } from "react-native";
+import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import * as firebase from "firebase";
 import { GeoFire } from "geofire";
@@ -136,7 +137,7 @@ class PhotoCards extends Component {
             return (
                 <View style={styles.wrapperCentered}>
                     <Spinner />
-                    <Text>Loading cards...</Text>
+                    <Text>{this.context.t("Discovering people...")}</Text>
                 </View>
             );
         } else {
@@ -170,5 +171,9 @@ class PhotoCards extends Component {
         return this.cardStack();
     }
 }
+
+PhotoCards.contextTypes = {
+    t: PropTypes.func.isRequired
+};
 
 export default PhotoCards;

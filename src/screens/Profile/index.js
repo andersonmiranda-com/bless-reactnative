@@ -47,7 +47,9 @@ class Profile extends Component {
                             style={styles.settingsBtn}
                         >
                             <Icon name="md-settings" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>Preferences</Text>
+                            <Text style={styles.settingsBtnText}>
+                                {this.context.t("Settings")}
+                            </Text>
                         </Button>
                     </View>
                 </Content>
