@@ -1,4 +1,4 @@
-import Expo from "expo";
+import { Facebook } from "expo";
 import React, { Component } from "react";
 import { StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
@@ -72,7 +72,7 @@ class Login extends Component {
         const options = {
             permissions: ["public_profile", "email"]
         };
-        const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(ADD_ID, options);
+        const { type, token } = await Facebook.logInWithReadPermissionsAsync(ADD_ID, options);
 
         if (type === "success") {
             const fields = ["id", "first_name", "last_name", "gender", "birthday", "work"];

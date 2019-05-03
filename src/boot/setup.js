@@ -1,4 +1,4 @@
-import Expo from "expo";
+import { AppLoading, Font, Localization } from "expo";
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import { StyleProvider } from "native-base";
@@ -78,24 +78,25 @@ export default class Setup extends Component {
         this.state = {
             isLoading: false,
             store: configureStore(() => this.setState({ isLoading: false })),
-            isReady: false
+            isReady: false,
+            deviceLocale: "en"
         };
         storeObj.store = this.state.store;
     }
     async componentWillMount() {
-        await Expo.Font.loadAsync({
+        await Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             arial: require("../../Fonts/Arial.ttf")
         });
-        //this.deviceLocale = await Expo.Util.getCurrentLocaleAsync();
-        //console.log(this.deviceLocale);
-        this.setState({ isReady: true });
+        const deviceLocale = Localization.locale;
+        console.log(deviceLocale);
+        this.setState({ isReady: true, deviceLocale });
     }
 
     render() {
         if (!this.state.isReady) {
-            return <Expo.AppLoading />;
+            return <AppLoading />;
         }
         return (
             <StyleProvider style={getTheme(variables)}>
@@ -103,7 +104,7 @@ export default class Setup extends Component {
                     <PersistGate persistor={this.state.store.persistor}>
                         <I18n
                             translations={translations}
-                            initialLang={"es"}
+                            initialLang={this.state.deviceLocale}
                             fallbackLang="en"
                         >
                             <App />
