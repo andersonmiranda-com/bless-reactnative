@@ -1,0 +1,4 @@
+#: src/screens/Profile/index.js
+msgid "Edit Profile"
+msgstr ""
+

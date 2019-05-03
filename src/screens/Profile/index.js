@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { Image, View, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 import { Container, Content, Icon, Button, Text } from "native-base";
 import commonColor from "../../theme/variables/commonColor";
 import styles from "./styles";
 
 class Profile extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -31,7 +36,9 @@ class Profile extends Component {
                             style={styles.settingsBtn}
                         >
                             <Icon name="create" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>Edit Profile</Text>
+                            <Text style={styles.settingsBtnText}>
+                                {this.context.t("Edit Profile")}
+                            </Text>
                         </Button>
 
                         <Button
@@ -49,4 +56,7 @@ class Profile extends Component {
     }
 }
 
+Profile.contextTypes = {
+    t: PropTypes.func.isRequired
+};
 export default Profile;

@@ -1,4 +1,4 @@
-import * as Expo from "expo";
+import Expo from "expo";
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import { StyleProvider } from "native-base";
@@ -8,6 +8,8 @@ import getTheme from "../theme/components";
 import variables from "../theme/variables/commonColor";
 import { PersistGate } from "redux-persist/integration/react";
 import * as firebase from "firebase";
+import I18n from "redux-i18n";
+import { translations } from "../translations";
 
 // Work around issue `Setting a timer for long time`
 //import { Platform, InteractionManager } from "react-native";
@@ -86,6 +88,8 @@ export default class Setup extends Component {
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             arial: require("../../Fonts/Arial.ttf")
         });
+        //this.deviceLocale = await Expo.Util.getCurrentLocaleAsync();
+        //console.log(this.deviceLocale);
         this.setState({ isReady: true });
     }
 
@@ -97,7 +101,13 @@ export default class Setup extends Component {
             <StyleProvider style={getTheme(variables)}>
                 <Provider store={this.state.store.store}>
                     <PersistGate persistor={this.state.store.persistor}>
-                        <App />
+                        <I18n
+                            translations={translations}
+                            initialLang={"es"}
+                            fallbackLang="en"
+                        >
+                            <App />
+                        </I18n>
                     </PersistGate>
                 </Provider>
             </StyleProvider>
