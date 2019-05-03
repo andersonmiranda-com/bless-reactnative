@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, Text, Slider, Platform } from "react-native";
+import { Image, View, Text, Platform } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
     Container,
@@ -15,6 +15,7 @@ import {
     Body,
     Right
 } from "native-base";
+import MultiSlider from "react-native-multi-slider";
 import firebase from "firebase";
 import styles from "./styles";
 import commonColor from "../../theme/variables/commonColor";
@@ -26,6 +27,9 @@ const resetAction = StackActions.reset({
 
 class Settings extends Component {
     state = {
+        distanceValue: [10],
+        ageRangeValues: [18, 24],
+
         trueSwitchIsOn: true,
         trueSwitchIsOn2: true,
         trueSwitchIsOn3: true,
@@ -34,7 +38,6 @@ class Settings extends Component {
         notSwitch2: true,
         notSwitch3: true,
         notSwitch4: true,
-        sliderValue: 0,
         leftValue: 25,
         rightValue: 35,
         disKM: true
@@ -66,6 +69,7 @@ class Settings extends Component {
 
     render() {
         const { navigation } = this.props;
+        const { ageRangeValues, distanceValue } = this.state;
         return (
             <Container>
                 <Header>
@@ -108,8 +112,8 @@ class Settings extends Component {
                                         onValueChange={value =>
                                             this.setState({ trueSwitchIsOn: value })
                                         }
-                                        onTintColor={commonColor.brandPrimary}
-                                        thumbTintColor={
+                                        trackColor={{true: commonColor.brandPrimary}}
+                                        thumbColor={
                                             Platform.OS === "android" ? "#ededed" : undefined
                                         }
                                         value={this.state.trueSwitchIsOn}
@@ -125,8 +129,8 @@ class Settings extends Component {
                                         onValueChange={value =>
                                             this.setState({ falseSwitchIsOn: value })
                                         }
-                                        onTintColor={commonColor.brandPrimary}
-                                        thumbTintColor={
+                                        trackColor={{true: commonColor.brandPrimary}}
+                                        thumbColor={
                                             Platform.OS === "android" ? "#ededed" : undefined
                                         }
                                         value={this.state.falseSwitchIsOn}
@@ -134,6 +138,7 @@ class Settings extends Component {
                                 </Right>
                             </CardItem>
                         </Card>
+
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
                                 <Left>
@@ -141,21 +146,50 @@ class Settings extends Component {
                                 </Left>
                                 <Right>
                                     <Text style={{ fontSize: 16, fontWeight: "600" }}>
-                                        {this.state.sliderValue}
-                                        km.
+                                        {distanceValue}
+                                        km
                                     </Text>
                                 </Right>
                             </CardItem>
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Slider
+                                <MultiSlider
                                     style={{ margin: 10 }}
-                                    onValueChange={value => this.setState({ sliderValue: value })}
-                                    maximumValue={100}
-                                    minimumTrackTintColor={commonColor.brandPrimary}
+                                    onValueChange={value => this.setState({ distanceValue: value })}
+                                    max={100}
+                                    //                                    minimumTrackTintColor={commonColor.brandPrimary}
+                                    values={[10]}
                                     step={1}
                                 />
                             </View>
                         </Card>
+
+                        <Card style={styles.card}>
+                            <CardItem style={styles.cardItemHeaderView}>
+                                <Left>
+                                    <Text style={styles.redText}>Age Range</Text>
+                                </Left>
+                                <Right>
+                                    <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                                        {ageRangeValues.join("-")}
+                                    </Text>
+                                </Right>
+                            </CardItem>
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <MultiSlider
+                                    style={{ margin: 10 }}
+                                    min={18}
+                                    max={100}
+                                    //                                    minimumTrackTintColor={commonColor.brandPrimary}
+                                    values={ageRangeValues}
+                                    step={1}
+                                    onValueChange={value => {
+                                        console.log(value);
+                                        this.setState({ ageRangeValues: value });
+                                    }}
+                                />
+                            </View>
+                        </Card>
+
                         <CardItem style={styles.switchBlock}>
                             <Left>
                                 <Text style={styles.swipText}>Show me on Bless</Text>
@@ -165,10 +199,8 @@ class Settings extends Component {
                                     onValueChange={value =>
                                         this.setState({ trueSwitchIsOn2: value })
                                     }
-                                    onTintColor={commonColor.brandPrimary}
-                                    thumbTintColor={
-                                        Platform.OS === "android" ? "#ededed" : undefined
-                                    }
+                                    trackColor={{true: commonColor.brandPrimary}}
+                                    thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
                                     value={this.state.trueSwitchIsOn2}
                                 />
                             </Right>
@@ -227,8 +259,8 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch1: value })
                                             }
-                                            onTintColor={commonColor.brandPrimary}
-                                            thumbTintColor={
+                                            trackColor={{true: commonColor.brandPrimary}}
+                                            thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
                                             value={this.state.notSwitch1}
@@ -244,8 +276,8 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch2: value })
                                             }
-                                            onTintColor={commonColor.brandPrimary}
-                                            thumbTintColor={
+                                            trackColor={{true: commonColor.brandPrimary}}
+                                            thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
                                             value={this.state.notSwitch2}
@@ -261,8 +293,8 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch3: value })
                                             }
-                                            onTintColor={commonColor.brandPrimary}
-                                            thumbTintColor={
+                                            trackColor={{true: commonColor.brandPrimary}}
+                                            thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
                                             value={this.state.notSwitch3}
@@ -278,8 +310,8 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch4: value })
                                             }
-                                            onTintColor={commonColor.brandPrimary}
-                                            thumbTintColor={
+                                            trackColor={{true: commonColor.brandPrimary}}
+                                            thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
                                             value={this.state.notSwitch4}

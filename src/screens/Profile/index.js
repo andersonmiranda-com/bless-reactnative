@@ -37,7 +37,7 @@ class Profile extends Component {
                     <Button
                         rounded
                         style={[styles.settingsBtn, { marginTop: 30 }]}
-                        onPress={() => navigation.navigate("EditProfile")}
+                        onPress={() => navigation.navigate("EditProfile",{uid})}
                     >
                         <Icon name="md-create" />
                         <Text>{this.context.t("Edit Profile")}</Text>
