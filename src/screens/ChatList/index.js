@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text } from "react-native";
 import {
     Container,
     Content,
@@ -13,7 +12,7 @@ import {
     Left,
     Right,
     Body,
-    List
+    List, Text
 } from "native-base";
 import { NavigationActions } from "react-navigation";
 import styles from "./styles";

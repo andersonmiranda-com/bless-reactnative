@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
     View,
-    Text,
     TextInput,
     TouchableOpacity,
     Platform,
@@ -21,7 +20,8 @@ import {
     Switch,
     Left,
     Right,
-    Body
+    Body,
+    Text
 } from "native-base";
 import ImageContainer from "./image-container";
 import MainImage from "./main-image";
