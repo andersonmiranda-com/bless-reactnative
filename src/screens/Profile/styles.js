@@ -18,12 +18,12 @@ export default {
     },
     profileImageView: {
         alignItems: "center",
-        marginTop: 25
+        paddingTop: height / 4
     },
     profileImage: {
-        height: 100,
-        width: 100,
-        borderRadius: 50
+        height: 150,
+        width: 150,
+        borderRadius: 75
     },
     editIconView: {
         alignItems: "center",
@@ -56,7 +56,7 @@ export default {
         textAlign: "center"
     },
     settingsBtn: {
-        marginTop: 20,
+        marginTop: 15,
         alignSelf: "center"
     },
     settingsBtnText: {

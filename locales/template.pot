@@ -1,0 +1,12 @@
+#: src/screens/Home/PhotoCards.js
+msgid "Discovering new people..."
+msgstr ""
+
+#: src/screens/Profile/index.js
+msgid "Edit Profile"
+msgstr ""
+
+#: src/screens/Profile/index.js
+msgid "Settings"
+msgstr ""
+

@@ -304,8 +304,8 @@ export default class Card extends Component {
                     </View>
 
                     <LinearGradient
-                        colors={["#00000000", "#00000050", "#00000060"]}
-                        locations={[0, 1, 2]}
+                        colors={["#00000000", "#00000030", "#00000070"]}
+                        locations={[0, 0.3, 1]}
                         style={{
                             padding: 20,
                             flex: 1,

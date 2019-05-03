@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { Image, View, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 import { Container, Content, Icon, Button, Text } from "native-base";
 import commonColor from "../../theme/variables/commonColor";
 import styles from "./styles";
 
 class Profile extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         const navigation = this.props.navigation;
         return (
@@ -17,12 +22,6 @@ class Profile extends Component {
                                 style={styles.profileImage}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.editIconView}
-                            onPress={() => navigation.navigate("EditProfile")}
-                        >
-                            <Icon active name="create" style={styles.editIcon} />
-                        </TouchableOpacity>
                     </View>
                     <View style={styles.profileDescriptionView}>
                         <Text style={styles.nameAndAgeText}>Roger Federer, 32yr</Text>
@@ -33,36 +32,33 @@ class Profile extends Component {
 
                         <Button
                             transparent
+                            onPress={() => navigation.navigate("EditProfile")}
+                            style={styles.settingsBtn}
+                        >
+                            <Icon name="create" style={{ color: commonColor.brandPrimary }} />
+                            <Text style={styles.settingsBtnText}>
+                                {this.context.t("Edit Profile")}
+                            </Text>
+                        </Button>
+
+                        <Button
+                            transparent
                             onPress={() => navigation.navigate("Settings")}
                             style={styles.settingsBtn}
                         >
                             <Icon name="md-settings" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>SETTINGS</Text>
+                            <Text style={styles.settingsBtnText}>
+                                {this.context.t("Settings")}
+                            </Text>
                         </Button>
                     </View>
                 </Content>
-                <View style={styles.goingOutView}>
-                    <View style={styles.goingOutTextView}>
-                        <Text style={{ fontSize: 18, fontWeight: "500" }}>Going Out Tonight?</Text>
-                        <Text
-                            style={{
-                                textAlign: "center",
-                                color: commonColor.contentTextColor,
-                                fontSize: 13,
-                                marginVertical: 10
-                            }}
-                        >
-                            Invite your friends to swipe & match with groups of friends going out
-                            tonight
-                        </Text>
-                        <Button block rounded style={styles.goingOutBtn}>
-                            <Text style={styles.goingOutBtnText}>I'M GOING OUT</Text>
-                        </Button>
-                    </View>
-                </View>
             </Container>
         );
     }
 }
 
+Profile.contextTypes = {
+    t: PropTypes.func.isRequired
+};
 export default Profile;

@@ -1,13 +1,15 @@
-import * as Expo from "expo";
+import { AppLoading, Font, Localization } from "expo";
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import { StyleProvider } from "native-base";
 import App from "../App";
-import configureStore from "./configureStore";
+import configureStore from "../reducers/configureStore";
 import getTheme from "../theme/components";
 import variables from "../theme/variables/commonColor";
 import { PersistGate } from "redux-persist/integration/react";
 import * as firebase from "firebase";
+import I18n from "redux-i18n";
+import { translations } from "../translations";
 
 // Work around issue `Setting a timer for long time`
 //import { Platform, InteractionManager } from "react-native";
@@ -76,28 +78,37 @@ export default class Setup extends Component {
         this.state = {
             isLoading: false,
             store: configureStore(() => this.setState({ isLoading: false })),
-            isReady: false
+            isReady: false,
+            deviceLocale: "en"
         };
         storeObj.store = this.state.store;
     }
     async componentWillMount() {
-        await Expo.Font.loadAsync({
+        await Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             arial: require("../../Fonts/Arial.ttf")
         });
-        this.setState({ isReady: true });
+        const deviceLocale = Localization.locale;
+        console.log(deviceLocale);
+        this.setState({ isReady: true, deviceLocale });
     }
 
     render() {
         if (!this.state.isReady) {
-            return <Expo.AppLoading />;
+            return <AppLoading />;
         }
         return (
             <StyleProvider style={getTheme(variables)}>
                 <Provider store={this.state.store.store}>
                     <PersistGate persistor={this.state.store.persistor}>
-                        <App />
+                        <I18n
+                            translations={translations}
+                            initialLang={this.state.deviceLocale}
+                            fallbackLang="en"
+                        >
+                            <App />
+                        </I18n>
                     </PersistGate>
                 </Provider>
             </StyleProvider>

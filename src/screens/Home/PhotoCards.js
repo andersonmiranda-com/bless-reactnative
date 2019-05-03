@@ -1,6 +1,7 @@
-import Expo from "expo";
+import { Permissions, Location } from "expo";
 import React, { Component } from "react";
 import { View } from "react-native";
+import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import * as firebase from "firebase";
 import { GeoFire } from "geofire";
@@ -61,7 +62,6 @@ class PhotoCards extends Component {
     };
 
     updateUserLocation = async uid => {
-        const { Permissions, Location } = Expo;
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             //const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
@@ -71,7 +71,6 @@ class PhotoCards extends Component {
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
             geoFireRef.set(uid, [latitude, longitude]);
             //console.log("Permission Granted", location);
-            console.log("lat, lon", [latitude, longitude]);
             return [latitude, longitude];
         } else {
             console.log("Permission Denied");
@@ -136,7 +135,7 @@ class PhotoCards extends Component {
             return (
                 <View style={styles.wrapperCentered}>
                     <Spinner />
-                    <Text>Loading cards...</Text>
+                    <Text>{this.context.t("Discovering new people...")}</Text>
                 </View>
             );
         } else {
@@ -170,5 +169,9 @@ class PhotoCards extends Component {
         return this.cardStack();
     }
 }
+
+PhotoCards.contextTypes = {
+    t: PropTypes.func.isRequired
+};
 
 export default PhotoCards;
