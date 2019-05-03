@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, Text, Platform } from "react-native";
+import { Image, View, Platform } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
     Container,
@@ -12,6 +12,7 @@ import {
     Card,
     CardItem,
     Left,
+    Text,
     Body,
     Right
 } from "native-base";
@@ -19,6 +20,8 @@ import MultiSlider from "react-native-multi-slider";
 import firebase from "firebase";
 import styles from "./styles";
 import commonColor from "../../theme/variables/commonColor";
+var Dimensions = require("Dimensions");
+var { width } = Dimensions.get("window");
 
 const resetAction = StackActions.reset({
     index: 0,
@@ -28,7 +31,7 @@ const resetAction = StackActions.reset({
 class Settings extends Component {
     state = {
         distanceValue: [10],
-        ageRangeValues: [18, 24],
+        ageRangeValues: [25, 35],
 
         trueSwitchIsOn: true,
         trueSwitchIsOn2: true,
@@ -86,22 +89,12 @@ class Settings extends Component {
                 <Content style={styles.container}>
                     <View style={{ paddingTop: 15, paddingHorizontal: 10 }}>
                         <View style={{ marginBottom: 10 }}>
-                            <Text style={styles.text}>Discovery Settings</Text>
+                            <Text style={styles.headerText}>Discovery Settings</Text>
                         </View>
-                        <Card>
-                            <CardItem style={styles.locationSwipperCarditem}>
-                                <Text style={styles.cardItemText}>Swiping in</Text>
-                                <Text style={styles.textBlue}>My Current Location</Text>
-                            </CardItem>
-                        </Card>
-                        <View>
-                            <Text style={styles.someText}>
-                                Change your swipe location to see Tinder members in other cities
-                            </Text>
-                        </View>
+
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
-                                <Text style={styles.redText}>Show Me</Text>
+                                <Text style={styles.sectionHeaderText}>Show Me</Text>
                             </CardItem>
                             <CardItem>
                                 <Left>
@@ -112,7 +105,7 @@ class Settings extends Component {
                                         onValueChange={value =>
                                             this.setState({ trueSwitchIsOn: value })
                                         }
-                                        trackColor={{true: commonColor.brandPrimary}}
+                                        trackColor={{ true: commonColor.brandPrimary }}
                                         thumbColor={
                                             Platform.OS === "android" ? "#ededed" : undefined
                                         }
@@ -129,7 +122,7 @@ class Settings extends Component {
                                         onValueChange={value =>
                                             this.setState({ falseSwitchIsOn: value })
                                         }
-                                        trackColor={{true: commonColor.brandPrimary}}
+                                        trackColor={{ true: commonColor.brandPrimary }}
                                         thumbColor={
                                             Platform.OS === "android" ? "#ededed" : undefined
                                         }
@@ -142,7 +135,7 @@ class Settings extends Component {
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
                                 <Left>
-                                    <Text style={styles.redText}>Search Distance</Text>
+                                    <Text style={styles.sectionHeaderText}>Search Distance</Text>
                                 </Left>
                                 <Right>
                                     <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -151,14 +144,17 @@ class Settings extends Component {
                                     </Text>
                                 </Right>
                             </CardItem>
-                            <View style={{ flex: 1, justifyContent: "center" }}>
+                            <View
+                                style={{ flex: 1, justifyContent: "center", paddingHorizontal: 19 }}
+                            >
                                 <MultiSlider
-                                    style={{ margin: 10 }}
-                                    onValueChange={value => this.setState({ distanceValue: value })}
+                                    selectedStyle={{ backgroundColor: commonColor.brandPrimary }}
                                     max={100}
-                                    //                                    minimumTrackTintColor={commonColor.brandPrimary}
-                                    values={[10]}
-                                    step={1}
+                                    sliderLength={width - 63}
+                                    values={distanceValue}
+                                    onValuesChange={value =>
+                                        this.setState({ distanceValue: value })
+                                    }
                                 />
                             </View>
                         </Card>
@@ -166,7 +162,7 @@ class Settings extends Component {
                         <Card style={styles.card}>
                             <CardItem style={styles.cardItemHeaderView}>
                                 <Left>
-                                    <Text style={styles.redText}>Age Range</Text>
+                                    <Text style={styles.sectionHeaderText}>Age Range</Text>
                                 </Left>
                                 <Right>
                                     <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -174,82 +170,52 @@ class Settings extends Component {
                                     </Text>
                                 </Right>
                             </CardItem>
-                            <View style={{ flex: 1, justifyContent: "center" }}>
+                            <View
+                                style={{ flex: 1, justifyContent: "center", paddingHorizontal: 19 }}
+                            >
                                 <MultiSlider
-                                    style={{ margin: 10 }}
+                                    selectedStyle={{ backgroundColor: commonColor.brandPrimary }}
                                     min={18}
                                     max={100}
-                                    //                                    minimumTrackTintColor={commonColor.brandPrimary}
+                                    sliderLength={width - 63}
                                     values={ageRangeValues}
-                                    step={1}
-                                    onValueChange={value => {
-                                        console.log(value);
+                                    onValuesChange={value => {
                                         this.setState({ ageRangeValues: value });
                                     }}
                                 />
                             </View>
                         </Card>
 
-                        <CardItem style={styles.switchBlock}>
-                            <Left>
-                                <Text style={styles.swipText}>Show me on Bless</Text>
-                            </Left>
-                            <Right>
-                                <Switch
-                                    onValueChange={value =>
-                                        this.setState({ trueSwitchIsOn2: value })
-                                    }
-                                    trackColor={{true: commonColor.brandPrimary}}
-                                    thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
-                                    value={this.state.trueSwitchIsOn2}
-                                />
-                            </Right>
-                        </CardItem>
-                        <View>
-                            <Text style={styles.someText}>
-                                Bless uses these preferences to suggest matches.Some match
-                                suggestions may not fall within your desired parameters.
-                            </Text>
-                        </View>
-
                         <Card style={styles.card}>
-                            <CardItem style={styles.cardItemHeaderView}>
-                                <Left>
-                                    <Text style={styles.redText}>Web Profile</Text>
-                                </Left>
-                            </CardItem>
                             <CardItem>
                                 <Left>
-                                    <Text style={{ color: commonColor.contentTextColor }}>
-                                        Username
-                                    </Text>
+                                    <Text style={styles.swipText}>Show me on Bless</Text>
                                 </Left>
                                 <Right>
-                                    <Text style={{ color: commonColor.contentTextColor }}>
-                                        Claim Yours
-                                    </Text>
+                                    <Switch
+                                        onValueChange={value =>
+                                            this.setState({ trueSwitchIsOn2: value })
+                                        }
+                                        trackColor={{ true: commonColor.brandPrimary }}
+                                        thumbColor={
+                                            Platform.OS === "android" ? "#ededed" : undefined
+                                        }
+                                        value={this.state.trueSwitchIsOn2}
+                                    />
                                 </Right>
                             </CardItem>
-                            <CardItem style={styles.cardItemHeaderView}>
-                                <Text
-                                    style={{
-                                        color: commonColor.lightTextColor,
-                                        fontSize: 12
-                                    }}
-                                >
-                                    Create a username. Share your username. Have people all over the
-                                    world swipe you right on Bless
-                                </Text>
-                            </CardItem>
                         </Card>
-                        <View style={{ marginVertical: 10 }}>
-                            <Text style={styles.text}>App Settings</Text>
+
+                        <View style={{ marginTop: 15, marginBottom: 10 }}>
+                            <Text style={styles.headerText}>App Settings</Text>
                         </View>
+
                         <View>
-                            <Card style={{ borderRadius: 5 }}>
-                                <CardItem style={{ borderRadius: 5 }}>
-                                    <Text style={styles.redText}>Notifications</Text>
+                            <Card style={styles.card}>
+                                <CardItem style={styles.cardItemHeaderView}>
+                                    <Text style={styles.sectionHeaderText}>Notifications</Text>
                                 </CardItem>
+
                                 <CardItem>
                                     <Left>
                                         <Text style={styles.cardItemText}>New Matches</Text>
@@ -259,7 +225,7 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch1: value })
                                             }
-                                            trackColor={{true: commonColor.brandPrimary}}
+                                            trackColor={{ true: commonColor.brandPrimary }}
                                             thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
@@ -276,7 +242,7 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch2: value })
                                             }
-                                            trackColor={{true: commonColor.brandPrimary}}
+                                            trackColor={{ true: commonColor.brandPrimary }}
                                             thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
@@ -293,7 +259,7 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch3: value })
                                             }
-                                            trackColor={{true: commonColor.brandPrimary}}
+                                            trackColor={{ true: commonColor.brandPrimary }}
                                             thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
@@ -310,7 +276,7 @@ class Settings extends Component {
                                             onValueChange={value =>
                                                 this.setState({ notSwitch4: value })
                                             }
-                                            trackColor={{true: commonColor.brandPrimary}}
+                                            trackColor={{ true: commonColor.brandPrimary }}
                                             thumbColor={
                                                 Platform.OS === "android" ? "#ededed" : undefined
                                             }
@@ -321,11 +287,13 @@ class Settings extends Component {
                             </Card>
                         </View>
 
-                        <View style={{ marginVertical: 10 }}>
+                        <View style={{ marginBottom: 10 }}>
                             <Card style={styles.card}>
                                 <CardItem style={styles.cardItemHeaderView}>
                                     <Left>
-                                        <Text style={styles.redText}>Show Distance in</Text>
+                                        <Text style={styles.sectionHeaderText}>
+                                            Show Distance in
+                                        </Text>
                                     </Left>
                                     <Right>
                                         <Text style={{ fontSize: 16, fontWeight: "600" }}>
@@ -384,17 +352,10 @@ class Settings extends Component {
                             </Card>
                         </View>
 
-                        <View style={{ marginVertical: 10 }}>
-                            <Text style={styles.text}>Contact Us</Text>
-                        </View>
-                        <Button block style={styles.helpBtn}>
-                            <Text style={styles.helpBtnText}>Help & Support</Text>
-                        </Button>
-
-                        <View style={{ marginVertical: 10 }}>
-                            <Card style={{ borderRadius: 5 }}>
-                                <CardItem style={{ borderRadius: 5 }}>
-                                    <Text style={styles.redText}>Legal</Text>
+                        <View style={{ marginBottom: 20 }}>
+                            <Card style={styles.card}>
+                                <CardItem style={styles.cardItemHeaderView}>
+                                    <Text style={styles.sectionHeaderText}>Legal</Text>
                                 </CardItem>
                                 <View style={{ paddingLeft: 3, marginBottom: 10 }}>
                                     <Button transparent small>
@@ -410,9 +371,20 @@ class Settings extends Component {
                             </Card>
                         </View>
 
-                        <Button block style={styles.helpBtn} onPress={() => this.logout()}>
-                            <Text style={styles.helpBtnText}>Logout</Text>
+                        <Button block rounded bordered primary>
+                            <Text>Help & Support</Text>
                         </Button>
+
+                        <Button
+                            primary
+                            rounded
+                            block
+                            style={{ marginVertical: 15 }}
+                            onPress={() => this.logout()}
+                        >
+                            <Text>Logout</Text>
+                        </Button>
+
                         <View style={{ alignItems: "center", marginVertical: 20 }}>
                             <Image
                                 source={require("../../../assets/logo.png")}

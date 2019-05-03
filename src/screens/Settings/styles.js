@@ -5,7 +5,7 @@ export default {
     container: {
         backgroundColor: "#F5F5F5"
     },
-    text: {
+    headerText: {
         fontSize: 18,
         fontWeight: "600",
         paddingLeft: 2
@@ -37,7 +37,6 @@ export default {
     },
     cardItemText: {
         color: commonColor.contentTextColor,
-        fontSize: 16
     },
     someText: {
         color: commonColor.lightTextColor,
@@ -58,10 +57,10 @@ export default {
         }
     },
     cardItemHeaderView: {
-        marginTop: -15,
-        marginBottom: -15
+        paddingTop: 0,
+        paddingBottom: 4
     },
-    redText: {
+    sectionHeaderText: {
         color: commonColor.brandPrimary,
         fontSize: 18,
         fontWeight: "600"

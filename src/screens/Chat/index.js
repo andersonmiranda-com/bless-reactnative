@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Image, View, Text } from "react-native";
-import { Container, Content, Button } from "native-base";
+import { Image, View } from "react-native";
+import { Container, Content, Button, Text } from "native-base";
 import styles from "./styles";
 
 class Chat extends Component {

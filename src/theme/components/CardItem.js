@@ -204,8 +204,8 @@ export default (variables = variable) => {
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 2,
-    padding: variables.listItemPadding + 5,
-    paddingVertical: variables.listItemPadding,
+    padding: variables.listItemPadding + 2,
+    paddingVertical: variables.listItemPadding - 4,
     backgroundColor: variables.cardDefaultBg
   };
 
