@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Image, View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import { Container, Content, Icon, Button, Text } from "native-base";
-import commonColor from "../../theme/variables/commonColor";
+import moment from "moment";
 import styles from "./styles";
 
 class Profile extends Component {
@@ -12,46 +12,45 @@ class Profile extends Component {
 
     render() {
         const navigation = this.props.navigation;
+
+        const { birthday, first_name, work, id, uid } = this.props.navigation.state.params.user;
+        const bio = work && work[0] && work[0].position ? work[0].position.name : null;
+        const profileBday = moment(birthday, "MM/DD/YYYY");
+        const profileAge = moment().diff(profileBday, "years");
+        const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
+
         return (
-            <Container style={styles.container}>
-                <Content scrollEnabled={false}>
-                    <View style={styles.profileImageView}>
-                        <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
-                            <Image
-                                source={require("../../../assets/federer.jpg")}
-                                style={styles.profileImage}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.profileDescriptionView}>
-                        <Text style={styles.nameAndAgeText}>Roger Federer, 32yr</Text>
-                        <View style={{ padding: 5 }}>
-                            <Text style={styles.workplaceText}>World Class Tennis Player</Text>
-                        </View>
-                        <Text style={styles.workplaceText}>JCE, Bangalore</Text>
+            <Container>
+                <Content
+                    padder
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.containerVertical}
+                >
+                    <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
+                        <Image source={{ uri: fbImage }} style={styles.profileImage} />
+                    </TouchableOpacity>
 
-                        <Button
-                            transparent
-                            onPress={() => navigation.navigate("EditProfile")}
-                            style={styles.settingsBtn}
-                        >
-                            <Icon name="create" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>
-                                {this.context.t("Edit Profile")}
-                            </Text>
-                        </Button>
+                    <Text style={styles.nameAndAgeText}>
+                        {first_name}, {profileAge}
+                    </Text>
+                    {bio ? <Text note>{bio}</Text> : <View />}
+                    <Button
+                        rounded
+                        style={[styles.settingsBtn, { marginTop: 30 }]}
+                        onPress={() => navigation.navigate("EditProfile")}
+                    >
+                        <Icon name="md-create" />
+                        <Text>{this.context.t("Edit Profile")}</Text>
+                    </Button>
 
-                        <Button
-                            transparent
-                            onPress={() => navigation.navigate("Settings")}
-                            style={styles.settingsBtn}
-                        >
-                            <Icon name="md-settings" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>
-                                {this.context.t("Settings")}
-                            </Text>
-                        </Button>
-                    </View>
+                    <Button
+                        rounded
+                        style={styles.settingsBtn}
+                        onPress={() => navigation.navigate("Settings")}
+                    >
+                        <Icon name="md-settings" />
+                        <Text>{this.context.t("Settings")}</Text>
+                    </Button>
                 </Content>
             </Container>
         );
