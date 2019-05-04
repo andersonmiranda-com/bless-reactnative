@@ -57,14 +57,12 @@ export default {
         color: "#393E40",
         fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial"
     },
     subtextLeft: {
         fontSize: 12,
         color: commonColor.contentTextColor,
         fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial"
     },
     iconRight: {
         color: Platform.OS === "ios" ? "#a3a3a3" : commonColor.contentTextColor,
@@ -74,7 +72,6 @@ export default {
         color: commonColor.contentTextColor,
         fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial",
         paddingBottom: 4
     },
     bottomGrid: {
