@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.8.12\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: src/components/OfflineNotice.js
+msgid "No Internet Connection"
+msgstr "Sem conexão com a internet"
+
 #: src/screens/Home/PhotoCards.js
 msgid "Discovering new people..."
 msgstr "Descobrindo novas pessoas..."
@@ -20,81 +24,93 @@ msgstr "Descobrindo novas pessoas..."
 msgid "Edit Profile"
 msgstr "Editar Perfil"
 
-#: src/screens/Profile/index.js src/screens/Settings/index.js
+#: src/screens/Profile/index.js src/screens/Profile/Settings.js
 msgid "Settings"
 msgstr "Configurações"
 
-#: src/screens/Settings/index.js
-msgid "Discovery Settings"
-msgstr "Configurações de busca"
+#: src/screens/Profile/Settings.js
+msgid "OK"
+msgstr "OK"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
+msgid "DISCOVERY"
+msgstr "DESCOBERTA"
+
+#: src/screens/Profile/Settings.js
 msgid "Show me"
 msgstr "Mostrar"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Men"
 msgstr "Homens"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Women"
 msgstr "Mulheres"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Search Distance"
 msgstr "Distância Máxima"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Age Range"
 msgstr "Faixa de idade"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Show me on Bless"
 msgstr "Me mostre no Bless"
 
-#: src/screens/Settings/index.js
-msgid "App Settings"
-msgstr "Configurações da aplicação"
+#: src/screens/Profile/Settings.js
+msgid "APPLICATION SETTINGS"
+msgstr "CONFIGURAÇÕES DO APP"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Notifications"
 msgstr "Notificações"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "New Matches"
 msgstr "Novos Matches"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Messages"
 msgstr "Mensagens"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Super Likes"
 msgstr "Super Likes"
 
-#: src/screens/Settings/index.js
-msgid "Show Distance in"
-msgstr "Mostrar distância em"
+#: src/screens/Profile/Settings.js
+msgid "LEGAL INFORMATION"
+msgstr "INFORMAÇÕES LEGAIS"
 
-#: src/screens/Settings/index.js
-msgid "Legal"
-msgstr "Informações legais"
-
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Privacy Policy"
 msgstr "Política de Privacidade"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Terms of Service"
 msgstr "Termos de Serviço"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Help & Support"
 msgstr "Ajuda & Suporte"
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Logout"
 msgstr "Encerrar sessão"
+
+#~ msgid "Discovery Settings"
+#~ msgstr "Configurações de busca"
+
+#~ msgid "App Settings"
+#~ msgstr "Configurações da aplicação"
+
+#~ msgid "Show Distance in"
+#~ msgstr "Mostrar distância em"
+
+#~ msgid "Legal"
+#~ msgstr "Informações legais"
 
 #~ msgid "Discovering people..."
 #~ msgstr "Encontrando pessoas..."

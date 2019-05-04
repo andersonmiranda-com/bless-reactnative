@@ -147,7 +147,7 @@ export default (variables = variable) => {
             },
             backgroundColor: "#000"
         },
-        
+
         ".light": {
             ".transparent": {
                 "NativeBase.Text": {
@@ -449,6 +449,7 @@ export default (variables = variable) => {
                 marginRight: 0
             }
         },
+
         ".picker": {
             "NativeBase.Text": {
                 ".note": {
@@ -456,6 +457,10 @@ export default (variables = variable) => {
                     lineHeight: null
                 }
             }
+        },
+
+        ".center": {
+            alignSelf: "center"
         },
 
         paddingVertical: variables.buttonPadding,

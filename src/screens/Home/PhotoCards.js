@@ -57,7 +57,18 @@ class PhotoCards extends Component {
         geoQuery.on("key_entered", async (uid, location, distance) => {
             const user = await this.getUser(uid);
             const profiles = [...this.state.profiles, user.val()];
+            
+            //denominação
+            
+            //sexo
+
+            //idade
+            
             this.setState({ profiles, loading: false });
+
+
+
+
         });
     };
 

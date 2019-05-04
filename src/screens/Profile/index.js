@@ -34,10 +34,12 @@ class Profile extends Component {
                         {first_name}, {profileAge}
                     </Text>
                     {bio ? <Text note>{bio}</Text> : <View />}
+
                     <Button
                         rounded
-                        style={[styles.settingsBtn, { marginTop: 30 }]}
-                        onPress={() => navigation.navigate("EditProfile",{uid})}
+                        center
+                        style={{ marginTop: 30 }}
+                        onPress={() => navigation.navigate("EditProfile", { uid })}
                     >
                         <Icon name="md-create" />
                         <Text>{this.context.t("Edit Profile")}</Text>
@@ -45,7 +47,8 @@ class Profile extends Component {
 
                     <Button
                         rounded
-                        style={styles.settingsBtn}
+                        center
+                        style={{ marginTop: 15 }}
                         onPress={() => navigation.navigate("Settings")}
                     >
                         <Icon name="md-settings" />
