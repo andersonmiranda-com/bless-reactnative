@@ -62,7 +62,7 @@ msgstr "Notificaciones"
 
 #: src/screens/Settings/index.js
 msgid "New Matches"
-msgstr "Nuevas Matches"
+msgstr "Nuevos Matches"
 
 #: src/screens/Settings/index.js
 msgid "Messages"

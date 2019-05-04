@@ -7,7 +7,7 @@ import HomeTabNavigation from "./screens/Home/tabNavigation";
 import ChatList from "./screens/ChatList/";
 import ChatScreen from "./screens/ChatScreen";
 import PhotoCardDetails from "./screens/PhotoCardDetails";
-import Settings from "./screens/Settings";
+import Settings from "./screens/Profile/Settings";
 import UserDetails from "./screens/UserDetails";
 import EditProfile from "./screens/EditProfile/editprofile";
 import CurrentWork from "./screens/EditProfile/currentWork";
@@ -30,7 +30,7 @@ const MainNavigator = createStackNavigator(
     },
     {
         index: 0,
-        initialRouteName: "Login",
+        initialRouteName: "Settings",
         headerMode: "none"
     }
 );

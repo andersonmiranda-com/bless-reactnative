@@ -12,7 +12,7 @@ export const translations = {
     'Show me on Bless': 'Muéstrame en Bless',
     'App Settings': 'Ajustes de Aplicación',
     'Notifications': 'Notificaciones',
-    'New Matches': 'Nuevas Matches',
+    'New Matches': 'Nuevos Matches',
     'Messages': 'Mensajes',
     'Super Likes': 'Super Likes',
     'Show Distance in': 'Distancia en',
