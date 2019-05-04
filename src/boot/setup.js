@@ -88,6 +88,7 @@ export default class Setup extends Component {
             Rubik: require("../../Fonts/Rubik-Regular.ttf"),
             Rubik_Light: require("../../Fonts/Rubik-Light.ttf"),
             Rubik_Bold: require("../../Fonts/Rubik-Medium.ttf"),
+            //streamline: require("../../Fonts/streamline/font/bless-icons.ttf"),
         });
         const deviceLocale = Localization.locale;
         console.log(deviceLocale);
