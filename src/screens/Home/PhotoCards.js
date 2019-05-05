@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import * as firebase from "firebase";
 import { GeoFire } from "geofire";
+import filter from "../../modules/filter";
 import Card from "../../components/Card";
 import styles from "./styles";
 
@@ -33,7 +34,7 @@ class PhotoCards extends Component {
                         profiles: [],
                         profileIndex: 0
                     });
-                    this.getProfiles(user.uid, userLocation, 10);
+                    this.getProfiles(user.uid, userLocation, user.distance);
                 });
         });
     }
@@ -56,18 +57,16 @@ class PhotoCards extends Component {
         });
         geoQuery.on("key_entered", async (uid, location, distance) => {
             const user = await this.getUser(uid);
+
+            console.log("got", user.val().first_name);
             const profiles = [...this.state.profiles, user.val()];
-            
+
+            //idade e sexo - frontend
+            const filtered = filter(profiles, this.state.user);
+
             //denominação
-            
-            //sexo
 
-            //idade
-            
-            this.setState({ profiles, loading: false });
-
-
-
+            this.setState({ profiles: filtered, loading: false });
 
         });
     };

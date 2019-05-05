@@ -9,19 +9,15 @@ import {
     Button,
     Header,
     Title,
-    Card,
-    CardItem,
     Left,
     Text,
     Body,
     Right,
-    Form,
     List,
     ListItem,
     Item,
     Separator,
-    Label,
-    Input
+    Label
 } from "native-base";
 import PropTypes from "prop-types";
 import OfflineNotice from "../../components/OfflineNotice";
@@ -38,28 +34,31 @@ const resetAction = StackActions.reset({
 });
 
 class Settings extends Component {
-    state = {
-        distanceValue: [10],
-        ageRangeValues: [25, 35],
-
-        trueSwitchIsOn: true,
-        trueSwitchIsOn2: true,
-        trueSwitchIsOn3: true,
-        falseSwitchIsOn: false,
-        notSwitch1: true,
-        notSwitch2: true,
-        notSwitch3: true,
-        notSwitch4: true,
-        leftValue: 25,
-        rightValue: 35,
-        disKM: true
-    };
-
     constructor(props, context) {
         super(props, context);
+
+        this.user = this.props.navigation.state.params.user;
+
+        this.state = {
+            ageRangeValues: this.user.ageRange || [25, 35],
+            distanceValue: [this.user.distance] || [10],
+            showMen: this.user.showMen,
+            showWomen: this.user.showWomen,
+            showMe: this.user.showMe,
+            notificationsPrefs: this.user.notificationsPrefs
+        };
     }
 
     componentDidMount() {}
+
+    updateUser = (key, value) => {
+        const { uid } = this.props.navigation.state.params.user;
+        firebase
+            .database()
+            .ref("users")
+            .child(uid)
+            .update({ [key]: value });
+    };
 
     logout() {
         const { navigation } = this.props;
@@ -81,19 +80,19 @@ class Settings extends Component {
 
     render() {
         const { navigation } = this.props;
-        const { ageRangeValues, distanceValue } = this.state;
+        const { ageRangeValues, distanceValue, showMen, showWomen, showMe } = this.state;
         return (
             <Container>
                 <Header>
-                    <Left/>
+                    <Left>
+                        <Button transparent onPress={() => navigation.goBack()}>
+                            <Icon name="ios-arrow-back" />
+                        </Button>
+                    </Left>
                     <Body>
                         <Title>{this.context.t("Settings")}</Title>
                     </Body>
-                    <Right>
-                        <Button transparent onPress={() => navigation.goBack()}>
-                            <Text>{this.context.t("OK")}</Text>
-                        </Button>
-                    </Right>
+                    <Right/>
                 </Header>
 
                 <OfflineNotice />
@@ -113,12 +112,13 @@ class Settings extends Component {
                             </Left>
                             <Right>
                                 <Switch
-                                    onValueChange={value =>
-                                        this.setState({ trueSwitchIsOn: value })
-                                    }
                                     trackColor={{ true: commonColor.brandPrimary }}
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
-                                    value={this.state.trueSwitchIsOn}
+                                    value={showMen}
+                                    onValueChange={val => {
+                                        this.setState({ showMen: val });
+                                        this.updateUser("showMen", val);
+                                    }}
                                 />
                             </Right>
                         </Item>
@@ -129,12 +129,13 @@ class Settings extends Component {
                             </Left>
                             <Right>
                                 <Switch
-                                    onValueChange={value =>
-                                        this.setState({ falseSwitchIsOn: value })
-                                    }
                                     trackColor={{ true: commonColor.brandPrimary }}
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
-                                    value={this.state.falseSwitchIsOn}
+                                    value={showWomen}
+                                    onValueChange={val => {
+                                        this.setState({ showWomen: val });
+                                        this.updateUser("showWomen", val);
+                                    }}
                                 />
                             </Right>
                         </Item>
@@ -159,7 +160,8 @@ class Settings extends Component {
                                 max={100}
                                 sliderLength={width - 28}
                                 values={distanceValue}
-                                onValuesChange={value => this.setState({ distanceValue: value })}
+                                onValuesChange={val => this.setState({ distanceValue: val })}
+                                onValuesChangeFinish={val => this.updateUser("distance", val[0])}
                             />
                         </Item>
 
@@ -184,9 +186,8 @@ class Settings extends Component {
                                 max={100}
                                 sliderLength={width - 28}
                                 values={ageRangeValues}
-                                onValuesChange={value => {
-                                    this.setState({ ageRangeValues: value });
-                                }}
+                                onValuesChange={val => this.setState({ ageRangeValues: val })}
+                                onValuesChangeFinish={val => this.updateUser("ageRange", val)}
                             />
                         </Item>
 
@@ -198,12 +199,13 @@ class Settings extends Component {
                             </Left>
                             <Right>
                                 <Switch
-                                    onValueChange={value =>
-                                        this.setState({ trueSwitchIsOn2: value })
-                                    }
                                     trackColor={{ true: commonColor.brandPrimary }}
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
-                                    value={this.state.trueSwitchIsOn2}
+                                    value={showMe}
+                                    onValueChange={val => {
+                                        this.setState({ showMe: val });
+                                        this.updateUser("showMe", val);
+                                    }}
                                 />
                             </Right>
                         </Item>
