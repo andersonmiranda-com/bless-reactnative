@@ -67,9 +67,17 @@ class PhotoCards extends Component {
             //denominação
 
             this.setState({ profiles: filtered, loading: false });
-
         });
     };
+
+    /*     
+    getProfilesBackend = async (uid, userLocation, distance) => {
+        var getProfilesFunc = firebase.functions().httpsCallable("getProfilesFunc");
+        getProfilesFunc({ uid, userLocation, distance }).then(function(result) {
+            console.log("functions return: ", result);
+        });
+    };
+    */
 
     updateUserLocation = async uid => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
