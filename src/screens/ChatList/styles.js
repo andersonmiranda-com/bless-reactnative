@@ -2,7 +2,7 @@ import commonColor from "../../theme/variables/commonColor";
 
 export default {
     userNameText: {
-        fontWeight: "bold",
+        fontFamily: "Rubik_Bold",
         marginBottom: 5
     },
     distanceText: {

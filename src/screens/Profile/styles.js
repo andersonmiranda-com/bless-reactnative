@@ -54,7 +54,7 @@ export default {
     },
     nameAndAgeText: {
         fontSize: 18,
-        fontWeight: "700",
+        fontFamily: "Rubik_Bold",
         textAlign: "center",
         marginBottom: 5
     },

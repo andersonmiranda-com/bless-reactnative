@@ -57,7 +57,7 @@ export default {
     },
     nameText: {
         fontSize: 15,
-        fontWeight: "bold"
+        fontFamily: "Rubik_Bold"
     },
     workingText: {
         color: "rgba(0,0,0,0.75)"
@@ -65,7 +65,7 @@ export default {
     distanceAwayText: {
         fontSize: 12,
         color: commonColor.lightTextColor,
-        fontWeight: "bold",
+        fontFamily: "Rubik_Bold",
         paddingTop: 3
     },
     quoteView: {

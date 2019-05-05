@@ -1,3 +1,7 @@
+#: src/components/OfflineNotice.js
+msgid "No Internet Connection"
+msgstr ""
+
 #: src/screens/Home/PhotoCards.js
 msgid "Discovering new people..."
 msgstr ""
@@ -7,79 +11,79 @@ msgid "Edit Profile"
 msgstr ""
 
 #: src/screens/Profile/index.js
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Settings"
 msgstr ""
 
-#: src/screens/Settings/index.js
-msgid "Discovery Settings"
+#: src/screens/Profile/Settings.js
+msgid "OK"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
+msgid "DISCOVERY"
+msgstr ""
+
+#: src/screens/Profile/Settings.js
 msgid "Show me"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Men"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Women"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Search Distance"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Age Range"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Show me on Bless"
 msgstr ""
 
-#: src/screens/Settings/index.js
-msgid "App Settings"
+#: src/screens/Profile/Settings.js
+msgid "APPLICATION SETTINGS"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Notifications"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "New Matches"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Messages"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Super Likes"
 msgstr ""
 
-#: src/screens/Settings/index.js
-msgid "Show Distance in"
+#: src/screens/Profile/Settings.js
+msgid "LEGAL INFORMATION"
 msgstr ""
 
-#: src/screens/Settings/index.js
-msgid "Legal"
-msgstr ""
-
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Privacy Policy"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Terms of Service"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Help & Support"
 msgstr ""
 
-#: src/screens/Settings/index.js
+#: src/screens/Profile/Settings.js
 msgid "Logout"
 msgstr ""
 
