@@ -37,7 +37,7 @@ class Login extends Component {
                 .db("bless");
             this.setState({ mongoClient });
 
-            //mongoClient.auth.logout();
+           // mongoClient.auth.logout();
 
             if (mongoClient.auth.isLoggedIn) {
                 console.log(mongoClient.auth.user.id);
@@ -97,7 +97,7 @@ class Login extends Component {
         };
         console.log("writing", uid, uData);
         const _uid = new BSON.ObjectId(uid);
-        usersCollection.updateOne({ _id: _uid }, { $set: uData }, { upsert: true }).then(result => {
+        usersCollection.updateOne({ _id: _uid }, { $set: { ...uData, last_login: new Date()} }, { upsert: true }).then(result => {
             console.log(result);
             this.goHome({ _id: uid, uData });
         });
