@@ -34,7 +34,7 @@ const MainNavigator = createStackNavigator(
     },
     {
         index: 0,
-        initialRouteName: "LoginMDB",
+        initialRouteName: "Login",
         headerMode: "none"
     }
 );
