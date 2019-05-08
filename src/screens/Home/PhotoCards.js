@@ -37,23 +37,50 @@ class PhotoCards extends Component {
         this.updateUserLocation(user).then(userLocation => {
             console.log("geolocalizaçao OK");
 
+            let gender = null;
+
+            if (user.showMen && user.showWomen) {
+                gender = null;
+            } else if (user.showMen) {
+                gender = "Male";
+            } else if (user.showWomen) {
+                gender = "Female";
+            }
+
             const query = {
                 //_id: { $ne: this.props.user._id },
                 location: {
                     $nearSphere: {
-                        $geometry: { type: "Point", coordinates: [-42.507843, -23.716211] },
-                        $maxDistance: 200000
+                        $geometry: {
+                            type: "Point",
+                            coordinates: [
+                                user.location.coordinates[0],
+                                user.location.coordinates[1]
+                            ]
+                        },
+                        $maxDistance: user.distance * 1000
                     }
                 },
                 showMe: true,
                 birthday: { $gt: new Date("1968-01-01"), $lte: new Date("1998-01-31") },
-                gender: "Male",
-                showMen: true
             };
+
+            if (user.gender === "Male") {
+                query.showMen = true;
+            }
+            if (user.gender === "Female") {
+                query.showWomen = true;
+            }
+
+            if (gender) {
+                query.gender = gender;
+            }
+
+            console.log(query);
 
             this.db
                 .collection("users")
-                .find(query, { limit: 10 })
+                .find(query)
                 .toArray()
                 .then(profiles => {
                     console.log(profiles.length);
@@ -124,8 +151,8 @@ class PhotoCards extends Component {
     doSwipe = direction => {
         if (this.state.profileIndex < this.state.profiles.length) {
             const cardTrigger =
-                this.state.profileIndex < this.state.profiles.length - 2
-                    ? 2
+                this.state.profileIndex < this.state.profiles.length - 4
+                    ? 4
                     : this.state.profiles.length - this.state.profileIndex - 1;
             this._photoCard.doSwipe(direction, cardTrigger);
         }
@@ -155,7 +182,7 @@ class PhotoCards extends Component {
             return (
                 <View style={styles.deckswiperView}>
                     {profiles
-                        .slice(profileIndex, profileIndex + 3)
+                        .slice(profileIndex, profileIndex + 5)
                         .reverse()
                         .map((profile, index) => {
                             if (profile._id.toString() === this.props.user._id.toString()) {
