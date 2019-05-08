@@ -21,12 +21,12 @@ class PhotoCards extends Component {
     }
 
     componentWillMount() {
-        const { uid } = this.state.user;
-        this.updateUserLocation(uid).then(userLocation => {
+        const { user } = this.state;
+        this.updateUserLocation(user).then(userLocation => {
             firebase
                 .database()
                 .ref("users")
-                .child(uid)
+                .child(user.uid)
                 .on("value", snap => {
                     const user = snap.val();
                     this.setState({
@@ -47,9 +47,20 @@ class PhotoCards extends Component {
             .once("value");
     };
 
+    getSwiped = uid => {
+        return firebase
+            .database()
+            .ref("relationships")
+            .child(uid)
+            .child("liked")
+            .once("value")
+            .then(snap => snap.val() || {});
+    };
+
     getProfiles = async (uid, userLocation, distance) => {
         const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
         //const userLocation = await geoFireRef.get(uid);
+        const swipedProfiles = await this.getSwiped(uid);
         console.log("userLocation", userLocation);
         const geoQuery = geoFireRef.query({
             center: userLocation,
@@ -62,7 +73,7 @@ class PhotoCards extends Component {
             const profiles = [...this.state.profiles, user.val()];
 
             //idade e sexo - frontend
-            const filtered = filter(profiles, this.state.user);
+            const filtered = filter(profiles, this.state.user, swipedProfiles);
 
             //denominação
 
@@ -70,24 +81,16 @@ class PhotoCards extends Component {
         });
     };
 
-    /*     
-    getProfilesBackend = async (uid, userLocation, distance) => {
-        var getProfilesFunc = firebase.functions().httpsCallable("getProfilesFunc");
-        getProfilesFunc({ uid, userLocation, distance }).then(function(result) {
-            console.log("functions return: ", result);
-        });
-    };
-    */
-
-    updateUserLocation = async uid => {
+    updateUserLocation = async user => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             //const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
             // const {latitude, longitude} = location.coords
             const latitude = 37.39239; //demo lat
             const longitude = -122.09072; //demo lon
+            //geofire
             const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
-            geoFireRef.set(uid, [latitude, longitude]);
+            geoFireRef.set(user.uid, [latitude, longitude]);
             //console.log("Permission Granted", location);
             return [latitude, longitude];
         } else {
@@ -111,19 +114,24 @@ class PhotoCards extends Component {
 
         console.log(direction, profileUid);
 
-        if (direction === "bottom") {
-            this.props.navigation.navigate("PhotoCardDetails");
-        } else {
-            this.setState({ profileIndex: this.state.profileIndex + 1 });
+        switch (direction) {
+            case "right":
+                this.relate(userUid, profileUid, true);
+                break;
 
-            //TODO: setar lastProfileIndex para evitar erro da ultima carta
+            case "left":
+                this.relate(userUid, profileUid, false);
+                break;
 
-            /*  if (swipedRight) {
-            this.relate(userUid, profileUid, true);
-        } else {
-            this.relate(userUid, profileUid, false);
-        } */
+            case "bottom":
+                break;
+
+            case "top":
+                this.relate(userUid, profileUid, "super");
+                break;
         }
+
+        this.setState({ profileIndex: this.state.profileIndex + 1 });
     };
 
     doSwipe = direction => {

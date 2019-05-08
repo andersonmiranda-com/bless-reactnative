@@ -1,7 +1,7 @@
 import _ from "lodash";
 import moment from "moment";
 
-export default (profiles, user) => {
+export default (profiles, user, swipedProfiles) => {
     const rejectMe = _.reject(profiles, profile => profile.uid === user.uid);
 
     const filterGender = _.filter(rejectMe, profile => {
@@ -26,12 +26,17 @@ export default (profiles, user) => {
 
         const withinRangeUser = _.inRange(profileAge, user.ageRange[0], user.ageRange[1] + 1);
         const withinRangeProfile = true;
-//        const withinRangeProfile = _.inRange(userAge, profile.ageRange[0], profile.ageRange[1] + 1);
+        //        const withinRangeProfile = _.inRange(userAge, profile.ageRange[0], profile.ageRange[1] + 1);
 
         return withinRangeUser && withinRangeProfile;
     });
 
     const filtered = _.uniqBy(filterAgeRange, "uid");
 
-    return filtered;
+    const filterSwiped = _.filter(filtered, profile => {
+        const swiped = profile.uid in swipedProfiles;
+        return !swiped;
+    });
+
+    return filterSwiped;
 };

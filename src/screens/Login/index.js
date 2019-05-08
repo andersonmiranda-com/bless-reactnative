@@ -11,8 +11,6 @@ import AppIntro from "./AppIntro";
 import commonColor from "../../theme/variables/commonColor";
 
 class Login extends Component {
-    //db = firebase.firestore();
-
     constructor(props) {
         super(props);
         this.state = {
@@ -79,6 +77,9 @@ class Login extends Component {
     };
 
     createUser = (uid, userData) => {
+        var usersRef = firebase.firestore().collection("users");
+        usersRef.doc(uid).set({ ...userData, uid });
+
         firebase
             .database()
             .ref("users")
