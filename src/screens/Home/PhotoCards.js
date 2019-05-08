@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
-import * as firebase from "firebase";
-import { GeoFire } from "geofire";
+import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
+import { ObjectId } from "bson";
 import filter from "../../modules/filter";
 import Card from "../../components/Card";
 import styles from "./styles";
@@ -18,80 +18,67 @@ class PhotoCards extends Component {
             user: this.props.user,
             loading: true
         };
+
+        if (!Stitch.hasAppClient("bless-club-nbaqg")) {
+            this.client = Stitch.initializeDefaultAppClient("bless-club-nbaqg");
+        } else {
+            this.client = Stitch.defaultAppClient;
+        }
+
+        this.db = this.client
+            .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
+            .db("bless");
+
+        console.log("conectado mongoDB");
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { user } = this.state;
         this.updateUserLocation(user).then(userLocation => {
-            firebase
-                .database()
-                .ref("users")
-                .child(user.uid)
-                .on("value", snap => {
-                    const user = snap.val();
-                    this.setState({
-                        user,
-                        profiles: [],
-                        profileIndex: 0
-                    });
-                    this.getProfiles(user.uid, userLocation, user.distance);
+            console.log("geolocalizaçao OK");
+
+            const query = {
+                //_id: { $ne: this.props.user._id },
+                location: {
+                    $nearSphere: {
+                        $geometry: { type: "Point", coordinates: [-42.507843, -23.716211] },
+                        $maxDistance: 200000
+                    }
+                },
+                showMe: true,
+                birthday: { $gt: new Date("1968-01-01"), $lte: new Date("1998-01-31") },
+                gender: "Male",
+                showMen: true
+            };
+
+            this.db
+                .collection("users")
+                .find(query, { limit: 10 })
+                .toArray()
+                .then(profiles => {
+                    console.log(profiles.length);
+                    this.setState({ profiles, loading: false });
                 });
         });
     }
-
-    getUser = uid => {
-        return firebase
-            .database()
-            .ref("users")
-            .child(uid)
-            .once("value");
-    };
-
-    getSwiped = uid => {
-        return firebase
-            .database()
-            .ref("relationships")
-            .child(uid)
-            .child("liked")
-            .once("value")
-            .then(snap => snap.val() || {});
-    };
-
-    getProfiles = async (uid, userLocation, distance) => {
-        const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
-        //const userLocation = await geoFireRef.get(uid);
-        const swipedProfiles = await this.getSwiped(uid);
-        console.log("userLocation", userLocation);
-        const geoQuery = geoFireRef.query({
-            center: userLocation,
-            radius: distance //km
-        });
-        geoQuery.on("key_entered", async (uid, location, distance) => {
-            const user = await this.getUser(uid);
-
-            console.log("got", user.val().first_name);
-            const profiles = [...this.state.profiles, user.val()];
-
-            //idade e sexo - frontend
-            const filtered = filter(profiles, this.state.user, swipedProfiles);
-
-            //denominação
-
-            this.setState({ profiles: filtered, loading: false });
-        });
-    };
 
     updateUserLocation = async user => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             //const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
-            // const {latitude, longitude} = location.coords
-            const latitude = 37.39239; //demo lat
-            const longitude = -122.09072; //demo lon
-            //geofire
-            const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
-            geoFireRef.set(user.uid, [latitude, longitude]);
-            //console.log("Permission Granted", location);
+            //const { latitude, longitude } = location.coords;
+            const latitude = -23.716211; //demo lat
+            const longitude = -42.507843; //demo lon
+
+            //Update geo no MongoDB
+            await this.db
+                .collection("users")
+                .updateOne(
+                    { _id: user._id },
+                    { $set: { "location.coordinates": [longitude, latitude] } }
+                );
+
+            console.log("Permission Granted");
             return [latitude, longitude];
         } else {
             console.log("Permission Denied");
@@ -99,14 +86,14 @@ class PhotoCards extends Component {
     };
 
     relate = (userUid, profileUid, status) => {
-        let relationUpdate = {};
+        /*  let relationUpdate = {};
         relationUpdate[`${userUid}/liked/${profileUid}`] = status;
         relationUpdate[`${profileUid}/likedBack/${userUid}`] = status;
 
-        firebase
+     firebase
             .database()
             .ref("relationships")
-            .update(relationUpdate);
+            .update(relationUpdate); */
     };
 
     nextCard = (direction, profileUid) => {
@@ -171,20 +158,24 @@ class PhotoCards extends Component {
                         .slice(profileIndex, profileIndex + 3)
                         .reverse()
                         .map((profile, index) => {
-                            return (
-                                <Card
-                                    key={profile.uid}
-                                    ref={mr => (this._photoCard = mr)}
-                                    index={index}
-                                    profile={profile}
-                                    onSwipeOff={this.nextCard}
-                                    onCardOpen={uid => {
-                                        this.props.navigation.navigate("PhotoCardDetails", {
-                                            uid: uid
-                                        });
-                                    }}
-                                />
-                            );
+                            if (profile._id.toString() === this.props.user._id.toString()) {
+                                return null;
+                            } else {
+                                return (
+                                    <Card
+                                        key={profile._id}
+                                        ref={mr => (this._photoCard = mr)}
+                                        index={index}
+                                        profile={profile}
+                                        onSwipeOff={this.nextCard}
+                                        onCardOpen={_id => {
+                                            this.props.navigation.navigate("PhotoCardDetails", {
+                                                _id: _id
+                                            });
+                                        }}
+                                    />
+                                );
+                            }
                         })}
                 </View>
             );

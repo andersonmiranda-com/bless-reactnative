@@ -20,7 +20,6 @@ class Login extends Component {
         super(props);
         this.state = {
             userId: undefined,
-            mongoClient: undefined,
             loading: true,
             loadingFB: false
         };
@@ -35,7 +34,6 @@ class Login extends Component {
             this.db = mongoClient
                 .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
                 .db("bless");
-            this.setState({ mongoClient });
 
            // mongoClient.auth.logout();
 
