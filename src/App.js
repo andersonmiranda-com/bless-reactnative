@@ -3,6 +3,7 @@ import { Root } from "native-base";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Login from "./screens/Login/";
+import LoginMDB from "./screens/Login/login_mongo";
 import HomeTabNavigation from "./screens/Home/tabNavigation";
 import ChatList from "./screens/ChatList/";
 import ChatScreen from "./screens/ChatScreen";
@@ -18,6 +19,7 @@ import AddPhoto from "./screens/EditProfile/addphoto";
 const MainNavigator = createStackNavigator(
     {
         Login: { screen: Login },
+        LoginMDB: { screen: LoginMDB },
         HomeTabNavigation: { screen: HomeTabNavigation },
         ChatList: { screen: ChatList },
         ChatScreen: { screen: ChatScreen },
@@ -32,7 +34,7 @@ const MainNavigator = createStackNavigator(
     },
     {
         index: 0,
-        initialRouteName: "Login",
+        initialRouteName: "LoginMDB",
         headerMode: "none"
     }
 );
