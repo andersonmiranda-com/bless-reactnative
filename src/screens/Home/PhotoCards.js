@@ -36,57 +36,47 @@ class PhotoCards extends Component {
         const { user } = this.state;
         this.updateUserLocation(user).then(userLocation => {
             console.log("geolocalizaçao OK");
-
-            let gender = null;
-
-            if (user.showMen && user.showWomen) {
-                gender = null;
-            } else if (user.showMen) {
-                gender = "Male";
-            } else if (user.showWomen) {
-                gender = "Female";
-            }
-
-            const query = {
-                //_id: { $ne: this.props.user._id },
-                location: {
-                    $nearSphere: {
-                        $geometry: {
-                            type: "Point",
-                            coordinates: [
-                                user.location.coordinates[0],
-                                user.location.coordinates[1]
-                            ]
-                        },
-                        $maxDistance: user.distance * 1000
-                    }
-                },
-                showMe: true,
-                birthday: { $gt: new Date("1968-01-01"), $lte: new Date("1998-01-31") },
-            };
-
-            if (user.gender === "Male") {
-                query.showMen = true;
-            }
-            if (user.gender === "Female") {
-                query.showWomen = true;
-            }
-
-            if (gender) {
-                query.gender = gender;
-            }
-
-            console.log(query);
-
-            this.db
-                .collection("users")
-                .find(query)
-                .toArray()
-                .then(profiles => {
-                    console.log(profiles.length);
-                    this.setState({ profiles, loading: false });
-                });
+            this.getCards(user);
         });
+    }
+
+    getCards(user) {
+        const query = {
+            //_id: { $ne: this.props.user._id },
+            location: {
+                $nearSphere: {
+                    $geometry: {
+                        type: "Point",
+                        coordinates: [user.location.coordinates[0], user.location.coordinates[1]]
+                    },
+                    $maxDistance: user.distance * 1000
+                }
+            },
+            showMe: true,
+            birthday: { $gt: new Date("1968-01-01"), $lte: new Date("1998-01-31") }
+        };
+
+        if (user.gender === "Male") {
+            query.showMen = true;
+        }
+        if (user.gender === "Female") {
+            query.showWomen = true;
+        }
+
+        if (user.showMen && !user.showWomen) {
+            query.gender = "Male";
+        } else if (user.showWomen && !user.showMen) {
+            query.gender = "Female";
+        }
+
+        this.db
+            .collection("users")
+            .find(query)
+            .toArray()
+            .then(profiles => {
+                console.log(profiles.length);
+                this.setState({ profiles, loading: false });
+            });
     }
 
     updateUserLocation = async user => {
