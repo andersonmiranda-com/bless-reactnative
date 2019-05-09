@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import moment from "moment";
 import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
+import { connect } from "react-redux";
+import { updateProfiles } from "../../actions";
+
 import Card from "../../components/Card";
 import styles from "./styles";
 
@@ -15,7 +18,8 @@ class PhotoCards extends Component {
             profileIndex: 0,
             profiles: [],
             user: this.props.user,
-            loading: true
+            loading: true,
+            offset: 0
         };
 
         if (!Stitch.hasAppClient("bless-club-nbaqg")) {
@@ -35,54 +39,19 @@ class PhotoCards extends Component {
         const { user } = this.state;
         this.updateUserLocation(user).then(userLocation => {
             console.log("geolocalizaçao OK");
-            this.getCards(user);
+            this.props.updateProfiles(this.state.user, true);
         });
     }
 
-    getCards(user) {
-        const query = {
-            //_id: { $ne: this.props.user._id },
-            location: {
-                $nearSphere: {
-                    $geometry: {
-                        type: "Point",
-                        coordinates: [user.location.coordinates[0], user.location.coordinates[1]]
-                    },
-                    $maxDistance: user.distance * 1000
-                }
-            },
-            showMe: true,
-            birthday: {
-                $gt: moment()
-                    .subtract(user.ageRange[1], "years")
-                    .toDate(),
-                $lte: moment()
-                    .subtract(user.ageRange[0], "years")
-                    .toDate()
-            }
-        };
-
-        if (user.gender === "Male") {
-            query.showMen = true;
-        }
-        if (user.gender === "Female") {
-            query.showWomen = true;
-        }
-
-        if (user.showMen && !user.showWomen) {
-            query.gender = "Male";
-        } else if (user.showWomen && !user.showMen) {
-            query.gender = "Female";
-        }
-
-        this.db
-            .collection("users")
-            .find(query)
-            .toArray()
-            .then(profiles => {
-                console.log(profiles.length);
-                this.setState({ profiles, loading: false });
+    componentDidUpdate(prevProps) {
+        const newProps = this.props;
+        if (prevProps.profilesState !== newProps.profilesState) {
+            console.log("recebido");
+            // eslint-disable-next-line react/no-did-update-set-state
+            this.setState({
+                ...this.props.profilesState
             });
+        }
     }
 
     updateUserLocation = async user => {
@@ -215,4 +184,14 @@ PhotoCards.contextTypes = {
     t: PropTypes.func.isRequired
 };
 
-export default PhotoCards;
+function mapStateToProps(state) {
+    return {
+        userState: state.userState,
+        profilesState: state.profilesState
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    { updateProfiles }
+)(PhotoCards);

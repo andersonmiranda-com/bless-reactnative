@@ -33,7 +33,6 @@ class Profile extends Component {
         usersCollection
             .findOne({ _id: _id })
             .then(user => {
-                console.log(user);
                 this.setState({ user, loading: false });
             })
             .catch(error => {

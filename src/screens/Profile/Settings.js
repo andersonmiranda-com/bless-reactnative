@@ -20,6 +20,9 @@ import {
     Label
 } from "native-base";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateProfiles } from "../../actions";
+
 import OfflineNotice from "../../components/OfflineNotice";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
@@ -37,15 +40,8 @@ class Settings extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.user = this.props.navigation.state.params.user;
-
         this.state = {
-            ageRangeValues: this.user.ageRange || [25, 35],
-            distanceValue: [this.user.distance] || [10],
-            showMen: this.user.showMen,
-            showWomen: this.user.showWomen,
-            showMe: this.user.showMe,
-            notificationsPrefs: this.user.notificationsPrefs
+            user: this.props.navigation.state.params.user
         };
 
         if (!Stitch.hasAppClient("bless-club-nbaqg")) {
@@ -61,13 +57,29 @@ class Settings extends Component {
         console.log("conectado mongoDB");
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        console.log(this.state.user);
+    }
 
     updateUser = (key, value) => {
-        const { _id } = this.props.navigation.state.params.user;
-        const usersCollection = this.db.collection("users");
-        usersCollection.updateOne({ _id: _id }, { $set: { [key]: value }});
+        this.setState(prevState => {
+            return {
+                user: {
+                    ...prevState.user,
+                    [key]: value
+                }
+            };
+        });
     };
+
+    saveUser() {
+        const { user } = this.state;
+        const usersCollection = this.db.collection("users");
+        usersCollection.updateOne({ _id: user._id }, { $set: user }).then(res => {
+            this.props.updateProfiles(user, true);
+            this.props.navigation.goBack();
+        });
+    }
 
     logout() {
         const { navigation } = this.props;
@@ -88,20 +100,20 @@ class Settings extends Component {
     }
 
     render() {
-        const { navigation } = this.props;
-        const { ageRangeValues, distanceValue, showMen, showWomen, showMe } = this.state;
+        const { ageRange, distance, showMen, showWomen, showMe } = this.state.user;
         return (
             <Container>
                 <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.goBack()}>
-                            <Icon name="ios-arrow-back" />
-                        </Button>
-                    </Left>
+                    <Left />
                     <Body>
                         <Title>{this.context.t("Settings")}</Title>
                     </Body>
-                    <Right />
+
+                    <Right>
+                        <Button transparent onPress={() => this.saveUser()}>
+                            <Text>{this.context.t("Ok")}</Text>
+                        </Button>
+                    </Right>
                 </Header>
 
                 <OfflineNotice />
@@ -125,7 +137,6 @@ class Settings extends Component {
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
                                     value={showMen}
                                     onValueChange={val => {
-                                        this.setState({ showMen: val });
                                         this.updateUser("showMen", val);
                                     }}
                                 />
@@ -142,7 +153,6 @@ class Settings extends Component {
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
                                     value={showWomen}
                                     onValueChange={val => {
-                                        this.setState({ showWomen: val });
                                         this.updateUser("showWomen", val);
                                     }}
                                 />
@@ -154,7 +164,7 @@ class Settings extends Component {
                                 <Text>{this.context.t("Search Distance")}</Text>
                             </Left>
                             <Right>
-                                <Text>{distanceValue} km</Text>
+                                <Text>{distance} km</Text>
                             </Right>
                         </Item>
                         <Item>
@@ -168,9 +178,9 @@ class Settings extends Component {
                                 }}
                                 max={100}
                                 sliderLength={width - 28}
-                                values={distanceValue}
-                                onValuesChange={val => this.setState({ distanceValue: val })}
-                                onValuesChangeFinish={val => this.updateUser("distance", val[0])}
+                                values={[distance]}
+                                onValuesChange={val => this.updateUser("distance", val[0])}
+                                //onValuesChangeFinish={val => this.saveUser("distance", val)}
                             />
                         </Item>
 
@@ -179,7 +189,7 @@ class Settings extends Component {
                                 <Text>{this.context.t("Age Range")}</Text>
                             </Left>
                             <Right>
-                                <Text>{ageRangeValues.join("-")}</Text>
+                                <Text>{ageRange.join("-")}</Text>
                             </Right>
                         </Item>
                         <Item>
@@ -194,9 +204,9 @@ class Settings extends Component {
                                 min={18}
                                 max={100}
                                 sliderLength={width - 28}
-                                values={ageRangeValues}
-                                onValuesChange={val => this.setState({ ageRangeValues: val })}
-                                onValuesChangeFinish={val => this.updateUser("ageRange", val)}
+                                values={ageRange}
+                                onValuesChange={val => this.updateUser("ageRange", val)}
+                                //onValuesChangeFinish={val => this.saveUser("ageRange", val)}
                             />
                         </Item>
 
@@ -212,8 +222,8 @@ class Settings extends Component {
                                     thumbColor={Platform.OS === "android" ? "#ededed" : undefined}
                                     value={showMe}
                                     onValueChange={val => {
-                                        this.setState({ showMe: val });
                                         this.updateUser("showMe", val);
+                                        this.saveUser("showMe", val);
                                     }}
                                 />
                             </Right>
@@ -332,4 +342,14 @@ Settings.contextTypes = {
     t: PropTypes.func.isRequired
 };
 
-export default Settings;
+function mapStateToProps(state) {
+    return {
+        userState: state.userState,
+        profilesState: state.profilesState
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    { updateProfiles }
+)(Settings);
