@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateProfiles } from "../../actions";
+import { updateCards } from "../../actions/Cards";
 
 import OfflineNotice from "../../components/OfflineNotice";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
@@ -76,7 +76,7 @@ class Settings extends Component {
         const { user } = this.state;
         const usersCollection = this.db.collection("users");
         usersCollection.updateOne({ _id: user._id }, { $set: user }).then(res => {
-            this.props.updateProfiles(user, true);
+            this.props.updateCards(user, true);
             this.props.navigation.goBack();
         });
     }
@@ -345,11 +345,11 @@ Settings.contextTypes = {
 function mapStateToProps(state) {
     return {
         userState: state.userState,
-        profilesState: state.profilesState
+        cardsState: state.cardsState
     };
 }
 
 export default connect(
     mapStateToProps,
-    { updateProfiles }
+    { updateCards }
 )(Settings);

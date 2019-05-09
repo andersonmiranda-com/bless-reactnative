@@ -2,16 +2,7 @@ import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import configureStore from "../reducers/configureStore";
 import moment from "moment";
 
-//------- App Vars
-
-export const setAppVar = (variable, val) => {
-    return {
-        type: "SET_APP_VAR",
-        payload: { key: variable, value: val }
-    };
-};
-
-export const updateProfiles = (user, refresh = false) => {
+export const updateCards = (user, refresh = false) => {
     this.client = Stitch.defaultAppClient;
     this.db = this.client
         .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
@@ -22,17 +13,17 @@ export const updateProfiles = (user, refresh = false) => {
     return dispatch => {
         this.limit = 50;
 
-        this.profilesState = this.store.getState().profilesState;
+        this.cardsState = this.store.getState().cardsState;
 
         if (refresh) {
             this.offset = 0;
-            this.profiles = [];
+            this.items = [];
         } else {
-            this.offset = this.profilesState.offset;
-            this.profiles = this.profilesState.profiles;
+            this.offset = this.cardsState.offset;
+            this.items = this.cardsState.items;
         }
 
-        this.profilesCount = parseInt(this.profilesState.profilesCount, 10);
+        this.profilesCount = parseInt(this.cardsState.itemsCount, 10);
 
         const query = {
             //_id: { $ne: this.props.user._id },
@@ -69,7 +60,7 @@ export const updateProfiles = (user, refresh = false) => {
             query.gender = "Female";
         }
 
-        if (this.profiles.length < this.profilesCount || refresh) {
+        if (this.items.length < this.itemsCount || refresh) {
             this.store.dispatch({
                 type: "UPDATE_NOTIFICATION_PARAM",
                 payload: { key: "loading", value: true }
@@ -79,17 +70,17 @@ export const updateProfiles = (user, refresh = false) => {
                 .collection("users")
                 .find(query)
                 .toArray()
-                .then(res => {
-                    console.log("actions OK", res.length);
-                    let profiles = {
-                        profiles: this.profiles.concat(res),
-                        notificationCount: res.count,
+                .then(items => {
+                    console.log("actions OK", items.length);
+                    let cards = {
+                        items: this.items.concat(items),
+                        itemsCount: items.count,
                         offset: this.offset + this.limit,
                         loading: false,
                         refreshing: false,
                         scrolling: false
                     };
-                    profilesUpdated(dispatch, profiles);
+                    profilesUpdated(dispatch, cards);
                 })
                 .catch(error => {
                     this.store.dispatch({
@@ -101,9 +92,9 @@ export const updateProfiles = (user, refresh = false) => {
     };
 };
 
-export const profilesUpdated = (dispatch, profiles) => {
+export const profilesUpdated = (dispatch, cards) => {
     dispatch({
-        type: "UPDATE_PROFILES",
-        payload: profiles
+        type: "UPDATE_CARDS",
+        payload: cards
     });
 };

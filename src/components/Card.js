@@ -81,7 +81,7 @@ export default class Card extends Component {
                 if (abs > 120) {
                     if (direction > 0 && directionVertical) {
                         direction = "bottom";
-                        this.props.onSwipeOff(direction, this.props.profile._id);
+                        this.props.onSwipeOff(direction, this.props.item._id);
                         Animated.spring(this.pan, {
                             toValue: { x: 0, y: 0 },
                             friction: 8
@@ -99,7 +99,7 @@ export default class Card extends Component {
                         velocity: { x: 3 * directionX, y: 3 * directionY },
                         deceleration: 0.995
                     }).start(() => {
-                        this.props.onSwipeOff(direction, this.props.profile._id);
+                        this.props.onSwipeOff(direction, this.props.item._id);
                     });
                 } else {
                     Animated.spring(this.pan, {
@@ -132,16 +132,16 @@ export default class Card extends Component {
                     },
                     deceleration: 0.98
                 }).start(() => {
-                    this.props.onSwipeOff(direction, this.props.profile._id);
+                    this.props.onSwipeOff(direction, this.props.item._id);
                 });
             }, 500);
         }
     };
 
     render() {
-        const { birthday, first_name, bio, _id, image } = this.props.profile;
-        const profileBday = moment(birthday, "MM/DD/YYYY");
-        const profileAge = moment().diff(profileBday, "years");
+        const { birthday, first_name, bio, _id, image } = this.props.item;
+        const itemBday = moment(birthday, "MM/DD/YYYY");
+        const itemAge = moment().diff(itemBday, "years");
         //const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
 
         let animatedStyle;
@@ -314,7 +314,7 @@ export default class Card extends Component {
                     >
                         <TouchableOpacity onPress={() => this.props.onCardOpen(_id)}>
                             <Text style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}>
-                                {first_name}, {profileAge}
+                                {first_name}, {itemAge}
                             </Text>
                             {bio ? (
                                 <Text style={{ fontSize: 16, color: "white" }}>{bio}</Text>

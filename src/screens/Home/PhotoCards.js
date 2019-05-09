@@ -3,10 +3,9 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
-import moment from "moment";
 import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
 import { connect } from "react-redux";
-import { updateProfiles } from "../../actions";
+import { updateCards } from "../../actions/Cards";
 
 import Card from "../../components/Card";
 import styles from "./styles";
@@ -15,8 +14,8 @@ class PhotoCards extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profileIndex: 0,
-            profiles: [],
+            itemIndex: 0,
+            items: [],
             user: this.props.user,
             loading: true,
             offset: 0
@@ -39,17 +38,17 @@ class PhotoCards extends Component {
         const { user } = this.state;
         this.updateUserLocation(user).then(userLocation => {
             console.log("geolocalizaçao OK");
-            this.props.updateProfiles(this.state.user, true);
+            this.props.updateCards(this.state.user, true);
         });
     }
 
     componentDidUpdate(prevProps) {
         const newProps = this.props;
-        if (prevProps.profilesState !== newProps.profilesState) {
+        if (prevProps.cardsState !== newProps.cardsState) {
             console.log("recebido");
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
-                ...this.props.profilesState
+                ...this.props.cardsState
             });
         }
     }
@@ -77,10 +76,10 @@ class PhotoCards extends Component {
         }
     };
 
-    relate = (userUid, profileUid, status) => {
+    relate = (userUid, itemUid, status) => {
         /*  let relationUpdate = {};
-        relationUpdate[`${userUid}/liked/${profileUid}`] = status;
-        relationUpdate[`${profileUid}/likedBack/${userUid}`] = status;
+        relationUpdate[`${userUid}/liked/${itemUid}`] = status;
+        relationUpdate[`${itemUid}/likedBack/${userUid}`] = status;
 
      firebase
             .database()
@@ -88,56 +87,56 @@ class PhotoCards extends Component {
             .update(relationUpdate); */
     };
 
-    nextCard = (direction, profileUid) => {
+    nextCard = (direction, itemUid) => {
         const userUid = this.state.user.uid;
 
-        console.log(direction, profileUid);
+        console.log(direction, itemUid);
 
         switch (direction) {
             case "right":
-                this.relate(userUid, profileUid, true);
+                this.relate(userUid, itemUid, true);
                 break;
 
             case "left":
-                this.relate(userUid, profileUid, false);
+                this.relate(userUid, itemUid, false);
                 break;
 
             case "bottom":
                 break;
 
             case "top":
-                this.relate(userUid, profileUid, "super");
+                this.relate(userUid, itemUid, "super");
                 break;
         }
 
-        this.setState({ profileIndex: this.state.profileIndex + 1 });
+        this.setState({ itemIndex: this.state.itemIndex + 1 });
     };
 
     doSwipe = direction => {
-        if (this.state.profileIndex < this.state.profiles.length) {
+        if (this.state.itemIndex < this.state.items.length) {
             const cardTrigger =
-                this.state.profileIndex < this.state.profiles.length - 4
+                this.state.itemIndex < this.state.items.length - 4
                     ? 4
-                    : this.state.profiles.length - this.state.profileIndex - 1;
+                    : this.state.items.length - this.state.itemIndex - 1;
             this._photoCard.doSwipe(direction, cardTrigger);
         }
     };
 
     doRestart = () => {
-        this.setState({ profileIndex: 0, loading: true, profiles: [] });
+        this.setState({ itemIndex: 0, loading: true, items: [] });
         this.getCards(this.props.user);
     };
 
     doGoBack = () => {
-        if (this.state.profileIndex > 0) {
-            this.setState({ profileIndex: this.state.profileIndex - 1 });
+        if (this.state.itemIndex > 0) {
+            this.setState({ itemIndex: this.state.itemIndex - 1 });
         }
     };
 
     cardStack = () => {
-        const { profileIndex, profiles, loading } = this.state;
+        const { itemIndex, items, loading } = this.state;
 
-        if (profiles.length === 0 && !!loading) {
+        if (items.length === 0 && !!loading) {
             return (
                 <View style={styles.wrapperCentered}>
                     <Spinner />
@@ -147,19 +146,19 @@ class PhotoCards extends Component {
         } else {
             return (
                 <View style={styles.deckswiperView}>
-                    {profiles
-                        .slice(profileIndex, profileIndex + 5)
+                    {items
+                        .slice(itemIndex, itemIndex + 5)
                         .reverse()
-                        .map((profile, index) => {
-                            if (profile._id.toString() === this.props.user._id.toString()) {
+                        .map((item, index) => {
+                            if (item._id.toString() === this.props.user._id.toString()) {
                                 return null;
                             } else {
                                 return (
                                     <Card
-                                        key={profile._id}
+                                        key={item._id}
                                         ref={mr => (this._photoCard = mr)}
                                         index={index}
-                                        profile={profile}
+                                        item={item}
                                         onSwipeOff={this.nextCard}
                                         onCardOpen={_id => {
                                             this.props.navigation.navigate("PhotoCardDetails", {
@@ -187,11 +186,11 @@ PhotoCards.contextTypes = {
 function mapStateToProps(state) {
     return {
         userState: state.userState,
-        profilesState: state.profilesState
+        cardsState: state.cardsState
     };
 }
 
 export default connect(
     mapStateToProps,
-    { updateProfiles }
+    { updateCards }
 )(PhotoCards);
