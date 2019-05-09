@@ -40,7 +40,6 @@ class PhotoCards extends Component {
     }
 
     getCards(user) {
-
         const query = {
             //_id: { $ne: this.props.user._id },
             location: {
@@ -54,8 +53,12 @@ class PhotoCards extends Component {
             },
             showMe: true,
             birthday: {
-                $gt: moment().subtract(user.ageRange[1], "years").toDate(),
-                $lte: moment().subtract(user.ageRange[0], "years").toDate()
+                $gt: moment()
+                    .subtract(user.ageRange[1], "years")
+                    .toDate(),
+                $lte: moment()
+                    .subtract(user.ageRange[0], "years")
+                    .toDate()
             }
         };
 
@@ -152,7 +155,8 @@ class PhotoCards extends Component {
     };
 
     doRestart = () => {
-        this.setState({ profileIndex: 0 });
+        this.setState({ profileIndex: 0, loading: true, profiles: [] });
+        this.getCards(this.props.user);
     };
 
     doGoBack = () => {
