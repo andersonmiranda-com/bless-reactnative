@@ -22,7 +22,7 @@ import {
 import PropTypes from "prop-types";
 import OfflineNotice from "../../components/OfflineNotice";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import firebase from "firebase";
+import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
 import styles from "../../theme/style.js";
 import commonColor from "../../theme/variables/commonColor";
 var Dimensions = require("Dimensions");
@@ -47,17 +47,26 @@ class Settings extends Component {
             showMe: this.user.showMe,
             notificationsPrefs: this.user.notificationsPrefs
         };
+
+        if (!Stitch.hasAppClient("bless-club-nbaqg")) {
+            this.client = Stitch.initializeDefaultAppClient("bless-club-nbaqg");
+        } else {
+            this.client = Stitch.defaultAppClient;
+        }
+
+        this.db = this.client
+            .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
+            .db("bless");
+
+        console.log("conectado mongoDB");
     }
 
     componentDidMount() {}
 
     updateUser = (key, value) => {
-        const { uid } = this.props.navigation.state.params.user;
-        firebase
-            .database()
-            .ref("users")
-            .child(uid)
-            .update({ [key]: value });
+        const { _id } = this.props.navigation.state.params.user;
+        const usersCollection = this.db.collection("users");
+        usersCollection.updateOne({ _id: _id }, { $set: { [key]: value }});
     };
 
     logout() {
@@ -92,7 +101,7 @@ class Settings extends Component {
                     <Body>
                         <Title>{this.context.t("Settings")}</Title>
                     </Body>
-                    <Right/>
+                    <Right />
                 </Header>
 
                 <OfflineNotice />

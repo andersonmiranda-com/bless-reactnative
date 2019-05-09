@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Image, View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import { Container, Content, Icon, Button, Text } from "native-base";
-import firebase from "firebase";
+import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
 import moment from "moment";
 import styles from "./styles";
 
@@ -13,17 +13,31 @@ class Profile extends Component {
             user: this.props.navigation.state.params.user,
             loading: true
         };
+
+        if (!Stitch.hasAppClient("bless-club-nbaqg")) {
+            this.client = Stitch.initializeDefaultAppClient("bless-club-nbaqg");
+        } else {
+            this.client = Stitch.defaultAppClient;
+        }
+
+        this.db = this.client
+            .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
+            .db("bless");
+
+        console.log("conectado mongoDB");
     }
 
     componentWillMount() {
-        const { uid } = this.state.user;
-        firebase
-            .database()
-            .ref("users")
-            .child(uid)
-            .on("value", snap => {
-                const user = snap.val();
-                this.setState({ user });
+        const { _id } = this.state.user;
+        const usersCollection = this.db.collection("users");
+        usersCollection
+            .findOne({ _id: _id })
+            .then(user => {
+                console.log(user);
+                this.setState({ user, loading: false });
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
 
@@ -31,11 +45,9 @@ class Profile extends Component {
         const navigation = this.props.navigation;
 
         const { user } = this.state;
-        const { birthday, first_name, work, id, uid } = user;
-        const bio = work && work[0] && work[0].position ? work[0].position.name : null;
+        const { birthday, first_name, bio, image, _id, } = user;
         const profileBday = moment(birthday, "MM/DD/YYYY");
         const profileAge = moment().diff(profileBday, "years");
-        const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
 
         return (
             <Container>
@@ -45,7 +57,7 @@ class Profile extends Component {
                     contentContainerStyle={styles.containerVertical}
                 >
                     <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
-                        <Image source={{ uri: fbImage }} style={styles.profileImage} />
+                        <Image source={{ uri: image }} style={styles.profileImage} />
                     </TouchableOpacity>
 
                     <Text style={styles.nameAndAgeText}>
