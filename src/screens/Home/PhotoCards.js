@@ -3,9 +3,8 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
+import moment from "moment";
 import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
-import { ObjectId } from "bson";
-import filter from "../../modules/filter";
 import Card from "../../components/Card";
 import styles from "./styles";
 
@@ -41,6 +40,7 @@ class PhotoCards extends Component {
     }
 
     getCards(user) {
+
         const query = {
             //_id: { $ne: this.props.user._id },
             location: {
@@ -53,7 +53,10 @@ class PhotoCards extends Component {
                 }
             },
             showMe: true,
-            birthday: { $gt: new Date("1968-01-01"), $lte: new Date("1998-01-31") }
+            birthday: {
+                $gt: moment().subtract(user.ageRange[1], "years").toDate(),
+                $lte: moment().subtract(user.ageRange[0], "years").toDate()
+            }
         };
 
         if (user.gender === "Male") {
