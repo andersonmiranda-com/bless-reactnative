@@ -39,7 +39,9 @@ class Login extends Component {
 
             // mongoClient.auth.logout();
 
-            if (user && user !== null && user !== {}) {
+            console.log(user._id);
+
+            if (user && user._id !== undefined) {
                 this.goHome(user);
             } else {
                 if (this.mongoClient.auth.isLoggedIn) {
