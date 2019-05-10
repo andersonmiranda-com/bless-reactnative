@@ -85,9 +85,10 @@ export default class Setup extends Component {
     }
     async componentWillMount() {
         await Font.loadAsync({
-            Roboto: require("native-base/Fonts/Roboto.ttf"),
-            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-            arial: require("../../Fonts/Arial.ttf")
+            Rubik: require("../../Fonts/Rubik-Regular.ttf"),
+            Rubik_Light: require("../../Fonts/Rubik-Light.ttf"),
+            Rubik_Bold: require("../../Fonts/Rubik-Medium.ttf"),
+            //streamline: require("../../Fonts/streamline/font/bless-icons.ttf"),
         });
         const deviceLocale = Localization.locale;
         console.log(deviceLocale);

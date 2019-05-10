@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.8.12\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/components/OfflineNotice.js
+msgid "No Internet Connection"
+msgstr "Sin conexión a Internet"
+
 #: src/screens/Home/PhotoCards.js
 msgid "Discovering new people..."
 msgstr "Descubriendo nuevas personas ..."
@@ -20,9 +24,93 @@ msgstr "Descubriendo nuevas personas ..."
 msgid "Edit Profile"
 msgstr "Editar perfil"
 
-#: src/screens/Profile/index.js
+#: src/screens/Profile/index.js src/screens/Profile/Settings.js
 msgid "Settings"
 msgstr "Ajustes"
+
+#: src/screens/Profile/Settings.js
+msgid "OK"
+msgstr "OK"
+
+#: src/screens/Profile/Settings.js
+msgid "DISCOVERY"
+msgstr "DESCOBIERTA"
+
+#: src/screens/Profile/Settings.js
+msgid "Show me"
+msgstr "Muéstrame"
+
+#: src/screens/Profile/Settings.js
+msgid "Men"
+msgstr "Hombres"
+
+#: src/screens/Profile/Settings.js
+msgid "Women"
+msgstr "Mujeres"
+
+#: src/screens/Profile/Settings.js
+msgid "Search Distance"
+msgstr "Distancia Máxima"
+
+#: src/screens/Profile/Settings.js
+msgid "Age Range"
+msgstr "Rango de edad"
+
+#: src/screens/Profile/Settings.js
+msgid "Show me on Bless"
+msgstr "Muéstrame en Bless"
+
+#: src/screens/Profile/Settings.js
+msgid "APPLICATION SETTINGS"
+msgstr "AJUSTES DEL APP"
+
+#: src/screens/Profile/Settings.js
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: src/screens/Profile/Settings.js
+msgid "New Matches"
+msgstr "Nuevos Matches"
+
+#: src/screens/Profile/Settings.js
+msgid "Messages"
+msgstr "Mensajes"
+
+#: src/screens/Profile/Settings.js
+msgid "Super Likes"
+msgstr "Super Likes"
+
+#: src/screens/Profile/Settings.js
+msgid "LEGAL INFORMATION"
+msgstr "INFORMACIÓN LEGAL"
+
+#: src/screens/Profile/Settings.js
+msgid "Privacy Policy"
+msgstr "Politica de Privacidad"
+
+#: src/screens/Profile/Settings.js
+msgid "Terms of Service"
+msgstr "Términos de Servicio"
+
+#: src/screens/Profile/Settings.js
+msgid "Help & Support"
+msgstr "Ayuda y Soporte"
+
+#: src/screens/Profile/Settings.js
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#~ msgid "Discovery Settings"
+#~ msgstr "Configuración de búsqueda"
+
+#~ msgid "App Settings"
+#~ msgstr "Ajustes de Aplicación"
+
+#~ msgid "Show Distance in"
+#~ msgstr "Distancia en"
+
+#~ msgid "Legal"
+#~ msgstr "Información legal"
 
 #~ msgid "Discovering people..."
 #~ msgstr "Descubriendo personas ..."

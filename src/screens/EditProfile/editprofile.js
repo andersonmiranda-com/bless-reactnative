@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
     View,
-    Text,
     TextInput,
     TouchableOpacity,
     Platform,
@@ -21,7 +20,8 @@ import {
     Switch,
     Left,
     Right,
-    Body
+    Body,
+    Text
 } from "native-base";
 import ImageContainer from "./image-container";
 import MainImage from "./main-image";
@@ -60,7 +60,7 @@ class EditProfile extends Component {
                 <Header>
                     <Left>
                         <Button transparent onPress={() => navigation.goBack()}>
-                            <Icon name="ios-arrow-back-outline" />
+                            <Icon name="ios-arrow-back" />
                         </Button>
                     </Left>
                     <Body>
@@ -264,7 +264,7 @@ const styles = {
         paddingVertical: 3
     },
     headingText: {
-        fontWeight: "bold",
+        fontFamily: "Rubik_Bold",
         color: commonColor.lightTextColor
     },
     textView: {

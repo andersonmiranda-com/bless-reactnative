@@ -9,7 +9,6 @@ class Home extends Component {
         return (
             <Container style={styles.wrapper}>
                 <PhotoCards
-                    user={this.props.navigation.state.params.user}
                     ref={mr => (this._photoCards = mr)}
                     navigation={this.props.navigation}
                 />

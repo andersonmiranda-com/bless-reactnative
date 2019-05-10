@@ -58,30 +58,12 @@ class UserDetails extends Component {
                                 <Icon name="md-create" />
                             </Button>
                         )}
-                        <TouchableOpacity
-                            onPress={() => navigation.goBack()}
-                            style={{
-                                position: "absolute",
-                                top: 10,
-                                left: 10,
-                                height: 40,
-                                width: 40,
-                                borderRadius: 20,
-                                backgroundColor: "rgba(255,255,255,0.1)",
-                                justifyContent: "center",
-                                alignItems: "center"
-                            }}
+                        <Button
+                            onPress={() => this.props.navigation.goBack()}
+                            style={styles.backBtn}
                         >
-                            <Icon
-                                name="ios-arrow-back"
-                                style={{
-                                    fontSize: 30,
-                                    marginTop: Platform.OS === "ios" ? 5 : undefined,
-                                    marginLeft: Platform.OS === "ios" ? -3 : undefined,
-                                    color: "#F7524C"
-                                }}
-                            />
-                        </TouchableOpacity>
+                            <Icon name="ios-arrow-back" style={styles.backBtnIcon} />
+                        </Button>
                     </View>
                     <View style={styles.subText}>
                         <Text style={styles.name}>Roger Federer, 34</Text>

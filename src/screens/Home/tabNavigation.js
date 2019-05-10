@@ -35,6 +35,7 @@ const HomeTabNavigation = createBottomTabNavigator(
                         <Button onPress={() => props.navigation.navigate("Home")}>
                             <Thumbnail
                                 small
+                                style={{marginBottom: 8}}
                                 source={
                                     props.navigation.state.index === 1
                                         ? require("../../../assets/logo.png")

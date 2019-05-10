@@ -13,7 +13,7 @@ import { Icon, Text } from "native-base";
 import { LinearGradient } from "expo";
 import commonColor from "../theme/variables/commonColor";
 import moment from "moment";
-
+import { geoDistance } from "../modules/geoConvert";
 const { width, height } = Dimensions.get("window");
 const platform = Platform.OS;
 const isIphoneX =
@@ -81,7 +81,7 @@ export default class Card extends Component {
                 if (abs > 120) {
                     if (direction > 0 && directionVertical) {
                         direction = "bottom";
-                        this.props.onSwipeOff(direction, this.props.profile.uid);
+                        this.props.onSwipeOff(direction, this.props.item._id);
                         Animated.spring(this.pan, {
                             toValue: { x: 0, y: 0 },
                             friction: 8
@@ -99,7 +99,7 @@ export default class Card extends Component {
                         velocity: { x: 3 * directionX, y: 3 * directionY },
                         deceleration: 0.995
                     }).start(() => {
-                        this.props.onSwipeOff(direction, this.props.profile.uid);
+                        this.props.onSwipeOff(direction, this.props.item._id);
                     });
                 } else {
                     Animated.spring(this.pan, {
@@ -132,18 +132,19 @@ export default class Card extends Component {
                     },
                     deceleration: 0.98
                 }).start(() => {
-                    this.props.onSwipeOff(direction, this.props.profile.uid);
+                    this.props.onSwipeOff(direction, this.props.item._id);
                 });
             }, 500);
         }
     };
 
     render() {
-        const { birthday, first_name, work, id, uid } = this.props.profile;
-        const bio = work && work[0] && work[0].position ? work[0].position.name : null;
-        const profileBday = moment(birthday, "MM/DD/YYYY");
-        const profileAge = moment().diff(profileBday, "years");
-        const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
+        const { birthday, first_name, bio, _id, image, location } = this.props.item;
+        const itemAge = moment().diff(birthday, "years");
+        const itemDistance = parseInt(geoDistance(this.props.userLocation, {
+            longitude: location.coordinates[0],
+            latitude: location.coordinates[1]
+        }));
 
         let animatedStyle;
 
@@ -178,7 +179,7 @@ export default class Card extends Component {
                         justifyContent: "space-between",
                         alignItems: "stretch"
                     }}
-                    source={{ uri: fbImage }}
+                    source={{ uri: image }}
                 >
                     <View
                         style={{
@@ -290,7 +291,7 @@ export default class Card extends Component {
                                     backgroundColor: "transparent",
                                     color: "white",
                                     fontSize: 26,
-                                    fontWeight: "700",
+                                    fontFamily: "Rubik_Bold",
                                     textAlign: "center",
                                     lineHeight: 26,
                                     marginTop: 5,
@@ -313,15 +314,13 @@ export default class Card extends Component {
                             maxHeight: 80
                         }}
                     >
-                        <TouchableOpacity onPress={() => this.props.onCardOpen(uid)}>
-                            <Text style={{ fontSize: 22, fontWeight: "700", color: "white" }}>
-                                {first_name}, {profileAge}
+                        <TouchableOpacity onPress={() => this.props.onCardOpen(_id)}>
+                            <Text
+                                style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}
+                            >
+                                {first_name}, {itemAge}
                             </Text>
-                            {bio ? (
-                                <Text style={{ fontSize: 16, color: "white" }}>{bio}</Text>
-                            ) : (
-                                <View />
-                            )}
+                            <Text style={{ fontSize: 16, color: "white" }}>{bio}, {itemDistance} km</Text>
                         </TouchableOpacity>
                     </LinearGradient>
                 </ImageBackground>
@@ -337,8 +336,8 @@ const styles = StyleSheet.create({
         height: height - 168 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
         overflow: "hidden",
         backgroundColor: "white",
-//        borderWidth: 1,
-//        borderColor: "lightgrey",
+        //        borderWidth: 1,
+        //        borderColor: "lightgrey",
         borderRadius: 10
     }
 });

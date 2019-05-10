@@ -67,7 +67,7 @@ export default (variables = variable) => {
       ".transparent": {
         "NativeBase.Text": {
           color: variables.toolbarBtnColor,
-          fontWeight: "600"
+          fontFamily: "Rubik_Bold"
         },
         "NativeBase.Icon": {
           color: variables.toolbarBtnColor

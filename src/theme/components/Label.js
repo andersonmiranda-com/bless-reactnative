@@ -5,7 +5,8 @@ export default (variables = variable) => {
     ".focused": {
       width: 0
     },
-    fontSize: 17
+    fontSize: 17,
+    fontFamily: "Rubik"
   };
 
   return labelTheme;

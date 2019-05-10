@@ -41,6 +41,7 @@
         ]
     },
     "dependencies": {
+        "@ptomasroos/react-native-multi-slider": "^1.0.0",
         "babel-preset-expo": "^5.0.0",
         "color": "3.1.0",
         "expo": "^32.0.0",
@@ -49,13 +50,13 @@
         "jest-cli": "23.5.0",
         "lodash": "4.17.11",
         "moment": "2.22.2",
-        "native-base": "2.8.1",
+        "mongodb-stitch-react-native-sdk": "^4.3.2",
+        "native-base": "^2.12.1",
         "react": "16.5.0",
         "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
         "react-native-camera-roll-picker": "1.2.3",
         "react-native-device-info": "^1.6.1",
         "react-native-gifted-chat": "0.5.0",
-        "react-native-multi-slider": "0.3.6",
         "react-native-scrollable-tab-view": "0.10.0",
         "react-native-swiper": "1.5.14",
         "react-navigation": "^3.9.1",

@@ -7,9 +7,10 @@ import HomeTabNavigation from "./screens/Home/tabNavigation";
 import ChatList from "./screens/ChatList/";
 import ChatScreen from "./screens/ChatScreen";
 import PhotoCardDetails from "./screens/PhotoCardDetails";
-import Settings from "./screens/Settings";
+import Settings from "./screens/Profile/Settings";
 import UserDetails from "./screens/UserDetails";
 import EditProfile from "./screens/EditProfile/editprofile";
+import Profile from "./screens/Profile";
 import CurrentWork from "./screens/EditProfile/currentWork";
 import School from "./screens/EditProfile/school";
 import AddPhoto from "./screens/EditProfile/addphoto";
@@ -23,6 +24,7 @@ const MainNavigator = createStackNavigator(
         UserDetails: { screen: UserDetails },
         Settings: { screen: Settings },
         EditProfile: { screen: EditProfile },
+        Profile: { screen: Profile },
         AddPhoto: { screen: AddPhoto },
         CurrentWork: { screen: CurrentWork },
         School: { screen: School },

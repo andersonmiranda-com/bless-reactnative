@@ -68,7 +68,7 @@ export default (variables = variable) => {
       "NativeBase.Text": {
         ".note": {
           color: variables.listNoteColor,
-          fontWeight: "200",
+          fontFamily: "Rubik_Light",
           marginRight: 20
         }
       },
@@ -184,7 +184,7 @@ export default (variables = variable) => {
     "NativeBase.Text": {
       ".note": {
         color: variables.listNoteColor,
-        fontWeight: "200"
+        fontFamily: "Rubik_Light"
       }
     },
 
@@ -204,8 +204,8 @@ export default (variables = variable) => {
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 2,
-    padding: variables.listItemPadding + 5,
-    paddingVertical: variables.listItemPadding,
+    padding: variables.listItemPadding + 2,
+    paddingVertical: variables.listItemPadding - 4,
     backgroundColor: variables.cardDefaultBg
   };
 

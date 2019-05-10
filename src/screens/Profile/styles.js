@@ -16,14 +16,21 @@ export default {
         backgroundColor: "#FFF",
         paddingTop: isIphoneX ? 25 : 10
     },
+    containerVertical: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+
     profileImageView: {
         alignItems: "center",
-        paddingTop: height / 4
     },
     profileImage: {
         height: 150,
         width: 150,
-        borderRadius: 75
+        borderRadius: 75,
+        marginBottom: 15
     },
     editIconView: {
         alignItems: "center",
@@ -47,42 +54,12 @@ export default {
     },
     nameAndAgeText: {
         fontSize: 18,
-        fontWeight: "700",
-        textAlign: "center"
-    },
-    workplaceText: {
-        fontSize: 14,
-        color: commonColor.contentTextColor,
-        textAlign: "center"
+        fontFamily: "Rubik_Bold",
+        textAlign: "center",
+        marginBottom: 5
     },
     settingsBtn: {
-        marginTop: 15,
+        marginTop: 20,
         alignSelf: "center"
     },
-    settingsBtnText: {
-        color: commonColor.brandPrimary,
-        fontWeight: "600",
-        fontSize: 14
-    },
-    goingOutView: {
-        left: 1,
-        width: width
-    },
-    goingOutTextView: {
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 10,
-        position: "absolute",
-        bottom: 0
-    },
-    goingOutBtn: {
-        width: width / 1.8,
-        alignSelf: "center",
-        marginTop: 10,
-        marginBottom: 30
-    },
-    goingOutBtnText: {
-        fontSize: 14,
-        fontWeight: "800"
-    }
 };

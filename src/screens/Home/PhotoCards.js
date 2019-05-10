@@ -3,8 +3,10 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
-import * as firebase from "firebase";
-import { GeoFire } from "geofire";
+import { connect } from "react-redux";
+import { updateCards } from "../../actions/Cards";
+import { saveUser } from "../../actions/User";
+
 import Card from "../../components/Card";
 import styles from "./styles";
 
@@ -12,126 +14,112 @@ class PhotoCards extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profileIndex: 0,
-            profiles: [],
-            user: this.props.user,
-            loading: true
+            itemIndex: 0,
+            items: [],
+            user: this.props.userState,
+            loading: true,
+            offset: 0
         };
     }
 
-    componentWillMount() {
-        const { uid } = this.state.user;
-        this.updateUserLocation(uid).then(userLocation => {
-            firebase
-                .database()
-                .ref("users")
-                .child(uid)
-                .on("value", snap => {
-                    const user = snap.val();
-                    this.setState({
-                        user,
-                        profiles: [],
-                        profileIndex: 0
-                    });
-                    this.getProfiles(user.uid, userLocation, 10);
-                });
+    componentDidMount() {
+        this.updateUserLocation(this.state.user).then(user => {
+            this.props.updateCards(user, true);
         });
     }
 
-    getUser = uid => {
-        return firebase
-            .database()
-            .ref("users")
-            .child(uid)
-            .once("value");
-    };
+    componentDidUpdate(prevProps) {
+        const newProps = this.props;
+        if (prevProps.cardsState !== newProps.cardsState) {
+            // eslint-disable-next-line react/no-did-update-set-state
+            this.setState({
+                ...this.props.cardsState
+            });
+        }
+    }
 
-    getProfiles = async (uid, userLocation, distance) => {
-        const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
-        //const userLocation = await geoFireRef.get(uid);
-        console.log("userLocation", userLocation);
-        const geoQuery = geoFireRef.query({
-            center: userLocation,
-            radius: distance //km
-        });
-        geoQuery.on("key_entered", async (uid, location, distance) => {
-            const user = await this.getUser(uid);
-            const profiles = [...this.state.profiles, user.val()];
-            this.setState({ profiles, loading: false });
-        });
-    };
-
-    updateUserLocation = async uid => {
+    updateUserLocation = async user => {
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === "granted") {
             //const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
-            // const {latitude, longitude} = location.coords
-            const latitude = 37.39239; //demo lat
-            const longitude = -122.09072; //demo lon
-            const geoFireRef = new GeoFire(firebase.database().ref("geoData"));
-            geoFireRef.set(uid, [latitude, longitude]);
-            //console.log("Permission Granted", location);
-            return [latitude, longitude];
+            //const { latitude, longitude } = location.coords;
+            const latitude = -23.716211; //demo lat
+            const longitude = -42.507444; //demo lon
+
+            user.location.coordinates[0] = longitude;
+            user.location.coordinates[1] = latitude;
+            await this.props.saveUser(user._id, user);
+
+            console.log("Permission Granted");
+            return user;
         } else {
             console.log("Permission Denied");
         }
     };
 
-    relate = (userUid, profileUid, status) => {
-        let relationUpdate = {};
-        relationUpdate[`${userUid}/liked/${profileUid}`] = status;
-        relationUpdate[`${profileUid}/likedBack/${userUid}`] = status;
+    relate = (userUid, itemUid, status) => {
+        /*  let relationUpdate = {};
+        relationUpdate[`${userUid}/liked/${itemUid}`] = status;
+        relationUpdate[`${itemUid}/likedBack/${userUid}`] = status;
 
-        firebase
+     firebase
             .database()
             .ref("relationships")
-            .update(relationUpdate);
+            .update(relationUpdate); */
     };
 
-    nextCard = (direction, profileUid) => {
+    nextCard = (direction, itemUid) => {
         const userUid = this.state.user.uid;
 
-        console.log(direction, profileUid);
+        console.log(direction, itemUid);
 
-        if (direction === "bottom") {
-            this.props.navigation.navigate("PhotoCardDetails");
-        } else {
-            this.setState({ profileIndex: this.state.profileIndex + 1 });
+        switch (direction) {
+            case "right":
+                this.relate(userUid, itemUid, true);
+                break;
 
-            //TODO: setar lastProfileIndex para evitar erro da ultima carta
+            case "left":
+                this.relate(userUid, itemUid, false);
+                break;
 
-            /*  if (swipedRight) {
-            this.relate(userUid, profileUid, true);
-        } else {
-            this.relate(userUid, profileUid, false);
-        } */
+            case "bottom":
+                break;
+
+            case "top":
+                this.relate(userUid, itemUid, "super");
+                break;
         }
+
+        console.log("this.state.itemIndex", this.state.itemIndex);
+
+        this.setState({ itemIndex: this.state.itemIndex + 1 });
     };
 
     doSwipe = direction => {
-        if (this.state.profileIndex < this.state.profiles.length) {
+        if (this.state.itemIndex < this.state.items.length) {
             const cardTrigger =
-                this.state.profileIndex < this.state.profiles.length - 2
-                    ? 2
-                    : this.state.profiles.length - this.state.profileIndex - 1;
+                this.state.itemIndex < this.state.items.length - 4
+                    ? 4
+                    : this.state.items.length - this.state.itemIndex - 1;
             this._photoCard.doSwipe(direction, cardTrigger);
         }
     };
 
     doRestart = () => {
-        this.setState({ profileIndex: 0 });
+        this.setState({ itemIndex: 0, loading: true, items: [] });
+        this.props.updateCards(this.state.user, true);
     };
 
     doGoBack = () => {
-        if (this.state.profileIndex > 0) {
-            this.setState({ profileIndex: this.state.profileIndex - 1 });
+        if (this.state.itemIndex > 0) {
+            this.setState({ itemIndex: this.state.itemIndex - 1 });
         }
     };
 
     cardStack = () => {
-        const { profileIndex, profiles, loading } = this.state;
+        const { itemIndex, items, loading, user } = this.state;
 
-        if (profiles.length === 0 && !!loading) {
+        if (items.length === 0 && !!loading) {
             return (
                 <View style={styles.wrapperCentered}>
                     <Spinner />
@@ -141,24 +129,29 @@ class PhotoCards extends Component {
         } else {
             return (
                 <View style={styles.deckswiperView}>
-                    {profiles
-                        .slice(profileIndex, profileIndex + 3)
+                    {items
+                        .slice(itemIndex, itemIndex + 5)
                         .reverse()
-                        .map((profile, index) => {
-                            return (
-                                <Card
-                                    key={profile.uid}
-                                    ref={mr => (this._photoCard = mr)}
-                                    index={index}
-                                    profile={profile}
-                                    onSwipeOff={this.nextCard}
-                                    onCardOpen={uid => {
-                                        this.props.navigation.navigate("PhotoCardDetails", {
-                                            uid: uid
-                                        });
-                                    }}
-                                />
-                            );
+                        .map((item, index) => {
+                            if (item._id.toString() === user._id.toString()) {
+                                return null;
+                            } else {
+                                return (
+                                    <Card
+                                        key={item._id}
+                                        ref={mr => (this._photoCard = mr)}
+                                        index={index}
+                                        item={item}
+                                        userLocation={{longitude: user.location.coordinates[0], latitude: user.location.coordinates[1]}}
+                                        onSwipeOff={this.nextCard}
+                                        onCardOpen={_id => {
+                                            this.props.navigation.navigate("PhotoCardDetails", {
+                                                _id: _id
+                                            });
+                                        }}
+                                    />
+                                );
+                            }
                         })}
                 </View>
             );
@@ -174,4 +167,14 @@ PhotoCards.contextTypes = {
     t: PropTypes.func.isRequired
 };
 
-export default PhotoCards;
+function mapStateToProps(state) {
+    return {
+        userState: state.userState,
+        cardsState: state.cardsState
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    { updateCards, saveUser }
+)(PhotoCards);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Image, View, Text } from "react-native";
-import { Container, Content, Button } from "native-base";
+import { Image, View } from "react-native";
+import { Container, Content, Button, Text } from "native-base";
 import styles from "./styles";
 
 class Chat extends Component {
@@ -8,7 +8,7 @@ class Chat extends Component {
     const navigation = this.props.navigation;
     return (
       <Container style={styles.container}>
-        <Content scrollEnabled={false}>
+        <Content padder scrollEnabled={false}>
           <View style={styles.imageView}>
             <Image
               source={require("../../../assets/likeSquare.png")}
@@ -21,9 +21,8 @@ class Chat extends Component {
           </View>
           <Button
             block
-            large
+            rounded
             onPress={() => navigation.navigate("ChatList")}
-            style={styles.discoverBtn}
           >
             <Text style={styles.discoverBtnText}>Discover New People</Text>
           </Button>

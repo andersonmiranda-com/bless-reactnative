@@ -4,87 +4,104 @@ import { StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
-import { setAppVar } from "../../actions/index";
-import firebase from "firebase";
+import { saveUser, getUser, setUser } from "../../actions/User";
+import {
+    Stitch,
+    FacebookCredential,
+    RemoteMongoClient,
+    BSON
+} from "mongodb-stitch-react-native-sdk";
 import styles from "./styles";
 import AppIntro from "./AppIntro";
 import commonColor from "../../theme/variables/commonColor";
 
 class Login extends Component {
-    //db = firebase.firestore();
-
     constructor(props) {
         super(props);
         this.state = {
+            userId: undefined,
             loading: true,
             loadingFB: false
         };
     }
 
     componentDidMount() {
-        firebase.auth().onAuthStateChanged(auth => {
-            if (auth) {
-                this.firebaseRef = firebase.database().ref("users");
-                this.firebaseRef.child(auth.uid).on("value", snap => {
-                    const user = snap.val();
-                    this.setState({ loading: false });
-                    if (user != null) {
-                        this.firebaseRef.child(auth.uid).off("value");
-                        this.goHome(user);
-                    }
-                });
+        this._loadClient();
+    }
+
+    _loadClient() {
+        let user = this.props.userState;
+        Stitch.initializeDefaultAppClient("bless-club-nbaqg").then(mongoClient => {
+            this.mongoClient = mongoClient;
+            this.db = mongoClient
+                .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
+                .db("bless");
+
+            // mongoClient.auth.logout();
+
+            if (user && user !== null && user !== {}) {
+                this.goHome(user);
             } else {
-                this.setState({ loading: false });
+                if (this.mongoClient.auth.isLoggedIn) {
+                    const usersCollection = this.db.collection("users");
+                    usersCollection
+                        .findOne({ _id: new BSON.ObjectId(mongoClient.auth.user.id) })
+                        .then(userData => {
+                            console.log("user data from auth + load", userData);
+
+                            this.setState({ loading: false });
+                            this.props.setUser(userData);
+                            this.goHome(userData);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.setState({ loading: false });
+                }
             }
         });
     }
-
-    checkUser = async () => {
-        const { appUser } = this.props.appState;
-        console.log(appUser);
-        if (appUser.uid) {
-            this.setState({ loading: false, loadingFB: false });
-            console.log("entrou");
-
-            this.props.navigation.reset(
-                [
-                    NavigationActions.navigate({
-                        routeName: "HomeTabNavigation",
-                        params: { user: appUser }
-                    })
-                ],
-                0
-            );
-        } else {
-            this.setState({ loading: false, loadingFB: false });
-        }
-    };
 
     goHome(user) {
         this.props.navigation.reset(
             [
                 NavigationActions.navigate({
-                    routeName: "HomeTabNavigation",
-                    params: { user: user }
+                    routeName: "HomeTabNavigation"
                 })
             ],
             0
         );
     }
 
-    authenticate = token => {
-        const provider = firebase.auth.FacebookAuthProvider;
-        const credential = provider.credential(token);
-        return firebase.auth().signInAndRetrieveDataWithCredential(credential);
-    };
+    authenticate(token, userData) {
+        const credential = new FacebookCredential(token);
+        Stitch.defaultAppClient.auth
+            .loginWithCredential(credential)
+            .then(user => {
+                //this.props.setAppVar("appUser", { ...userData, uid: userInfo.user.uid });
+                this.createUser(user.id, userData);
+                this.setState({ loadingFB: false, userId: user.id });
+            })
+            .catch(err => {
+                this.setState({ loadingFB: false, userId: null });
+                console.log(`Failed to log in Facebook: ${err}`);
+            });
+    }
 
-    createUser = (uid, userData) => {
-        firebase
-            .database()
-            .ref("users")
-            .child(uid)
-            .update({ ...userData, uid });
-    };
+    createUser(uid, userData) {
+        const uData = {
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            fbId: userData.id,
+            image: `https://graph.facebook.com/${userData.id}/picture?height=500`,
+            last_login: new Date()
+        };
+        const _id = new BSON.ObjectId(uid);
+        console.log("mandei salvar", _id, uData);
+        this.props.saveUser(_id, uData, true);
+        this.goHome();
+    }
 
     login = async () => {
         this.setState({ loadingFB: true });
@@ -95,17 +112,12 @@ class Login extends Component {
         const { type, token } = await Facebook.logInWithReadPermissionsAsync(ADD_ID, options);
 
         if (type === "success") {
-            const fields = ["id", "first_name", "last_name", "gender", "birthday", "work"];
+            const fields = ["id", "first_name", "last_name", "cover", "gender", "birthday", "work"];
             const response = await fetch(
                 `https://graph.facebook.com/me?fields=${fields.toString()}&access_token=${token}`
             );
             const userData = await response.json();
-            const userInfo = await this.authenticate(token);
-
-            //this.props.setAppVar("appUser", { ...userData, uid: userInfo.user.uid });
-            this.createUser(userInfo.user.uid, userData);
-            //this.checkUser();
-            this.setState({ loadingFB: false });
+            this.authenticate(token, userData);
         } else {
             this.setState({ loadingFB: false });
         }
@@ -180,11 +192,11 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return {
-        appState: state.appState
+        userState: state.userState
     };
 }
 
 export default connect(
     mapStateToProps,
-    { setAppVar }
+    { saveUser, getUser, setUser }
 )(Login);

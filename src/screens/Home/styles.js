@@ -55,16 +55,14 @@ export default {
     text: {
         fontSize: 16,
         color: "#393E40",
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial"
     },
     subtextLeft: {
         fontSize: 12,
         color: commonColor.contentTextColor,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial"
     },
     iconRight: {
         color: Platform.OS === "ios" ? "#a3a3a3" : commonColor.contentTextColor,
@@ -72,9 +70,8 @@ export default {
     },
     subtextRight: {
         color: commonColor.contentTextColor,
-        fontWeight: "600",
+        fontFamily: "Rubik_Bold",
         opacity: 0.879,
-        fontFamily: "arial",
         paddingBottom: 4
     },
     bottomGrid: {

@@ -1,57 +1,70 @@
 import React, { Component } from "react";
 import { Image, View, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Container, Content, Icon, Button, Text } from "native-base";
-import commonColor from "../../theme/variables/commonColor";
+import moment from "moment";
 import styles from "./styles";
 
 class Profile extends Component {
     constructor(props, context) {
         super(props, context);
+        this.state = {
+            user: this.props.userState
+        };
+    }
+
+    componentDidMount() {}
+
+    componentDidUpdate(prevProps) {
+        const newProps = this.props;
+        if (prevProps.userState !== newProps.userState) {
+            // eslint-disable-next-line react/no-did-update-set-state
+            this.setState({ user: newProps.userState });
+        }
     }
 
     render() {
         const navigation = this.props.navigation;
+        const { user } = this.state;
+        const { birthday, first_name, bio, image, _id } = user;
+        const profileAge = moment().diff(birthday, "years");
+
         return (
-            <Container style={styles.container}>
-                <Content scrollEnabled={false}>
-                    <View style={styles.profileImageView}>
-                        <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
-                            <Image
-                                source={require("../../../assets/federer.jpg")}
-                                style={styles.profileImage}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.profileDescriptionView}>
-                        <Text style={styles.nameAndAgeText}>Roger Federer, 32yr</Text>
-                        <View style={{ padding: 5 }}>
-                            <Text style={styles.workplaceText}>World Class Tennis Player</Text>
-                        </View>
-                        <Text style={styles.workplaceText}>JCE, Bangalore</Text>
+            <Container>
+                <Content
+                    padder
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.containerVertical}
+                >
+                    <TouchableOpacity onPress={() => navigation.navigate("UserDetails")}>
+                        <Image source={{ uri: image }} style={styles.profileImage} />
+                    </TouchableOpacity>
 
-                        <Button
-                            transparent
-                            onPress={() => navigation.navigate("EditProfile")}
-                            style={styles.settingsBtn}
-                        >
-                            <Icon name="create" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>
-                                {this.context.t("Edit Profile")}
-                            </Text>
-                        </Button>
+                    <Text style={styles.nameAndAgeText}>
+                        {first_name}, {profileAge}
+                    </Text>
+                    {bio ? <Text note>{bio}</Text> : <View />}
 
-                        <Button
-                            transparent
-                            onPress={() => navigation.navigate("Settings")}
-                            style={styles.settingsBtn}
-                        >
-                            <Icon name="md-settings" style={{ color: commonColor.brandPrimary }} />
-                            <Text style={styles.settingsBtnText}>
-                                {this.context.t("Settings")}
-                            </Text>
-                        </Button>
-                    </View>
+                    <Button
+                        rounded
+                        center
+                        style={{ marginTop: 30 }}
+                        onPress={() => navigation.navigate("EditProfile", { user })}
+                    >
+                        <Icon name="md-create" />
+                        <Text>{this.context.t("Edit Profile")}</Text>
+                    </Button>
+
+                    <Button
+                        rounded
+                        center
+                        style={{ marginTop: 15 }}
+                        onPress={() => navigation.navigate("Settings", { user })}
+                    >
+                        <Icon name="md-settings" />
+                        <Text>{this.context.t("Settings")}</Text>
+                    </Button>
                 </Content>
             </Container>
         );
@@ -61,4 +74,11 @@ class Profile extends Component {
 Profile.contextTypes = {
     t: PropTypes.func.isRequired
 };
-export default Profile;
+
+function mapStateToProps(state) {
+    return {
+        userState: state.userState
+    };
+}
+
+export default connect(mapStateToProps)(Profile);
