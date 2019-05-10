@@ -142,6 +142,7 @@ class PhotoCards extends Component {
                                         ref={mr => (this._photoCard = mr)}
                                         index={index}
                                         item={item}
+                                        userLocation={{longitude: user.location.coordinates[0], latitude: user.location.coordinates[1]}}
                                         onSwipeOff={this.nextCard}
                                         onCardOpen={_id => {
                                             this.props.navigation.navigate("PhotoCardDetails", {

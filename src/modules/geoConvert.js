@@ -1,4 +1,4 @@
-export default (center, radius) => {
+export const getCoordinates = (center, radius) => {
     // ref: http://www.movable-type.co.uk/scripts/latlong.html
     // Destination point given distance and bearing from start point
 
@@ -56,4 +56,25 @@ export default (center, radius) => {
     const ne = destinationPoint(center, radius);
 
     return { sw, ne };
+};
+
+export const geoDistance = (location1, location2) => {
+    const radius = 6371; // Earth's radius in kilometers
+    const latDelta = toRad(location2.latitude - location1.latitude);
+    const lonDelta = toRad(location2.longitude - location1.longitude);
+
+    const a =
+        Math.sin(latDelta / 2) * Math.sin(latDelta / 2) +
+        Math.cos(toRad(location1.latitude)) *
+            Math.cos(toRad(location2.latitude)) *
+            Math.sin(lonDelta / 2) *
+            Math.sin(lonDelta / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    function toRad(deg) {
+        return deg * (Math.PI / 180);
+    }
+
+    return radius * c;
 };
