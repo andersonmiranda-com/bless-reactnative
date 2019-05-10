@@ -18,9 +18,11 @@ export const updateCards = (user, refresh = false) => {
         if (refresh) {
             this.offset = 0;
             this.items = [];
+            this.itemIndex = 0;
         } else {
             this.offset = this.cardsState.offset;
             this.items = this.cardsState.items;
+            this.itemIndex = this.cardsState.itemIndex;
         }
 
         this.profilesCount = parseInt(this.cardsState.itemsCount, 10);
@@ -71,10 +73,10 @@ export const updateCards = (user, refresh = false) => {
                 .find(query)
                 .toArray()
                 .then(items => {
-                    console.log("actions OK", items.length);
                     let cards = {
                         items: this.items.concat(items),
                         itemsCount: items.count,
+                        itemIndex: this.itemIndex,
                         offset: this.offset + this.limit,
                         loading: false,
                         refreshing: false,

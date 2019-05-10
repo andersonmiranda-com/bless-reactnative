@@ -140,9 +140,7 @@ export default class Card extends Component {
 
     render() {
         const { birthday, first_name, bio, _id, image } = this.props.item;
-        const itemBday = moment(birthday, "MM/DD/YYYY");
-        const itemAge = moment().diff(itemBday, "years");
-        //const fbImage = `https://graph.facebook.com/${id}/picture?height=500`;
+        const itemAge = moment().diff(birthday, "years");
 
         let animatedStyle;
 
@@ -313,7 +311,9 @@ export default class Card extends Component {
                         }}
                     >
                         <TouchableOpacity onPress={() => this.props.onCardOpen(_id)}>
-                            <Text style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}>
+                            <Text
+                                style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}
+                            >
                                 {first_name}, {itemAge}
                             </Text>
                             {bio ? (
@@ -336,8 +336,8 @@ const styles = StyleSheet.create({
         height: height - 168 - (platform !== "ios" ? 10 : 0) - (isIphoneX ? 50 : 0),
         overflow: "hidden",
         backgroundColor: "white",
-//        borderWidth: 1,
-//        borderColor: "lightgrey",
+        //        borderWidth: 1,
+        //        borderColor: "lightgrey",
         borderRadius: 10
     }
 });

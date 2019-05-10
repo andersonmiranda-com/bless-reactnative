@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
-import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
 import { connect } from "react-redux";
 import { updateCards } from "../../actions/Cards";
+import { saveUser } from "../../actions/User";
 
 import Card from "../../components/Card";
 import styles from "./styles";
@@ -16,36 +16,21 @@ class PhotoCards extends Component {
         this.state = {
             itemIndex: 0,
             items: [],
-            user: this.props.user,
+            user: this.props.userState,
             loading: true,
             offset: 0
         };
-
-        if (!Stitch.hasAppClient("bless-club-nbaqg")) {
-            this.client = Stitch.initializeDefaultAppClient("bless-club-nbaqg");
-        } else {
-            this.client = Stitch.defaultAppClient;
-        }
-
-        this.db = this.client
-            .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
-            .db("bless");
-
-        console.log("conectado mongoDB");
     }
 
     componentDidMount() {
-        const { user } = this.state;
-        this.updateUserLocation(user).then(userLocation => {
-            console.log("geolocalizaçao OK");
-            this.props.updateCards(this.state.user, true);
+        this.updateUserLocation(this.state.user).then(user => {
+            this.props.updateCards(user, true);
         });
     }
 
     componentDidUpdate(prevProps) {
         const newProps = this.props;
         if (prevProps.cardsState !== newProps.cardsState) {
-            console.log("recebido");
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({
                 ...this.props.cardsState
@@ -59,18 +44,14 @@ class PhotoCards extends Component {
             //const location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
             //const { latitude, longitude } = location.coords;
             const latitude = -23.716211; //demo lat
-            const longitude = -42.507843; //demo lon
+            const longitude = -42.507444; //demo lon
 
-            //Update geo no MongoDB
-            await this.db
-                .collection("users")
-                .updateOne(
-                    { _id: user._id },
-                    { $set: { "location.coordinates": [longitude, latitude] } }
-                );
+            user.location.coordinates[0] = longitude;
+            user.location.coordinates[1] = latitude;
+            await this.props.saveUser(user._id, user);
 
             console.log("Permission Granted");
-            return [latitude, longitude];
+            return user;
         } else {
             console.log("Permission Denied");
         }
@@ -109,6 +90,8 @@ class PhotoCards extends Component {
                 break;
         }
 
+        console.log("this.state.itemIndex", this.state.itemIndex);
+
         this.setState({ itemIndex: this.state.itemIndex + 1 });
     };
 
@@ -124,7 +107,7 @@ class PhotoCards extends Component {
 
     doRestart = () => {
         this.setState({ itemIndex: 0, loading: true, items: [] });
-        this.getCards(this.props.user);
+        this.props.updateCards(this.state.user, true);
     };
 
     doGoBack = () => {
@@ -134,7 +117,7 @@ class PhotoCards extends Component {
     };
 
     cardStack = () => {
-        const { itemIndex, items, loading } = this.state;
+        const { itemIndex, items, loading, user } = this.state;
 
         if (items.length === 0 && !!loading) {
             return (
@@ -150,7 +133,7 @@ class PhotoCards extends Component {
                         .slice(itemIndex, itemIndex + 5)
                         .reverse()
                         .map((item, index) => {
-                            if (item._id.toString() === this.props.user._id.toString()) {
+                            if (item._id.toString() === user._id.toString()) {
                                 return null;
                             } else {
                                 return (
@@ -192,5 +175,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { updateCards }
+    { updateCards, saveUser }
 )(PhotoCards);

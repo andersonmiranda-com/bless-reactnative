@@ -4,7 +4,7 @@ import { StatusBar, Platform } from "react-native";
 import { Container, Content, Text, Button, View, Icon, Spinner } from "native-base";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
-import { setAppVar } from "../../actions/index";
+import { saveUser, getUser, setUser } from "../../actions/User";
 import {
     Stitch,
     FacebookCredential,
@@ -30,26 +30,35 @@ class Login extends Component {
     }
 
     _loadClient() {
+        let user = this.props.userState;
         Stitch.initializeDefaultAppClient("bless-club-nbaqg").then(mongoClient => {
+            this.mongoClient = mongoClient;
             this.db = mongoClient
                 .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
                 .db("bless");
 
-           // mongoClient.auth.logout();
+            // mongoClient.auth.logout();
 
-            if (mongoClient.auth.isLoggedIn) {
-                const usersCollection = this.db.collection("users");
-                usersCollection
-                    .findOne({ "_id" : new BSON.ObjectId(mongoClient.auth.user.id) })
-                    .then(user => {
-                        this.setState({ loading: false });
-                        this.goHome(user);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            if (user && user !== null && user !== {}) {
+                this.goHome(user);
             } else {
-                this.setState({ loading: false });
+                if (this.mongoClient.auth.isLoggedIn) {
+                    const usersCollection = this.db.collection("users");
+                    usersCollection
+                        .findOne({ _id: new BSON.ObjectId(mongoClient.auth.user.id) })
+                        .then(userData => {
+                            console.log("user data from auth + load", userData);
+
+                            this.setState({ loading: false });
+                            this.props.setUser(userData);
+                            this.goHome(userData);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                } else {
+                    this.setState({ loading: false });
+                }
             }
         });
     }
@@ -58,8 +67,7 @@ class Login extends Component {
         this.props.navigation.reset(
             [
                 NavigationActions.navigate({
-                    routeName: "HomeTabNavigation",
-                    params: { user: user }
+                    routeName: "HomeTabNavigation"
                 })
             ],
             0
@@ -82,18 +90,17 @@ class Login extends Component {
     }
 
     createUser(uid, userData) {
-        const usersCollection = this.db.collection("users");
         const uData = {
             first_name: userData.first_name,
             last_name: userData.last_name,
             fbId: userData.id,
-            image: `https://graph.facebook.com/${userData.id}/picture?height=500`
+            image: `https://graph.facebook.com/${userData.id}/picture?height=500`,
+            last_login: new Date()
         };
-        console.log("writing", uid, uData);
-        const _uid = new BSON.ObjectId(uid);
-        usersCollection.updateOne({ _id: _uid }, { $set: { ...uData, last_login: new Date()} }, { upsert: true }).then(result => {
-            this.goHome({ _id: uid, uData });
-        });
+        const _id = new BSON.ObjectId(uid);
+        console.log("mandei salvar", _id, uData);
+        this.props.saveUser(_id, uData, true);
+        this.goHome();
     }
 
     login = async () => {
@@ -185,11 +192,11 @@ class Login extends Component {
 
 function mapStateToProps(state) {
     return {
-        appState: state.appState
+        userState: state.userState
     };
 }
 
 export default connect(
     mapStateToProps,
-    { setAppVar }
+    { saveUser, getUser, setUser }
 )(Login);

@@ -22,12 +22,13 @@ import {
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { updateCards } from "../../actions/Cards";
+import { saveUser } from "../../actions/User";
 
 import OfflineNotice from "../../components/OfflineNotice";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import { Stitch, RemoteMongoClient, BSON } from "mongodb-stitch-react-native-sdk";
 import styles from "../../theme/style.js";
 import commonColor from "../../theme/variables/commonColor";
+
 var Dimensions = require("Dimensions");
 var { width } = Dimensions.get("window");
 
@@ -39,26 +40,19 @@ const resetAction = StackActions.reset({
 class Settings extends Component {
     constructor(props, context) {
         super(props, context);
-
         this.state = {
-            user: this.props.navigation.state.params.user
+            user: this.props.userState
         };
-
-        if (!Stitch.hasAppClient("bless-club-nbaqg")) {
-            this.client = Stitch.initializeDefaultAppClient("bless-club-nbaqg");
-        } else {
-            this.client = Stitch.defaultAppClient;
-        }
-
-        this.db = this.client
-            .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
-            .db("bless");
-
-        console.log("conectado mongoDB");
     }
 
-    componentDidMount() {
-        console.log(this.state.user);
+    componentDidMount() {}
+
+    componentDidUpdate(prevProps) {
+        const newProps = this.props;
+        if (prevProps.userState !== newProps.userState) {
+            // eslint-disable-next-line react/no-did-update-set-state
+            this.setState({ user: newProps.userState });
+        }
     }
 
     updateUser = (key, value) => {
@@ -74,11 +68,9 @@ class Settings extends Component {
 
     saveUser() {
         const { user } = this.state;
-        const usersCollection = this.db.collection("users");
-        usersCollection.updateOne({ _id: user._id }, { $set: user }).then(res => {
-            this.props.updateCards(user, true);
-            this.props.navigation.goBack();
-        });
+        this.props.saveUser(user._id, user);
+        this.props.updateCards(user, true);
+        this.props.navigation.goBack();
     }
 
     logout() {
@@ -111,7 +103,7 @@ class Settings extends Component {
 
                     <Right>
                         <Button transparent onPress={() => this.saveUser()}>
-                            <Text>{this.context.t("Ok")}</Text>
+                            <Text>{this.context.t("OK")}</Text>
                         </Button>
                     </Right>
                 </Header>
@@ -351,5 +343,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { updateCards }
+    { updateCards, saveUser }
 )(Settings);
