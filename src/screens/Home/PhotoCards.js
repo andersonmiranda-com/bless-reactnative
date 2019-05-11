@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import { connect } from "react-redux";
 import { updateCards } from "../../actions/Cards";
-import { saveUser } from "../../actions/User";
+import { getUser, saveUser } from "../../actions/User";
 
 import Card from "../../components/Card";
 import styles from "./styles";
@@ -22,8 +22,12 @@ class PhotoCards extends Component {
         };
     }
 
-    componentDidMount() {
-        this.updateUserLocation(this.state.user).then(user => {
+    async componentDidMount() {
+        console.log("inicio photocards");
+        await this.props.getUser(this.props.userState._id);
+        this.updateUserLocation(this.props.userState).then(user => {
+            console.log("updated user");
+
             this.props.updateCards(user, true);
         });
     }
@@ -186,5 +190,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { updateCards, saveUser }
+    { updateCards, saveUser, getUser }
 )(PhotoCards);

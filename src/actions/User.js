@@ -2,6 +2,7 @@ import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import configureStore from "../reducers/configureStore";
 
 export const getUser = _id => {
+    console.log("getUser");
     this.client = Stitch.defaultAppClient;
     this.db = this.client
         .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")

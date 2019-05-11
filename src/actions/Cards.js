@@ -3,6 +3,8 @@ import configureStore from "../reducers/configureStore";
 import moment from "moment";
 
 export const updateCards = (user, refresh = false) => {
+    console.log("called updateCards", user);
+
     this.client = Stitch.defaultAppClient;
     this.db = this.client
         .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
@@ -27,7 +29,7 @@ export const updateCards = (user, refresh = false) => {
 
         this.profilesCount = parseInt(this.cardsState.itemsCount, 10);
 
-        const query = {
+        let query = {
             //_id: { $ne: this.props.user._id },
             location: {
                 $nearSphere: {
@@ -62,6 +64,10 @@ export const updateCards = (user, refresh = false) => {
             query.gender = "Female";
         }
 
+        const options = {
+            projection: { birthday: 1, first_name: 1, bio: 1, _id: 1, image: 1, location: 1 }
+        };
+
         if (this.items.length < this.itemsCount || refresh) {
             this.store.dispatch({
                 type: "UPDATE_NOTIFICATION_PARAM",
@@ -70,9 +76,10 @@ export const updateCards = (user, refresh = false) => {
 
             this.db
                 .collection("users")
-                .find(query)
+                .find(query, options)
                 .toArray()
                 .then(items => {
+                    console.log("updateCards", items);
                     let cards = {
                         items: this.items.concat(items),
                         itemsCount: items.count,

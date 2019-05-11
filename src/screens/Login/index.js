@@ -19,7 +19,6 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: undefined,
             loading: true,
             loadingFB: false
         };
@@ -65,7 +64,7 @@ class Login extends Component {
         });
     }
 
-    goHome(user) {
+    goHome() {
         this.props.navigation.reset(
             [
                 NavigationActions.navigate({
@@ -81,12 +80,10 @@ class Login extends Component {
         Stitch.defaultAppClient.auth
             .loginWithCredential(credential)
             .then(user => {
-                //this.props.setAppVar("appUser", { ...userData, uid: userInfo.user.uid });
                 this.createUser(user.id, userData);
-                this.setState({ loadingFB: false, userId: user.id });
             })
             .catch(err => {
-                this.setState({ loadingFB: false, userId: null });
+                this.setState({ loadingFB: false });
                 console.log(`Failed to log in Facebook: ${err}`);
             });
     }
@@ -100,8 +97,17 @@ class Login extends Component {
             last_login: new Date()
         };
         const _id = new BSON.ObjectId(uid);
+
+        //le dados do user
+
+        // se não existe, pedir perfil e criar
+
+        //this.goEditProfile();
+
+        //se existe, setUser
         console.log("mandei salvar", _id, uData);
         this.props.saveUser(_id, uData, true);
+        this.setState({ loadingFB: false });
         this.goHome();
     }
 
