@@ -1,4 +1,5 @@
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
+import { ObjectId } from "bson";
 import configureStore from "../reducers/configureStore";
 import moment from "moment";
 
@@ -106,4 +107,28 @@ export const profilesUpdated = (dispatch, cards) => {
         type: "UPDATE_CARDS",
         payload: cards
     });
+};
+
+export const saveRelation = (user_id, item_id, status) => {
+    this.client = Stitch.defaultAppClient;
+    this.db = this.client
+        .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
+        .db("bless");
+
+    return dispatch => {
+        this.db.collection("relations").updateOne(
+            { _id: new ObjectId(user_id) },
+            {
+                $push: { liked: { uid: item_id, status: status } }
+            },
+            { upsert: true }
+        );
+        this.db.collection("relations").updateOne(
+            { _id: new ObjectId(item_id) },
+            {
+                $push: { likedBack: { uid: new ObjectId(user_id), status: status } }
+            },
+            { upsert: true }
+        );
+    };
 };

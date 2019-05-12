@@ -4,7 +4,7 @@ import { View } from "react-native";
 import PropTypes from "prop-types";
 import { Spinner, Text } from "native-base";
 import { connect } from "react-redux";
-import { updateCards } from "../../actions/Cards";
+import { updateCards, saveRelation } from "../../actions/Cards";
 import { getUser, saveUser } from "../../actions/User";
 
 import Card from "../../components/Card";
@@ -64,7 +64,9 @@ class PhotoCards extends Component {
         }
     };
 
-    relate = (userUid, itemUid, status) => {
+    relate = (user_id, item_id, status) => {
+        this.props.saveRelation(user_id, item_id, status);
+
         /*  let relationUpdate = {};
         relationUpdate[`${userUid}/liked/${itemUid}`] = status;
         relationUpdate[`${itemUid}/likedBack/${userUid}`] = status;
@@ -76,9 +78,9 @@ class PhotoCards extends Component {
     };
 
     nextCard = (direction, itemUid) => {
-        const userUid = this.state.user.uid;
+        const userUid = this.props.userState._id;
 
-        console.log(direction, itemUid);
+        console.log(direction, userUid, itemUid);
 
         switch (direction) {
             case "right":
@@ -190,5 +192,5 @@ function mapStateToProps(state) {
 
 export default connect(
     mapStateToProps,
-    { updateCards, saveUser, getUser }
+    { updateCards, saveUser, getUser, saveRelation }
 )(PhotoCards);
