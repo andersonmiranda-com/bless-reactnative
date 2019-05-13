@@ -48,7 +48,7 @@ class Login extends Component {
                     usersCollection
                         .findOne({ _id: new BSON.ObjectId(mongoClient.auth.user.id) })
                         .then(userData => {
-                            console.log("user data from auth + load", userData);
+                            //console.log("user data from auth + load", userData);
 
                             this.setState({ loading: false });
                             this.props.setUser(userData);
