@@ -66,15 +66,6 @@ class PhotoCards extends Component {
 
     relate = (user_id, item_id, status) => {
         this.props.saveRelation(user_id, item_id, status);
-
-        /*  let relationUpdate = {};
-        relationUpdate[`${userUid}/liked/${itemUid}`] = status;
-        relationUpdate[`${itemUid}/likedBack/${userUid}`] = status;
-
-     firebase
-            .database()
-            .ref("relationships")
-            .update(relationUpdate); */
     };
 
     nextCard = (direction, itemUid) => {

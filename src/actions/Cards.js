@@ -30,6 +30,9 @@ export const updateCards = (user, refresh = false) => {
 
         this.profilesCount = parseInt(this.cardsState.itemsCount, 10);
 
+        let ageRange0 = user.ageRange[0] || 18;
+        let ageRange1 = user.ageRange[1] || 100;
+
         let query = {
             //_id: { $ne: this.props.user._id },
             location: {
@@ -44,10 +47,10 @@ export const updateCards = (user, refresh = false) => {
             showMe: true,
             birthday: {
                 $gt: moment()
-                    .subtract(user.ageRange[1], "years")
+                    .subtract(ageRange1, "years")
                     .toDate(),
                 $lte: moment()
-                    .subtract(user.ageRange[0], "years")
+                    .subtract(ageRange0, "years")
                     .toDate()
             }
         };
