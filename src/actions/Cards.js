@@ -40,13 +40,16 @@ export const updateCards = (user, refresh = false) => {
             .subtract(ageRange1, "years")
             .toDate();
 
+
+            console.log(user, dateRange0, dateRange1);
+
         if (this.items.length < this.itemsCount || refresh) {
             this.store.dispatch({
                 type: "UPDATE_NOTIFICATION_PARAM",
                 payload: { key: "loading", value: true }
             });
 
-            this.client.callFunction("getCards", [user, dateRange0, dateRange1]).then(items => {
+            this.client.callFunction("getCards2", [user, dateRange0, dateRange1]).then(items => {
                 console.log("updateCards from Functions >> ", items.length);
                 let cards = {
                     items: this.items.concat(items),
@@ -80,14 +83,14 @@ export const saveRelation = (user_id, item_id, status) => {
         this.db.collection("relations").updateOne(
             { _id: new ObjectId(user_id) },
             {
-                $push: { liked: { uid: item_id, status: status } }
+                $push: { liked: item_id }
             },
             { upsert: true }
         );
         this.db.collection("relations").updateOne(
             { _id: new ObjectId(item_id) },
             {
-                $push: { likedBack: { uid: new ObjectId(user_id), status: status } }
+                $push: { likedBack: new ObjectId(user_id) } 
             },
             { upsert: true }
         );
