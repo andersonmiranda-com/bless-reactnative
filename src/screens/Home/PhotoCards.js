@@ -64,8 +64,8 @@ class PhotoCards extends Component {
         }
     };
 
-    relate = (user_id, item_id, status) => {
-        this.props.saveRelation(user_id, item_id, status);
+    relate = (user_id, item_id, type) => {
+        this.props.saveRelation(user_id, item_id, type);
     };
 
     nextCard = (direction, itemUid) => {
@@ -75,18 +75,18 @@ class PhotoCards extends Component {
 
         switch (direction) {
             case "right":
-                this.relate(userUid, itemUid, true);
+                this.relate(userUid, itemUid, "like");
                 break;
 
             case "left":
-                this.relate(userUid, itemUid, false);
+                this.relate(userUid, itemUid, "dislike");
                 break;
 
             case "bottom":
                 break;
 
             case "top":
-                this.relate(userUid, itemUid, "super");
+                this.relate(userUid, itemUid, "superlike");
                 break;
         }
 

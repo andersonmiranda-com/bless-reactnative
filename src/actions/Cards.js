@@ -62,26 +62,8 @@ export const profilesUpdated = (dispatch, cards) => {
     });
 };
 
-export const saveRelation = (user_id, item_id, status) => {
-    this.client = Stitch.defaultAppClient;
-    this.db = this.client
-        .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
-        .db("bless");
-
+export const saveRelation = (user_id, item_id, type) => {
     return dispatch => {
-        this.db.collection("relations").updateOne(
-            { _id: new ObjectId(user_id) },
-            {
-                $push: { liked: item_id }
-            },
-            { upsert: true }
-        );
-        this.db.collection("relations").updateOne(
-            { _id: new ObjectId(item_id) },
-            {
-                $push: { likedBack: new ObjectId(user_id) }
-            },
-            { upsert: true }
-        );
+        axios.post("http://192.168.1.51:3000/api/saveRelation", { user_id, item_id, type })
     };
 };
