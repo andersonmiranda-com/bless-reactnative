@@ -2,6 +2,7 @@ import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import { ObjectId } from "bson";
 import configureStore from "../reducers/configureStore";
 import moment from "moment";
+import axios from "axios";
 
 export const updateCards = (user, refresh = false) => {
     //console.log("called updateCards", user);
@@ -30,27 +31,31 @@ export const updateCards = (user, refresh = false) => {
 
         this.profilesCount = parseInt(this.cardsState.itemsCount, 10);
 
-        const ageRange0 = user.ageRange[0] || 18;
-        const ageRange1 = user.ageRange[1] || 100;
-
-        const dateRange0 = moment()
-            .subtract(ageRange0, "years")
-            .toDate();
-        const dateRange1 = moment()
-            .subtract(ageRange1, "years")
-            .toDate();
-
-
-            console.log(user, dateRange0, dateRange1);
-
         if (this.items.length < this.itemsCount || refresh) {
             this.store.dispatch({
                 type: "UPDATE_NOTIFICATION_PARAM",
                 payload: { key: "loading", value: true }
             });
 
-            this.client.callFunction("getCards2", [user, dateRange0, dateRange1]).then(items => {
-                console.log("updateCards from Functions >> ", items.length);
+            axios
+                .post("http://192.168.1.51:3000/api/getCards", {user})
+                .then(function(response) {
+                    let items = response.data.data;
+
+                    let cards = {
+                        items: this.items.concat(items),
+                        itemsCount: items.count,
+                        itemIndex: this.itemIndex,
+                        offset: this.offset + this.limit,
+                        loading: false,
+                        refreshing: false,
+                        scrolling: false
+                    };
+                    profilesUpdated(dispatch, cards);
+                });
+
+           /*  this.client.callFunction("getCards2", [user, dateRange0, dateRange1]).then(items => {
+                //console.log("updateCards from Functions >> ", items.length);
                 let cards = {
                     items: this.items.concat(items),
                     itemsCount: items.count,
@@ -61,7 +66,7 @@ export const updateCards = (user, refresh = false) => {
                     scrolling: false
                 };
                 profilesUpdated(dispatch, cards);
-            });
+            }); */
         }
     };
 };
@@ -90,7 +95,7 @@ export const saveRelation = (user_id, item_id, status) => {
         this.db.collection("relations").updateOne(
             { _id: new ObjectId(item_id) },
             {
-                $push: { likedBack: new ObjectId(user_id) } 
+                $push: { likedBack: new ObjectId(user_id) }
             },
             { upsert: true }
         );
