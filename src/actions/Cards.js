@@ -35,20 +35,25 @@ export const updateCards = (user, refresh = false) => {
                 payload: { key: "loading", value: true }
             });
 
-            axios.post("http://192.168.1.51:3000/api/getCards", { user }).then(function(response) {
-                let items = response.data.data;
+            axios
+                .post(
+                    "http://blessback-env.rnsmfv3mt4.us-east-1.elasticbeanstalk.com/api/getCards",
+                    { user }
+                )
+                .then(function(response) {
+                    let items = response.data.data;
 
-                let cards = {
-                    items: this.items.concat(items),
-                    itemsCount: items.count,
-                    itemIndex: this.itemIndex,
-                    offset: this.offset + this.limit,
-                    loading: false,
-                    refreshing: false,
-                    scrolling: false
-                };
-                profilesUpdated(dispatch, cards);
-            });
+                    let cards = {
+                        items: this.items.concat(items),
+                        itemsCount: items.count,
+                        itemIndex: this.itemIndex,
+                        offset: this.offset + this.limit,
+                        loading: false,
+                        refreshing: false,
+                        scrolling: false
+                    };
+                    profilesUpdated(dispatch, cards);
+                });
         }
     };
 };
@@ -62,6 +67,6 @@ export const profilesUpdated = (dispatch, cards) => {
 
 export const saveRelation = (user_id, item_id, type) => {
     return dispatch => {
-        axios.post("http://192.168.1.51:3000/api/saveRelation", { user_id, item_id, type });
+        axios.post("http://blessback-env.rnsmfv3mt4.us-east-1.elasticbeanstalk.com/api/saveRelation", { user_id, item_id, type });
     };
 };
