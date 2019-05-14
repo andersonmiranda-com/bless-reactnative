@@ -37,25 +37,9 @@ export const updateCards = (user, refresh = false) => {
                 payload: { key: "loading", value: true }
             });
 
-            axios
-                .post("http://192.168.1.51:3000/api/getCards", {user})
-                .then(function(response) {
-                    let items = response.data.data;
+            axios.post("http://192.168.1.51:3000/api/getCards", { user }).then(function(response) {
+                let items = response.data.data;
 
-                    let cards = {
-                        items: this.items.concat(items),
-                        itemsCount: items.count,
-                        itemIndex: this.itemIndex,
-                        offset: this.offset + this.limit,
-                        loading: false,
-                        refreshing: false,
-                        scrolling: false
-                    };
-                    profilesUpdated(dispatch, cards);
-                });
-
-           /*  this.client.callFunction("getCards2", [user, dateRange0, dateRange1]).then(items => {
-                //console.log("updateCards from Functions >> ", items.length);
                 let cards = {
                     items: this.items.concat(items),
                     itemsCount: items.count,
@@ -66,7 +50,7 @@ export const updateCards = (user, refresh = false) => {
                     scrolling: false
                 };
                 profilesUpdated(dispatch, cards);
-            }); */
+            });
         }
     };
 };
