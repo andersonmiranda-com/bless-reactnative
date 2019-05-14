@@ -1,7 +1,5 @@
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
-import { ObjectId } from "bson";
 import configureStore from "../reducers/configureStore";
-import moment from "moment";
 import axios from "axios";
 
 export const updateCards = (user, refresh = false) => {
@@ -64,6 +62,6 @@ export const profilesUpdated = (dispatch, cards) => {
 
 export const saveRelation = (user_id, item_id, type) => {
     return dispatch => {
-        axios.post("http://192.168.1.51:3000/api/saveRelation", { user_id, item_id, type })
+        axios.post("http://192.168.1.51:3000/api/saveRelation", { user_id, item_id, type });
     };
 };
