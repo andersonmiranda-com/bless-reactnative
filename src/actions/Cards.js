@@ -1,6 +1,7 @@
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import configureStore from "../reducers/configureStore";
 import axios from "axios";
+import { config } from "../config";
 
 export const updateCards = (user, refresh = false) => {
     //console.log("called updateCards", user);
@@ -35,23 +36,20 @@ export const updateCards = (user, refresh = false) => {
                 payload: { key: "loading", value: true }
             });
 
-            axios
-                .post("http://localhost:3000/api/users/getCards", { user })
-                .then(function(response) {
+            axios.post(config.apiUrl + "/users/getCards", { user }).then(function(response) {
+                let items = response.data.data;
 
-                    let items = response.data.data;
-
-                    let cards = {
-                        items: this.items.concat(items),
-                        itemsCount: response.data.count,
-                        itemIndex: this.itemIndex,
-                        offset: this.offset + this.limit,
-                        loading: false,
-                        refreshing: false,
-                        scrolling: false
-                    };
-                    profilesUpdated(dispatch, cards);
-                });
+                let cards = {
+                    items: this.items.concat(items),
+                    itemsCount: response.data.count,
+                    itemIndex: this.itemIndex,
+                    offset: this.offset + this.limit,
+                    loading: false,
+                    refreshing: false,
+                    scrolling: false
+                };
+                profilesUpdated(dispatch, cards);
+            });
         }
     };
 };
@@ -65,6 +63,6 @@ export const profilesUpdated = (dispatch, cards) => {
 
 export const saveRelation = (user_id, item_id, type) => {
     return dispatch => {
-        axios.post("http://localhost:3000/api/relations/save", { user_id, item_id, type });
+        axios.post(config.apiUrl + "/relations/save", { user_id, item_id, type });
     };
 };

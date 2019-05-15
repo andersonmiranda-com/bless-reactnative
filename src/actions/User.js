@@ -1,22 +1,15 @@
 import { Stitch, RemoteMongoClient } from "mongodb-stitch-react-native-sdk";
 import configureStore from "../reducers/configureStore";
+import axios from "axios";
+import { config } from "../config";
 
 export const getUser = _id => {
     console.log("getUser");
-    this.client = Stitch.defaultAppClient;
-    this.db = this.client
-        .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
-        .db("bless");
-
-    this.store = configureStore().store;
-
     return dispatch => {
-        this.userState = this.store.getState().userState;
-        this.db
-            .collection("users")
-            .findOne({ _id: _id })
-            .then(user => {
-                userReady(dispatch, user);
+        axios
+            .get(config.apiUrl + "/users/" + _id.toString())
+            .then(result => {
+                userReady(dispatch, result);
             })
             .catch(error => {
                 console.log(error);
@@ -31,22 +24,11 @@ export const setUser = user => {
     };
 };
 
-export const saveUser = (_id, uData, upsert = false) => {
-    this.client = Stitch.defaultAppClient;
-    this.db = this.client
-        .getServiceClient(RemoteMongoClient.factory, "bless-club-mongodb")
-        .db("bless");
-
-    this.store = configureStore().store;
-    this.userState = this.store.getState().userState;
-
+export const saveUser = (_id, userData, upsert = false) => {
     return dispatch => {
-        this.db
-            .collection("users")
-            .updateOne({ _id: _id }, { $set: uData }, { upsert: upsert })
-            .then(result => {
-                userReady(dispatch, uData);
-            });
+        axios.post(config.apiUrl + "/users/save", { _id, userData, upsert }).then(result => {
+            userReady(dispatch, userData);
+        });
     };
 };
 
