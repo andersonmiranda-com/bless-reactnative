@@ -36,16 +36,14 @@ export const updateCards = (user, refresh = false) => {
             });
 
             axios
-                .post(
-                    "http://blessback-env.rnsmfv3mt4.us-east-1.elasticbeanstalk.com/api/getCards",
-                    { user }
-                )
+                .post("http://localhost:3000/api/users/getCards", { user })
                 .then(function(response) {
+
                     let items = response.data.data;
 
                     let cards = {
                         items: this.items.concat(items),
-                        itemsCount: items.count,
+                        itemsCount: response.data.count,
                         itemIndex: this.itemIndex,
                         offset: this.offset + this.limit,
                         loading: false,
@@ -67,6 +65,6 @@ export const profilesUpdated = (dispatch, cards) => {
 
 export const saveRelation = (user_id, item_id, type) => {
     return dispatch => {
-        axios.post("http://blessback-env.rnsmfv3mt4.us-east-1.elasticbeanstalk.com/api/saveRelation", { user_id, item_id, type });
+        axios.post("http://localhost:3000/api/relations/save", { user_id, item_id, type });
     };
 };

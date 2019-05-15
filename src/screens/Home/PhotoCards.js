@@ -133,9 +133,7 @@ class PhotoCards extends Component {
                         .slice(itemIndex, itemIndex + 5)
                         .reverse()
                         .map((item, index) => {
-                            if (item._id.toString() === user._id.toString()) {
-                                return null;
-                            } else {
+                           
                                 return (
                                     <Card
                                         key={item._id}
@@ -158,7 +156,7 @@ class PhotoCards extends Component {
                                         }}
                                     />
                                 );
-                            }
+                            
                         })}
                 </View>
             );
