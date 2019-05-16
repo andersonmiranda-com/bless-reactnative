@@ -13,7 +13,6 @@ import { Icon, Text } from "native-base";
 import { LinearGradient } from "expo";
 import commonColor from "../theme/variables/commonColor";
 import moment from "moment";
-import { geoDistance } from "../modules/geoConvert";
 const { width, height } = Dimensions.get("window");
 const platform = Platform.OS;
 const isIphoneX =
@@ -139,12 +138,17 @@ export default class Card extends Component {
     };
 
     render() {
-        const { birthday, first_name, bio, _id, image, location } = this.props.item;
+        const {
+            birthday,
+            first_name,
+            bio,
+            _id,
+            image,
+            likeBack,
+            distance_in_meters
+        } = this.props.item;
         const itemAge = moment().diff(birthday, "years");
-        const itemDistance = parseInt(geoDistance(this.props.userLocation, {
-            longitude: location.coordinates[0],
-            latitude: location.coordinates[1]
-        }));
+        const itemDistance = parseInt (distance_in_meters / 1000, 10);
 
         let animatedStyle;
 
@@ -318,9 +322,11 @@ export default class Card extends Component {
                             <Text
                                 style={{ fontSize: 22, fontFamily: "Rubik_Bold", color: "white" }}
                             >
-                                {first_name}, {itemAge}
+                                {first_name}, {itemAge}, {likeBack}
                             </Text>
-                            <Text style={{ fontSize: 16, color: "white" }}>{bio}, {itemDistance} km</Text>
+                            <Text style={{ fontSize: 16, color: "white" }}>
+                                {bio}, {itemDistance} km
+                            </Text>
                         </TouchableOpacity>
                     </LinearGradient>
                 </ImageBackground>

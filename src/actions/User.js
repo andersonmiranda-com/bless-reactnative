@@ -7,9 +7,9 @@ export const getUser = _id => {
     console.log("getUser");
     return dispatch => {
         axios
-            .get(config.apiUrl + "/users/" + _id.toString())
+            .get(config.apiUrl + "/users/" + _id)
             .then(result => {
-                userReady(dispatch, result);
+                userReady(dispatch, result.data);
             })
             .catch(error => {
                 console.log(error);
